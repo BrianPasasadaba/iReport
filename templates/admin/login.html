@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iReport</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/adminstyles.css') }}" />
+  </head>
+
+  <body>    
+    <header
+      class="header d-flex justify-content-between align-items-center py-3"
+    >
+      <div class="ml-4">
+        <img src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}" alt="Left Logo" class="header-logo" />
+      </div>
+      <div class="text-center">
+        <div>i-Report</div>
+        <div>CABUYAO CITY DISASTER RISK REDUCTION AND MANAGEMENT OFFICE</div>
+      </div>
+      <div class="mr-4"></div>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6 d-flex justify-content-center align-items-center">
+          <div class="d-flex justify-content-center align-items-center">
+            <!-- Left Logo -->
+            <img
+              src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}"
+              alt="Left Logo"
+              class="login_img"
+            />
+          </div>
+          <div class="col-lg-12 d-flex justify-content-center">
+            <form class="login-form" method="POST">
+              <h1 class="login-header">i-REPORT</h1>
+              <div class="form-group">
+                <label for="username" class="mb-0">EMPLOYEE ID</label>
+                <input type="text" class="form-control" id="username" name="username" required />
+              </div>
+              <div class="form-group">
+                <label for="password" class="mb-0">PASSWORD</label>
+                <input type="password" class="form-control" id="password" name="password" required />
+              </div>
+              <div class="row justify-content-center">
+                <button type="submit" class="btn btn-tertiary login-button">
+                  LOGIN
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-3"></div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row"></div>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/adminscripts.js') }}"></script>
+  </body>
+</html>
