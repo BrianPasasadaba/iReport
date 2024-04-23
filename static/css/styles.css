@@ -1,0 +1,210 @@
+body {
+  background-color: #fac7c7;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+}
+
+.container-fluid {
+  min-height: calc(100vh - 10%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.header {
+  background-color: #a91212;
+  border-bottom: 1px solid #ddd;
+  color: #fff;
+  padding: 2vw;
+}
+
+.header_img {
+  max-width: 80%;
+}
+.footer {
+  background-color: #a91212;
+  color: #fff;
+  padding: 1.5vh 0;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
+  margin-top: 20vh;
+}
+
+#scrollIndicator {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 0.8vw;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  z-index: 9999;
+}
+
+.logo-img {
+  max-width: 20%;
+}
+
+.accordion .card-header {
+  background-color: #a91212;
+  color: white;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.accordion .card-body {
+  background-color: #a91212;
+  color: white;
+  font-weight: 500;
+}
+
+.accordion .card-header button {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+}
+
+.accordion .card-header button:focus {
+  box-shadow: none;
+}
+
+.accordion .card-header .fa-chevron-up {
+  color: white;
+}
+
+.container-last {
+  margin-bottom: 20vh;
+}
+
+.report-button {
+  background-color: #a91212;
+  color: white;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1vw;
+  border-radius: 3px;
+}
+
+.report-button a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.red-label {
+  background-color: #df4747;
+  color: black;
+  padding: 0.3vh 0.8vw;
+}
+
+.form-control {
+  border-radius: 0;
+  border-color: transparent;
+}
+.form-group {
+  margin: 2vw;
+}
+
+.input-group {
+  border: none;
+  background-color: white;
+}
+
+.no-border {
+  border: none;
+}
+
+.input-group-text.no-border {
+  background-color: inherit;
+  color: inherit;
+}
+
+.photo-icon {
+  max-width: 100%;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.font-italic {
+  font-style: italic;
+}
+.text-decoration-underline {
+  text-decoration: underline;
+}
+
+a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.report-container {
+  width: 60%;
+  background-color: #a91212;
+  margin: 2vw auto;
+  padding: 2vw;
+  text-align: left;
+  font-size: 0.75vw;
+  border-radius: 1%;
+  color: white;
+}
+
+.report-container h3 {
+  font-size: 1.75vw;
+}
+
+.accordion {
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  padding: 1vw;
+  margin: 0;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 1vw;
+  font-weight: bold;
+  position: relative;
+  box-shadow: none;
+  transition: background-color 0.5s ease;
+}
+
+.accordion-panel {
+  background-color: #a91212;
+  color: white;
+  padding: 0 1.5vw;
+  margin: 0;
+  display: none;
+  overflow: hidden;
+  transition: opacity 0.5s ease 0.3s;
+  font-size: 0.75vw;
+}
+
+.accordion.active {
+  background-color: #a91212;
+  color: white;
+  border: none;
+  outline-style: none;
+}
+
+.accordion.active + .accordion-panel {
+  display: block;
+  opacity: 1;
+}
+
+.back-button {
+  color: #a91212;
+}
