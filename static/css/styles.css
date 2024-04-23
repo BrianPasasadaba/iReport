@@ -19,10 +19,11 @@ a {
   border-bottom: 1px solid #ddd;
   color: #fff;
   padding: 2vw;
+  font-size: 3vh;
 }
 
 .header_img {
-  max-width: 80%;
+  max-width: 90%;
 }
 .footer {
   background-color: #a91212;
