@@ -1,9 +1,19 @@
 from flask import Flask, render_template, url_for, redirect, request, flash, session
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
-from werkzeug.security import check_password_hash
-from user import User
+
+
 
 app = Flask(__name__)
+
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# Initialize Flask-Bcrypt
+bcrypt = Bcrypt(app)
+
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
@@ -13,27 +23,49 @@ app.config['SECRET_KEY'] = 'b6Vs6>[L;pgZ26`$]>?V'
 
 mysql = MySQL(app)
 
+# Define User model
+class User(UserMixin):
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+
+    def get_id(self):
+        return self.email
+
+# Callback to load user from session
+@login_manager.user_loader
+def load_user(email):
+    cursor = mysql.connection.cursor()
+    query = "SELECT * FROM admins WHERE email = %s"
+    cursor.execute(query, (email,))
+    user_data = cursor.fetchone()
+    cursor.close()
+    if user_data:
+        return User(user_data[5], user_data[6])
+    else:
+        return None
+
 
 @app.route('/')
 def index():
     '''
-    # Check if a user already exists in the database (optional)
-    existing_user = User.get_by_email('admin@cdrrmo.com', mysql)  # Replace with desired email
+    account = {
+        'email': 'admin@cdrrmo.com',
+        'password': 'Admin1234'
+    }
 
-    if not existing_user:
-        # Create a new user with a strong password (replace with your desired password)
-        new_user = User('admin@cdrrmo.com', 'Admin123')  # Removed generate_password_hash
+    # Hash the password before storing it in the database
+    hashed_password = bcrypt.generate_password_hash(account['password']).decode('utf-8')
 
-        # Insert the new user into the database
-        cursor = mysql.connection.cursor()
-        cursor.execute('INSERT INTO admins (email, password) VALUES (%s, %s)', (new_user.email, new_user.password_hash))
-        mysql.connection.commit()
-
-        flash('User created successfully!', 'success')
-    else:
-        flash('User already exists!', 'info')  # Or handle existing user differently
+    # Insert the new user into the database
+    cursor = mysql.connection.cursor()
+    query = "INSERT INTO admins (email, password) VALUES (%s, %s)"
+    cursor.execute(query, (account['email'], hashed_password))
+    mysql.connection.commit()
+    cursor.close()
     '''
 
+                   
     return render_template('index.html')
 
 @app.route('/incident_form')
@@ -46,38 +78,35 @@ def faqs():
 
 #Start of admin routes
 @app.route('/login', methods=['GET', 'POST'])
-def admin_login():
+def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
 
-        user = User.get_by_email(email, mysql)
+        cursor = mysql.connection.cursor()
+        query = "SELECT * FROM admins WHERE email = %s"
+        cursor.execute(query, (email,))
+        user_data = cursor.fetchone()
+        cursor.close()
 
-        print("Fetched user:", user)  # Print the retrieved user object
-
-        if user:  # Check if user is found
-            print("Verifying password...")
-            if user.verify_password(password):
-                print("Login successful!")
-                session['logged_in'] = True
-                session['email'] = email
-                flash('Login successful!', 'success')
-                return redirect(url_for('analytics'))  # Redirect to your desired route
-            else:
-                print("Login failed: Invalid password.")
-                flash('Invalid email or password.', 'danger')
+        if user_data and bcrypt.check_password_hash(user_data[6], password):
+            user = User(user_data[5], user_data[6])
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('analytics'))
         else:
-            print("Login failed: User not found.")
             flash('Invalid email or password.', 'danger')
 
     return render_template('admin/login.html')
 
 
 @app.route('/analytics')
+@login_required
 def analytics():
     return render_template('admin/analytics.html')
 
 @app.route('/announcement')
+@login_required
 def announcement():
     return render_template('admin/announcement.html')
 
@@ -98,12 +127,15 @@ def help():
     return render_template('admin/help.html')
 
 @app.route('/report')
+@login_required
 def report():
     return render_template('admin/report.html')
 
 @app.route('/logout')
 def logout():
-    return redirect('/')
+    logout_user()
+    flash('You have been logged out!', 'success')
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)
