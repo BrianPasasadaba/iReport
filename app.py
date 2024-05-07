@@ -101,12 +101,12 @@ def login():
 
 
 @app.route('/analytics')
-@login_required
+
 def analytics():
     return render_template('admin/analytics.html')
 
 @app.route('/announcement')
-@login_required
+
 def announcement():
     return render_template('admin/announcement.html')
 
@@ -127,7 +127,7 @@ def help():
     return render_template('admin/help.html')
 
 @app.route('/report')
-@login_required
+
 def report():
     return render_template('admin/report.html')
 
