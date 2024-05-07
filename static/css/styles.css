@@ -19,6 +19,7 @@ a {
   border-bottom: 1px solid #ddd;
   color: #fff;
   padding: 3vw;
+  font-size: x-large;
 }
 
 .header_img {
@@ -34,6 +35,7 @@ a {
   width: 100%;
   z-index: 9999;
   margin-top: 20vh;
+  font-size: small;
 }
 
 #scrollIndicator {
@@ -150,7 +152,7 @@ a:hover {
 }
 
 .report-container {
-  width: 60%;
+  width: 80%;
   height: 50vh;
   background-color: #100a51;
   margin: 2vw auto;
@@ -184,7 +186,7 @@ a:hover {
   display: none;
   overflow: hidden;
   transition: opacity 0.5s ease 0.3s;
-  border: 1px solid white;
+  border: 2px solid white;
   border-top: 1px solid #100a51;
 }
 
@@ -193,7 +195,7 @@ a:hover {
   color: white;
   border: none;
   outline-style: none;
-  border: 1px solid white;
+  border: 2px solid white;
   border-bottom: 1px solid #100a51;
 }
 
@@ -204,4 +206,49 @@ a:hover {
 
 .back-button {
   color: #a91212;
+}
+
+.form-control-sm-6 {
+  max-width: 60vw;
+}
+
+.form-control-sm-4 {
+  max-width: 40vw;
+}
+
+.form-control-sm-2 {
+  max-width: 25vw;
+}
+
+.input-icon {
+  position: relative;
+  display: flex;
+}
+
+.fas.fa-map-marker {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000;
+}
+
+.submit-button {
+  background-color: #100a51;
+  color: white;
+  cursor: pointer;
+  border: none;
+  align-items: center;
+  padding: 1vw;
+  border-radius: 3px;
+  width: 30%;
+  font-weight: 500;
+}
+
+.asterisk {
+  color: #a91212;
+}
+
+.custom-checkbox .form-check-input[type="checkbox"] {
+  border-color: black;
 }
