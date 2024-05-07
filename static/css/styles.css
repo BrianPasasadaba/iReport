@@ -18,8 +18,8 @@ a {
   background-color: #a91212;
   border-bottom: 1px solid #ddd;
   color: #fff;
-  padding: 3vw;
-  font-size: x-large;
+  padding: 2vw;
+  font-size: large;
 }
 
 .header_img {
@@ -36,6 +36,10 @@ a {
   z-index: 9999;
   margin-top: 20vh;
   font-size: small;
+}
+
+.footer p {
+  margin-bottom: 0.25vh;
 }
 
 #scrollIndicator {
