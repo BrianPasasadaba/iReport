@@ -1,5 +1,5 @@
 body {
-  background-color: #fac7c7;
+  background-color: white;
   margin: 0;
   padding: 0;
   font-weight: bold;
@@ -19,11 +19,10 @@ a {
   border-bottom: 1px solid #ddd;
   color: #fff;
   padding: 2vw;
-  font-size: 3vh;
 }
 
 .header_img {
-  max-width: 90%;
+  max-width: 80%;
 }
 .footer {
   background-color: #a91212;
@@ -35,6 +34,14 @@ a {
   width: 100%;
   z-index: 9999;
   margin-top: 20vh;
+}
+
+.footer h5 {
+  font-size: 2.5vw;
+}
+
+.footer p {
+  font-size: 2vw;
 }
 
 #scrollIndicator {
@@ -53,7 +60,7 @@ a {
 }
 
 .accordion .card-header {
-  background-color: #a91212;
+  background-color: #100a51;
   color: white;
   cursor: pointer;
   border: none;
@@ -63,9 +70,10 @@ a {
 }
 
 .accordion .card-body {
-  background-color: #a91212;
+  background-color: #100a51;
   color: white;
   font-weight: 500;
+  font-size: 3vw;
 }
 
 .accordion .card-header button {
@@ -87,7 +95,7 @@ a {
 }
 
 .report-button {
-  background-color: #a91212;
+  background-color: #100a51;
   color: white;
   cursor: pointer;
   border: none;
@@ -104,14 +112,13 @@ a {
 }
 
 .red-label {
-  background-color: #df4747;
   color: black;
   padding: 0.3vh 0.8vw;
 }
 
 .form-control {
   border-radius: 0;
-  border-color: transparent;
+  border-color: #000;
 }
 .form-group {
   margin: 2vw;
@@ -153,17 +160,18 @@ a:hover {
 
 .report-container {
   width: 60%;
-  background-color: #a91212;
+  height: 50vh;
+  background-color: #100a51;
   margin: 2vw auto;
   padding: 2vw;
   text-align: left;
-  font-size: 0.75vw;
+  font-size: 3vw;
   border-radius: 1%;
   color: white;
 }
 
 .report-container h3 {
-  font-size: 1.75vw;
+  font-size: 4vw;
 }
 
 .accordion {
@@ -176,7 +184,7 @@ a:hover {
   border: none;
   text-align: left;
   outline: none;
-  font-size: 1vw;
+  font-size: 3vw;
   font-weight: bold;
   position: relative;
   box-shadow: none;
@@ -184,21 +192,25 @@ a:hover {
 }
 
 .accordion-panel {
-  background-color: #a91212;
+  background-color: #100a51;
   color: white;
   padding: 0 1.5vw;
   margin: 0;
   display: none;
   overflow: hidden;
   transition: opacity 0.5s ease 0.3s;
-  font-size: 0.75vw;
+  font-size: 3vw;
+  border: 1px solid white;
+  border-top: 1px solid #100a51;
 }
 
 .accordion.active {
-  background-color: #a91212;
+  background-color: #100a51;
   color: white;
   border: none;
   outline-style: none;
+  border: 1px solid white;
+  border-bottom: 1px solid #100a51;
 }
 
 .accordion.active + .accordion-panel {
