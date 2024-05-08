@@ -5,12 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>iReport</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/adminstyles.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/adminstyles.css') }}" />
 </head>
 
 <body>
@@ -33,21 +30,10 @@
       </div>
       <div class="sidebar">
         <ul>
-          <li class="dropdown sub-btn">
-            <a><i class="fa fa-home"></i> Home</a> &nbsp;<i class="fa fa-chevron-down"></i>
-            <div class="sub-menu">
-              <ul>
-                <li>
-                  <a href="{{ url_for('report') }}"><i class="fa fa-list-alt"></i> Reports</a>
-                </li>
-                <li>
-                  <a href="{{ url_for('announcement') }}"><i class="fa fa-bullhorn"></i> Announcements</a>
-                </li>
-                <li>
-                  <a href="{{ url_for('admin_faqs') }}"><i class="fa fa-question"></i> FAQs</a>
-                </li>
-              </ul>
-            </div>
+          <li>
+            <a href="{{ url_for('report') }}"><i class="fa fa-list-alt"></i> Reports</a>
+          </li>
+
           </li>
           <li>
             <a href="{{ url_for('analytics') }}"><i class="fas fa-chart-bar"></i> Analytics</a>
@@ -164,7 +150,8 @@
                   nakita ko usok bandang 3pm sa bakanteng lote ng...
                 </td>
                 <td></td>
-                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td></td>
+                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td>
+                </td>
               </tr>
               <tr>
                 <td>E-0003</td>

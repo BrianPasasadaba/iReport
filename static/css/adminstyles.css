@@ -18,13 +18,6 @@ a:hover {
   text-decoration: none;
 }
 
-table a {
-  color: #a91212;
-}
-
-table a:hover {
-  color: #000;
-}
 .header {
   background-color: #a91212;
   height: 20vh;
@@ -62,8 +55,8 @@ table a:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #b6041c;
-  border-right: 0.5vw solid #a91212;
+  background-color: #100a51;
+  border-right: 0.5vw solid #100a51;
   top: 20vh;
   padding: 2vh;
   font-size: 1vw;
@@ -84,10 +77,10 @@ table a:hover {
   left: 0;
   bottom: 0;
   width: 15vw;
-  background-color: #b6041c;
+  background-color: #100a51;
   display: flex;
   flex-direction: column;
-  border-right: 0.5vw solid #a91212;
+  border-right: 0.5vw solid #100a51;
   padding-top: 3vh;
   font-size: 1vw;
 }
@@ -111,13 +104,13 @@ table a:hover {
 }
 
 .sidebar a:hover {
-  background-color: lightcoral;
-  color: #a91212;
+  background-color: white;
+  color: #100a51;
 }
 
 .sidebar a.active {
   background-color: white;
-  color: #a91212;
+  color: #100a51;
   padding: 0.25vw;
 }
 
@@ -132,13 +125,14 @@ table a:hover {
 }
 
 .incident-title {
-  font-size: 2vw;
+  font-size: 2.5vw;
   padding: 1vw;
-  color: #a91212;
+  color: #000;
 }
 
 .card-body {
   align-items: center;
+  justify-content: space-between;
   padding: 0 1vw;
 }
 .report-button {
@@ -150,25 +144,26 @@ table a:hover {
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  width: 15vw;
+  width: 100%;
   height: 8vh;
   font-size: 1vw;
   padding: 0.5vw;
 }
 
 .search-bar {
-  border: 1px solid #a91212;
-  width: 100%;
-  height: 8vh;
-  font-size: 1.25vw;
+  border: 1px solid #656565;
+  width: 20%;
+  height: 5vh;
+  font-size: 1vw;
+  margin-left: 62vw;
 }
 
 .search-icon {
   position: absolute;
-  right: 5%;
+  right: 2%;
   top: 50%;
   transform: translateY(-50%);
-  color: #a91212;
+  color: #656565;
   font-size: 0.75vw;
   border: none;
   background-color: transparent;
@@ -183,61 +178,23 @@ table a:hover {
 }
 
 .table {
-  width: 150%;
+  width: 100%;
   border-collapse: collapse;
-  border: 2vw solid #a91212;
-  font-size: 1vw;
-  margin-left: 2vw;
+  background-color: white;
+  font-size: 0.7vw;
 }
 
 th,
 td {
   text-align: center;
-  border-right: 1.5vw solid #a91212;
-  border-bottom: 0.1vw solid white;
   padding: 1%;
   border-radius: 1%;
+  margin-bottom: 0.5vh;
 }
 
 th {
-  background-color: #a91212 !important;
-  color: white !important;
-  border-bottom: 0.1vw solid white;
-}
-
-th:nth-child(1) {
-  width: 5%;
-}
-
-th:nth-child(2) {
-  width: 10%;
-}
-
-th:nth-child(3) {
-  width: 5%;
-}
-
-th:nth-child(4) {
-  width: 15%;
-}
-
-th:nth-child(5) {
-  width: 15%;
-}
-
-th:nth-child(6) {
-  width: 10%;
-}
-
-th:nth-child(7) {
-  width: 15%;
-}
-
-th:nth-child(8) {
-  width: 15%;
-}
-
-th:nth-child(9) {
+  background-color: rgba(16, 10, 81, 0.15);
+  color: #000;
   width: 10%;
 }
 
@@ -375,6 +332,18 @@ th:nth-child(9) {
   margin-left: 0.5vw;
 }
 
+.btn.btn-sixth {
+  color: #100a51;
+  font-weight: bold;
+  background-color: white;
+}
+
+.btn.btn-sixth:hover {
+  background-color: #100a51;
+  color: white;
+  margin-left: 0.5vw;
+}
+
 .checkbox {
   height: 2.5vh;
   width: 3vh;
@@ -419,18 +388,21 @@ th:nth-child(9) {
   border: none;
 }
 
+.modal-title {
+  font-size: 2vw;
+}
+
+.modal-body p {
+  margin-bottom: 3px;
+}
+
 .modal-content {
   height: 70vh;
   width: 60vw;
-  font-size: 1vw;
-  color: #a91212;
+  font-size: 0.75vw;
+  color: #000;
   position: fixed;
   padding: 2vw;
-}
-
-.modal-footer button {
-  padding: 1vw;
-  font-size: 1vw;
 }
 
 .modal-dialog {
@@ -443,26 +415,27 @@ th:nth-child(9) {
 }
 
 .modal-footer {
-  position: absolute;
+  position: static;
   right: 5vw;
   bottom: 1.5vw;
   display: flex;
 }
 
+.modal-footer button {
+  padding: 1vw;
+  font-size: 0.75vw;
+}
+
 .modal-footer hr {
   display: none;
 }
-
 .report-container {
-  width: 90%;
-  height: 90%;
-  background-color: #a91212;
-  margin: 2vw auto;
-  padding: 2vw;
-  text-align: left;
-  font-size: 0.75vw;
-  border-radius: 1%;
-  color: white;
+  overflow: auto;
+  width: 80vw;
+  height: 65vh;
+  align-items: center;
+  border: 1px solid gray;
+  margin: 1vw;
 }
 
 .report-container h4 {
@@ -494,19 +467,22 @@ th:nth-child(9) {
 }
 
 .analytics-container {
-  width: 90%;
+  width: 70%;
   height: 90%;
-  background-color: #a91212;
+  background-color: white;
   margin: 2vw auto;
   padding: 1vw;
   text-align: left;
   font-size: 0.75vw;
   border-radius: 1%;
-  color: white;
+  color: #000;
+  border: 1px solid #656565;
+  position: relative;
 }
 
-.analytics-container h5 {
-  font-size: 1.5vw;
+.analytics-container h3 {
+  font-size: 2vw;
+  margin-left: 2vw;
 }
 
 .analytics-container select {
@@ -521,16 +497,6 @@ th:nth-child(9) {
   margin-right: 2vw;
   margin-left: 2vw;
 }
-.help-container {
-  width: 90%;
-  height: 90%;
-  background-color: #a91212;
-  margin: 2vw auto;
-  padding: 2vw;
-  text-align: center;
-  font-size: 1.25vw;
-  color: white;
-}
 
 .help-container-2 {
   width: 100%;
@@ -540,7 +506,7 @@ th:nth-child(9) {
   padding: 1vw;
   text-align: left;
   font-size: 1vw;
-  color: #a91212;
+  color: #000;
 }
 
 .help-container-3 {
@@ -562,7 +528,7 @@ th:nth-child(9) {
 }
 .accordion {
   background-color: transparent;
-  color: #a91212;
+  color: #000;
   cursor: pointer;
   padding: 1vw;
   margin: 0;
@@ -577,21 +543,25 @@ th:nth-child(9) {
 }
 
 .accordion-panel {
-  background-color: #a91212;
-  color: white;
+  background-color: white;
+  color: #000;
   padding: 0 1.5vw;
   margin: 0;
   display: none;
   overflow: hidden;
   transition: opacity 0.5s ease 0.3s;
   font-size: 0.75vw;
+  border: 1px solid #656565;
+  border-top: 1px solid white;
 }
 
 .accordion.active {
-  background-color: #a91212;
-  color: white;
+  background-color: white;
+  color: #000;
   border: none;
   outline-style: none;
+  border: 1px solid #656565;
+  border-bottom: 1px solid white;
 }
 
 .accordion.active + .accordion-panel {
@@ -605,7 +575,7 @@ th:nth-child(9) {
 }
 
 .login-form {
-  background-color: #a91212;
+  background-color: #100a51;
   padding: 2vw;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin: 2vh;
@@ -630,7 +600,8 @@ th:nth-child(9) {
   font-size: 1.25vw;
   width: 50%;
   height: 5vh;
-  margin-bottom: 5vh;
+  margin-bottom: 7vh;
+  color: white;
 }
 
 .form-control {
@@ -639,6 +610,124 @@ th:nth-child(9) {
   height: 5vh;
 }
 
+.filter {
+  font-size: 1vw;
+  color: #000;
+}
+
+.filter select {
+  padding: 0.25vw;
+  font-size: 0.75vw;
+  border: 1px solid #ccc;
+  border-radius: none;
+  background-color: rgba(16, 10, 81, 0.15);
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.filter select option {
+  background-color: white;
+  color: #a91212;
+}
+.pagination {
+  position: static;
+  bottom: 1vh;
+  right: 0;
+  text-align: right;
+  margin-left: 75vw;
+}
+
+.pagination button {
+  padding: 0.75vw;
+  margin: 0 0.2vw;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #656565;
+  color: white;
+  font-size: 0.5vw;
+}
+
+.pagination button.active {
+  background-color: #a91212;
+  color: white;
+}
+
+.page-1,
+.page-2 {
+  display: none;
+}
+
+.page-1.active,
+.page-2.active {
+  display: table;
+}
+
+.label {
+  color: #656565;
+  font-weight: bold;
+}
+
+.same-size-btn {
+  width: 25%;
+}
+
+.report select {
+  padding: 0.25vw;
+  font-size: 0.75vw;
+  border: 1px solid #ccc;
+  border-radius: none;
+  background-color: #a91212;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.analytics-container select {
+  padding: 0.25vw;
+  font-size: 1.25vw;
+  border: 1px solid #ccc;
+  background-color: #a91212;
+  color: white;
+  font-weight: bold;
+  width: 70%;
+}
+
+.legend-container {
+  display: flex;
+  align-items: left;
+  margin-right: 0.25vw;
+}
+
+.legend-circle {
+  display: inline-block;
+  width: 1vw;
+  height: 2vh;
+  border-radius: 50%;
+  margin-right: 0.5vw;
+  position: sticky;
+}
+
+.medical {
+  background-color: #a91212;
+}
+
+.vehicular {
+  background-color: #100a51;
+}
+
+.other {
+  background-color: #000;
+}
+
+.legend-text {
+  font-size: 1vw;
+  margin-right: 0.5vw;
+}
+
+.chev-icon {
+  color: #a91212;
+}
 @media only screen and (max-width: 1680px) and (max-height: 1050px) {
 }
 
