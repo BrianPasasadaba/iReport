@@ -8,14 +8,16 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/adminstyles.css') }}" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700|Lato:wght@300;400;700|Poppins:wght@300;400;500;600;700|Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">  
   <link href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
- integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
- crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
 </head>
 
 <body>
@@ -62,23 +64,18 @@
                 <p class="card-text">ALL INCIDENT REPORTS</p>
               </div>
               <div class="ml-auto d-flex align-items-center">
-                <div class="select-wrapper">
                   <select class="report-button form-select month-dropdown">
-                      <option value="1">MARCH 2024</option>
-                      <option value="2">APRIL 2024</option>
-                      <option value="3">MAY 2024</option>
-                      <option value="4">JUNE 2024</option>
-                      <option value="5">JULY 2024</option>
-                      <option value="6">AUGUST 2024</option>
+                    <option value="1">MARCH 2024</option>
+                    <option value="2">APRIL 2024</option>
+                    <option value="3">MAY 2024</option>
+                    <option value="4">JUNE 2024</option>
+                    <option value="5">JULY 2024</option>
+                    <option value="6">AUGUST 2024</option>
                   </select>
-              
-              </div>
-              
-                
               </div>
             </div>
           </div>
-      
+
           <div class="row">
             <table id="reportTable" class="table table-striped" style="width: 120%;">
               <thead>
@@ -92,7 +89,7 @@
                   <th class="text-center">Further Details</th>
                   <th class="text-center">Status</th>
                   <th class="text-center">View Details</th>
-                </tr>  
+                </tr>
               </thead>
               <tbody>
                 {% for report in reports %}
@@ -103,7 +100,8 @@
                   <td class="text-center">{{ report[3] }}</td>
                   <td class="text-center">
                     {% if report[5] is not none and report[6] is not none %}
-                    <button type="button" class="btn show-map-btn" data-toggle="modal" data-lat="{{ report[5] }}" data-lng="{{ report[6] }}">
+                    <button type="button" class="btn show-map-btn" data-toggle="modal" data-lat="{{ report[5] }}"
+                      data-lng="{{ report[6] }}">
                       <i class="fas fa-map-marked-alt fa-lg"></i>
                     </button>
                     {% else %}
@@ -120,34 +118,35 @@
                   </td>
                 </tr>
                 {% endfor %}
-              </tbody>    
+              </tbody>
             </table>
           </div>
         </div>
       </div>
-      
-  </div>
-</div>
-  <!-- Map Modal -->
-<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-body" style="text-align: center;">
-              <div id="map"></div>
-          </div>
-      </div>
-  </div>
-</div>
 
-<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-body" style="text-align: center;">
-              <div id="map"></div>
-          </div>
-      </div>
+    </div>
   </div>
-</div>
+  <!-- Map Modal -->
+  <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body" style="text-align: center;">
+          <div id="map"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body" style="text-align: center;">
+          <div id="map"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <footer class="footer">
@@ -167,48 +166,48 @@
   <script src="{{ url_for('static', filename='js/adminscripts.js') }}"></script>
 
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('#reportTable').DataTable({
-          //"searching": false, // Disable search bar
-          //"paging": false, // Disable pagination
-          "lengthChange": false, // Disable "entries per page" selection
-          // Add any other options you need
+        //"searching": false, // Disable search bar
+        //"paging": false, // Disable pagination
+        "lengthChange": false, // Disable "entries per page" selection
+        // Add any other options you need
       });
-  });
-</script>
+    });
+  </script>
 
-<script>
-  $(document).ready(function(){
-      $('.show-map-btn').click(function(){
+  <script>
+    $(document).ready(function () {
+      $('.show-map-btn').click(function () {
         $('#mapModal').modal('show');
-          var lat = $(this).data('lat');
-          var lng = $(this).data('lng');
-          $('#mapModal').on('shown.bs.modal', function () {
+        var lat = $(this).data('lat');
+        var lng = $(this).data('lng');
+        $('#mapModal').on('shown.bs.modal', function () {
           initializeMap(lat, lng);
         });
       });
 
       function initializeMap(lat, lng) {
-          // Remove any existing map instance
-          $('#map').remove();
+        // Remove any existing map instance
+        $('#map').remove();
 
-          // Create a new map container
-          var mapContainer = $('<div id="map" style="width: 100%; height: 100%;"></div>');
-          $('.modal-body').append(mapContainer);
+        // Create a new map container
+        var mapContainer = $('<div id="map" style="width: 100%; height: 100%;"></div>');
+        $('.modal-body').append(mapContainer);
 
-          var map = L.map('map').setView([lat, lng], 17);
+        var map = L.map('map').setView([lat, lng], 17);
 
-          map.setMinZoom(14); // Adjust the maximum zoom level as needed
+        map.setMinZoom(14); // Adjust the maximum zoom level as needed
 
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
 
-          const marker = L.marker([lat, lng]).addTo(map);
+        const marker = L.marker([lat, lng]).addTo(map);
 
       }
-  });
-</script>
+    });
+  </script>
 </body>
 
 </html>

@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   font-weight: bold;
-  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-family: "Manrope", Helvetica, sans-serif;
 }
 
 li {
@@ -24,6 +24,7 @@ a:hover {
   color: #fff;
   padding: 2vh;
   font-size: 1.5vw;
+  font-family: "Lato";
 }
 
 .header-logo {
@@ -40,6 +41,7 @@ a:hover {
   width: 100%;
   z-index: 9999;
   font-size: 1vw;
+  font-family: "Lato";
 }
 
 .footer a {
@@ -61,6 +63,7 @@ a:hover {
   padding: 2vh;
   font-size: 1vw;
   height: 25vh;
+  font-family: "Lato";
 }
 .sidebar-header img {
   padding: 2vh;
@@ -83,6 +86,7 @@ a:hover {
   border-right: 0.5vw solid #100a51;
   padding-top: 3vh;
   font-size: 1vw;
+  font-family: "Lato";
 }
 
 .sidebar ul {
@@ -128,6 +132,7 @@ a:hover {
   font-size: 2.5vw;
   padding: 1vw;
   color: #000;
+  font-family: "Poppins";
 }
 
 .card-body {
@@ -145,7 +150,7 @@ a:hover {
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  width: 100%;
+  width: 8vw;
   height: 6vh;
   font-size: 1vw;
   padding: 0.5vw;
@@ -437,6 +442,7 @@ th {
   align-items: center;
   border: 1px solid gray;
   margin: 1vw;
+  font-size: 0.75vw;
 }
 
 .report-container h4 {
@@ -451,12 +457,12 @@ th {
 .report-container select {
   padding: 0.25vw;
   font-size: 0.75vw;
-  border: 1px solid #ccc;
   border-radius: none;
   background-color: #a91212;
   color: white;
   cursor: pointer;
   font-weight: bold;
+  caret-color: white;
 }
 
 /* Style the dropdown options */
@@ -729,6 +735,15 @@ th {
 .chev-icon {
   color: #a91212;
 }
+
+.month-dropdown {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M7 10l5 5 5-5z"></path></svg>');
+  background-size: 2vw;
+  background-position: right center;
+  background-repeat: no-repeat;
+  padding-right: 2vw;
+}
+
 @media only screen and (max-width: 1680px) and (max-height: 1050px) {
 }
 
