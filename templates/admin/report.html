@@ -55,32 +55,31 @@
 
 
       <div class="main-content">
-        <div class="incident-title">
-          <div class="card-body d-flex">
-            <div class="col-4">
-              <p class="card-text">ALL INCIDENT REPORTS</p>
-            </div>
-            <div class="col-8 d-flex">
-              <button type="button" class="btn icon-button">
-                <i class="fas fa-print fa-lg"></i>
-              </button>
-              <select class="report-button form-select year-dropdown ms-2">
-                <option value="">Year</option>
-                <option value="2023">2023</option>
-                <option value="2024" selected>2024</option>
-              </select>
-              <div class="input-group ms-3 me-3">
-                <input type="text" class="search-bar" placeholder="Search Reports">
-                <span class="input-group-text search-icon">
-                  <i class="fas fa-search"></i>
-                </span>
+        <div class="report-container col-12">
+          <div class="incident-title">
+            <div class="card-body d-flex">
+              <div class="col-8">
+                <p class="card-text">ALL INCIDENT REPORTS</p>
+              </div>
+              <div class="ml-auto d-flex align-items-center">
+                <div class="select-wrapper">
+                  <select class="report-button form-select month-dropdown">
+                      <option value="1">MARCH 2024</option>
+                      <option value="2">APRIL 2024</option>
+                      <option value="3">MAY 2024</option>
+                      <option value="4">JUNE 2024</option>
+                      <option value="5">JULY 2024</option>
+                      <option value="6">AUGUST 2024</option>
+                  </select>
+              
+              </div>
+              
+                
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="row">
-          <div class="scrollable-container">
+      
+          <div class="row">
             <table id="reportTable" class="table table-striped" style="width: 120%;">
               <thead>
                 <tr>
@@ -98,40 +97,37 @@
               <tbody>
                 {% for report in reports %}
                 <tr>
-                    <td class="text-center">{{ report[0] }}</td>
-                    <td class="text-center">{{ report[1] }}</td>
-                    <td class="text-center">{{ report[2] }}</td>
-                    <td class="text-center">{{ report[3] }}</td>
-                    <td class="text-center">
-                      {% if report[5] is not none and report[6] is not none %}
-                      <button type="button" class="btn show-map-btn" data-toggle="modal" data-lat="{{ report[5] }}" data-lng="{{ report[6] }}">
-                        <i class="fas fa-map-marked-alt fa-lg"></i>
-                      </button>
-                      {% else %}
-                          {{ report[4] }}
-                      {% endif %}
+                  <td class="text-center">{{ report[0] }}</td>
+                  <td class="text-center">{{ report[1] }}</td>
+                  <td class="text-center">{{ report[2] }}</td>
+                  <td class="text-center">{{ report[3] }}</td>
+                  <td class="text-center">
+                    {% if report[5] is not none and report[6] is not none %}
+                    <button type="button" class="btn show-map-btn" data-toggle="modal" data-lat="{{ report[5] }}" data-lng="{{ report[6] }}">
+                      <i class="fas fa-map-marked-alt fa-lg"></i>
+                    </button>
+                    {% else %}
+                    {{ report[4] }}
+                    {% endif %}
                   </td>
-                    <td class="text-center">{{ report[7] }}</td>
-                    <td class="text-center">{{ report[8] }}</td>
-                    <td class="text-center">{{ report[9] }}</td>
-                    <td class="text-center">
-                      <button type="button" class="btn icon-button">
-                        <i class="far fa-file fa-lg" ></i>
-                      </button>
-                    </td>
+                  <td class="text-center">{{ report[7] }}</td>
+                  <td class="text-center">{{ report[8] }}</td>
+                  <td class="text-center">{{ report[9] }}</td>
+                  <td class="text-center">
+                    <button type="button" class="btn icon-button">
+                      <i class="far fa-file fa-lg"></i>
+                    </button>
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>    
             </table>
           </div>
-          <div class="scroll-indicator horizontal"></div>
-          <div class="scroll-indicator vertical"></div>
         </div>
       </div>
-    </div>
+      
   </div>
-  </div>
-
+</div>
   <!-- Map Modal -->
 <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
