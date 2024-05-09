@@ -46,7 +46,7 @@
       <form id="reportForm" action="/submit_incident_form" method="POST">
         <div class="form-group">
           <label for="name">Full Name (Optional)</label>
-          <input type="text" class="form-control" id="name" name="name"/>
+          <input type="text" class="form-control" id="name" name="name" maxlength="50"/>
         </div>
         <div class="form-group">
           <label for="contact_number">Contact Number<span class="asterisk">*</span>
@@ -175,6 +175,30 @@
     <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+    <script>
+      // Function to format the name input
+      document.addEventListener('DOMContentLoaded', function() {
+        var nameInput = document.getElementById('name');
+    
+        // Add an event listener for input event
+        nameInput.addEventListener('input', function() {
+          // Get the input value
+          var inputValue = nameInput.value;
+    
+          // Replace any non-alphabetic characters and non-space characters with an empty string
+          var alphaValue = inputValue.replace(/[^A-Za-z\s]/g, '');
+    
+          // Split the string by spaces and capitalize each word
+          alphaValue = alphaValue.toLowerCase().replace(/\b\w/g, function(firstLetter) {
+            return firstLetter.toUpperCase();
+          });
+    
+          // Update the input value with only alphabetic characters, space, and first letter capitalized
+          nameInput.value = alphaValue;
+        });
+      });
+    </script>
 
     <script>
       // Function to format the estimated number of victims
