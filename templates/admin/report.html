@@ -8,6 +8,14 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/adminstyles.css') }}" />
+  <link href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+ integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+ crossorigin=""></script>
 </head>
 
 <body>
@@ -75,136 +83,52 @@
 
         <div class="row">
           <div class="scrollable-container">
-            <table class="table">
-              <tr>
-                <th>REPORT ID</th>
-                <th>DATE & TIME</th>
-                <th>PHONE NUMBER</th>
-                <th>NAME</th>
-                <th>LOCATION</th>
-                <th>ESTIMATED NUMBER OF VICTIMS</th>
-                <th>FURTHER DETAILS</th>
-                <th>PICTURES</th>
-                <th>STATUS</th>
-              </tr>
-              <tr>
-                <td>E-0003</td>
-                <td>11-03-24;9:31 am</td>
-                <td>09751234567</td>
-                <td>Frederico Sanchez</td>
-                <td></td>
-                <td>5</td>
-                <td>
-                  nakita ko usok bandang 3pm sa bakanteng lote ng...
-                </td>
-                <td></td>
-                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td>
-              </tr>
-              <tr>
-                <td>E-0003</td>
-                <td>11-03-24;9:31 am</td>
-                <td>09751234567</td>
-                <td>Frederico Sanchez</td>
-                <td></td>
-                <td>5</td>
-                <td>
-                  nakita ko usok bandang 3pm sa bakanteng lote ng...
-                </td>
-                <td></td>
-                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td>
-              </tr>
-              <tr>
-                <td>E-0003</td>
-                <td>11-03-24;9:31 am</td>
-                <td>09751234567</td>
-                <td>Frederico Sanchez</td>
-                <td></td>
-                <td>5</td>
-                <td>
-                  nakita ko usok bandang 3pm sa bakanteng lote ng...
-                </td>
-                <td></td>
-                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td>
-              </tr>
-              <tr>
-                <td>E-0003</td>
-                <td>11-03-24;9:31 am</td>
-                <td>09751234567</td>
-                <td>Frederico Sanchez</td>
-                <td></td>
-                <td>5</td>
-                <td>
-                  nakita ko usok bandang 3pm sa bakanteng lote ng...
-                </td>
-                <td></td>
-                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td>
-              </tr>
-              <tr>
-                <td>E-0003</td>
-                <td>11-03-24;9:31 am</td>
-                <td>09751234567</td>
-                <td>Frederico Sanchez</td>
-                <td></td>
-                <td>5</td>
-                <td>
-                  nakita ko usok bandang 3pm sa bakanteng lote ng...
-                </td>
-                <td></td>
-                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td>
-                </td>
-              </tr>
-              <tr>
-                <td>E-0003</td>
-                <td>11-03-24;9:31 am</td>
-                <td>09751234567</td>
-                <td>Frederico Sanchez</td>
-                <td></td>
-                <td>5</td>
-                <td>
-                  nakita ko usok bandang 3pm sa bakanteng lote ng...
-                </td>
-                <td></td>
-                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td>
-              </tr>
-              <tr>
-                <td>E-0003</td>
-                <td>11-03-24;9:31 am</td>
-                <td>09751234567</td>
-                <td>Frederico Sanchez</td>
-                <td></td>
-                <td>5</td>
-                <td>
-                  nakita ko usok bandang 3pm sa bakanteng lote ng...
-                </td>
-                <td></td>
-                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td>
-              </tr>
-              <tr>
-                <td>E-0003</td>
-                <td>11-03-24;9:31 am</td>
-                <td>09751234567</td>
-                <td>Frederico Sanchez</td>
-                <td></td>
-                <td>5</td>
-                <td>
-                  nakita ko usok bandang 3pm sa bakanteng lote ng...
-                </td>
-                <td></td>
-                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td>
-              </tr>
-              <tr>
-                <td>E-0003</td>
-                <td>11-03-24;9:31 am</td>
-                <td>09751234567</td>
-                <td>Frederico Sanchez</td>
-                <td></td>
-                <td>5</td>
-                <td>
-                  nakita ko usok bandang 3pm sa bakanteng lote ng...
-                </td>
-                <td></td>
-                <td>Resolved <br><a href="{{ url_for('detail_report') }}">View File</a></td>
-              </tr>
+            <table id="reportTable" class="table table-striped" style="width: 120%;">
+              <thead>
+                <tr>
+                  <th class="text-center">Report ID</th>
+                  <th class="text-center">Date and Time</th>
+                  <th class="text-center">Phone Number</th>
+                  <th class="text-center">Name</th>
+                  <th class="text-center">Location</th>
+                  <th class="text-center">Victims (Estimated)</th>
+                  <th class="text-center">Further Details</th>
+                  <th class="text-center">Status</th>
+                  <th class="text-center">View Details</th>
+                </tr>  
+              </thead>
+              <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td class="text-center">{{ report[0] }}</td>
+                    <td class="text-center">{{ report[1] }}</td>
+                    <td class="text-center">{{ report[2] }}</td>
+                    <td class="text-center">{{ report[3] }}</td>
+                    <td class="text-center">
+                      {% if report[5] is not none and report[6] is not none %}
+                      <div id="map{{ report[0] }}" style="width: 200px; height: 200px;"></div>
+                      <script>
+                          var map{{ report[0] }} = L.map('map{{ report[0] }}').setView([{{ report[5] }}, {{ report[6] }}], 13);
+                          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                          }).addTo(map{{ report[0] }});
+                          L.marker([{{ report[5] }}, {{ report[6] }}]).addTo(map{{ report[0] }});
+                      </script>
+                      {% else %}
+                          {{ report[4] }}
+                      {% endif %}
+                  </td>
+                    <td class="text-center">{{ report[7] }}</td>
+                    <td class="text-center">{{ report[8] }}</td>
+                    <td class="text-center">{{ report[9] }}</td>
+                    <td class="text-center">
+                      <button type="button" class="btn icon-button">
+                        <i class="far fa-file fa-lg" ></i>
+                      </button>
+                    </td>
+                </tr>
+                {% endfor %}
+              </tbody>    
             </table>
           </div>
           <div class="scroll-indicator horizontal"></div>
@@ -231,7 +155,20 @@
 
   <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+  <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+  <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
   <script src="{{ url_for('static', filename='js/adminscripts.js') }}"></script>
+
+  <script>
+    $(document).ready(function() {
+      $('#reportTable').DataTable({
+          //"searching": false, // Disable search bar
+          //"paging": false, // Disable pagination
+          "lengthChange": false, // Disable "entries per page" selection
+          // Add any other options you need
+      });
+  });
+</script>
 </body>
 
 </html>

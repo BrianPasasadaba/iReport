@@ -163,9 +163,15 @@ def help():
     return render_template('admin/help.html')
 
 @app.route('/report')
-
 def report():
-    return render_template('admin/report.html')
+    # Fetch data with corresponding status value from MySQL database
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT r.report_id, r.date_time, r.phone_number, r.name, r.location, r.latitude, r.longitude, r.estimate_victims, r.report_details, s.report_status FROM reports r JOIN status s ON r.status_id = s.status_id")
+    reports = cur.fetchall()
+    cur.close()
+    
+    # Pass data to template and render
+    return render_template('admin/report.html', reports=reports)
 
 @app.route('/logout')
 def logout():
