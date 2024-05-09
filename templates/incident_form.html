@@ -43,7 +43,7 @@
       <a href="#" onclick="history.back();" class="back-button">
         <i class="fas fa-chevron-left"> &nbsp; Back</i>
       </a>
-      <form action="/submit_incident_form" method="POST">
+      <form id="reportForm" action="/submit_incident_form" method="POST">
         <div class="form-group">
           <label for="name">Full Name (Optional)</label>
           <input type="text" class="form-control" id="name" name="name"/>
@@ -127,7 +127,7 @@
           <textarea class="form-control" id="details" rows="3" maxlength="255" name="details" required></textarea>
         </div>
         <div class="row justify-content-center mt-4">
-          <button type="submit" class="btn btn-sm submit-button">SUBMIT</button>
+          <button id="submitButton" type="submit" class="btn btn-sm submit-button">SUBMIT</button>
         </div>
       </form>
     </div>
@@ -152,6 +152,25 @@
     </footer>
 
     <div id="scrollIndicator"></div>
+
+    <!-- Start of Success Modal -->
+    <div id="viewSuccessModal" class="modal fade" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <!-- Modal Body -->
+              <div class="modal-body" style="text-align: center;">
+                <i class="fa fa-ambulance fa-4x" aria-hidden="true"></i>
+                  <h5> Report has been submitted!</h5>
+                  <p>First Responders are on their way.</p>
+              </div>
+              <!-- Modal Footer -->
+              <div class="modal-footer d-flex justify-content-center align-items-center">
+                  <!-- Close Button -->
+                  <button type="button" class=" btn btn-primary" data-bs-dismiss="modal">OKAY</button>
+              </div>
+          </div>
+      </div>
+  </div>
 
     <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
@@ -304,6 +323,39 @@
         this.style.display = 'none';
       });
     </script>
+
+<script>
+  $(document).ready(function(){
+
+// Submit button click listener
+$("#submitButton").click(function(event){
+  event.preventDefault(); // Prevent default form submission
+
+  // Get form data
+  var formData = $('#reportForm').serialize(); // Use your form ID
+
+  $.ajax({
+    url: '/submit_incident_form', // Replace with your form submission URL
+    type: 'POST',
+    data: formData,
+    success: function(response) {
+      if (response.message) { // Check for success message
+        $("#viewSuccessModal").modal('show'); // Show modal on success
+      } else {
+        // Handle errors (optional)
+        alert("Error submitting report. Please try again.");
+      }
+    },
+    error: function(error) {
+      // Handle errors (optional)
+      alert("Error submitting report. Please try again.");
+    }
+  });
+});
+});
+  </script>
+
+
     
   </body>
 </html>

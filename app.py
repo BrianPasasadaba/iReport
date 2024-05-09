@@ -1,7 +1,8 @@
-from flask import Flask, render_template, url_for, redirect, request, flash, session
+from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
+from datetime import datetime
 
 
 
@@ -68,9 +69,44 @@ def index():
                    
     return render_template('index.html')
 
+#Route for form page
 @app.route('/incident_form')
 def incident_form():
     return render_template('incident_form.html')
+
+#Route for submitting form
+@app.route('/submit_incident_form', methods=['POST'])
+def submit_incident_form():
+    # Access form data using request object
+    full_name = request.form.get('name')
+    contact_number = request.form.get('contact_number')
+    location = request.form.get('location')
+    # Extract latitude and longitude if needed
+    latitude = request.form.get('latitude')
+    longitude = request.form.get('longitude')
+    victims = request.form.get('victims')
+    details = request.form.get('details')
+    
+    # Get current date and time
+    current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print("Full Name:", full_name)
+    print("Contact Number:", contact_number)
+    print("Location:", location)
+    print("Latitude:", latitude)
+    print("Longitude:", longitude)
+    print("Estimated Number of Victims:", victims)
+    print("Further Details:", details)
+    # Insert data into MySQL database
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO reports (date_time, name, phone_number, location, latitude, longitude, estimate_victims, report_details) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                (current_datetime, full_name, contact_number, location, latitude, longitude, victims, details))
+    mysql.connection.commit()
+    cur.close()
+    # Prepare success message (optional)
+    message = "Report Submitted! First Responders are on their way."
+
+    # Return JSON response with success message
+    return jsonify({'message': message})
 
 @app.route('/faqs')
 def faqs():

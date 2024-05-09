@@ -47,42 +47,19 @@
         </div>
         <div class="sidebar">
           <ul>
-            <li class="dropdown sub-btn">
-              <a><i class="fa fa-home"></i> Home</a> &nbsp;<i
-                class="fa fa-chevron-down"
-              ></i>
-              <div class="sub-menu">
-                <ul>
-                  <li>
-                    <a href="{{ url_for('report') }}"
-                      ><i class="fa fa-list-alt"></i> Reports</a
-                    >
-                  </li>
-                  <li>
-                    <a href="{{ url_for('announcement') }}"
-                      ><i class="fa fa-bullhorn"></i> Announcements</a
-                    >
-                  </li>
-                  <li>
-                    <a href="{{ url_for('admin_faqs') }}"
-                      ><i class="fa fa-question"></i> FAQs</a
-                    >
-                  </li>
-                </ul>
-              </div>
+            <li>
+              <a href="{{ url_for('report') }}"><i class="fa fa-list-alt"></i> Reports</a>
+            </li>
+  
             </li>
             <li>
-              <a href="{{ url_for('analytics') }}"
-                ><i class="fas fa-chart-bar"></i> Analytics</a
-              >
+              <a href="{{ url_for('analytics') }}"><i class="fas fa-chart-bar"></i> Analytics</a>
             </li>
             <li>
-              <a href="{{ url_for('help') }}"
-                ><i class="fa fa-question-circle"></i> Help</a
-              >
+              <a href="{{ url_for('help') }}"><i class="fa fa-question-circle"></i> Help</a>
             </li>
           </ul>
-        </div>
+        </div>  
 
         <div class="main-content">
           <div class="scrollable-container help">
