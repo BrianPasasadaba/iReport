@@ -40,30 +40,32 @@
     </header>
 
     <div class="container mt-4">
-      <a href="#" onclick="history.back();" class="back-button"
-        ><i class="fas fa-chevron-left"> &nbsp; Back</i></a
-      >
+      <a href="#" onclick="history.back();" class="back-button">
+        <i class="fas fa-chevron-left"> &nbsp; Back</i>
+      </a>
       <form>
         <div class="form-group">
           <label for="name">Full Name (Optional)</label>
           <input type="text" class="form-control" id="name" />
         </div>
         <div class="form-group">
-          <label for="contact_number"
-            >Contact Number<span class="asterisk">*</span></label
-          >
+          <label for="contact_number">Contact Number<span class="asterisk">*</span>
+          </label>
           <input
             type="text"
             class="form-control form-control-sm-6"
             id="contact_number"
+            maxlength="13"
+            oninput="validateContactNumber()"
+            required
           />
+          <div id="contactNoValidationMessage" class="text-danger"></div>
         </div>
 
         <div class="form-group">
-          <label for="name">Location</label>
+          <label for="name">Location<span class="asterisk">*</span></label>
           <span class="input-icon">
-            <i class="fas fa-map-marker"></i>
-            <input type="text" class="form-control" id="name" />
+            <input type="text" class="form-control" id="name" required/>
           </span>
         </div>
 
@@ -86,12 +88,14 @@
 
         <div class="form-group">
           <label for="victims"
-            >Estimated Number of Victims<span class="asterisk">*</span></label
-          >
+            >Estimated Number of Victims<span class="asterisk">*</span>
+          </label>
           <input
             type="text"
             class="form-control form-control-sm-2"
             id="victims"
+            maxlength="3"
+            required
           />
         </div>
         <div class="form-group">
@@ -109,23 +113,21 @@
                 id="file-upload1"
                 style="display: none"
                 multiple
+                required
               />
             </div>
           </div>
           <div class="row justify-content-center mt-2 text-center">
             <label for="photos"
-              >Take a Photos of the Incidents<span class="asterisk"
-                >*</span
-              ></label
-            >
+              >Take a Photo of the Incident<span class="asterisk">*</span>
+            </label>
           </div>
         </div>
 
         <div class="form-group">
           <label for="details" class="red-label"
-            >Further Details<span class="asterisk">*</span></label
-          >
-          <textarea class="form-control" id="details" rows="3"></textarea>
+            >Further Details<span class="asterisk">*</span></label>
+          <textarea class="form-control" id="details" rows="3" maxlength="255" required></textarea>
         </div>
         <div class="row justify-content-center mt-4">
           <button type="submit" class="btn btn-sm submit-button">SUBMIT</button>
@@ -157,5 +159,65 @@
     <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+    <script>
+      // Function to format the estimated number of victims
+      document.addEventListener('DOMContentLoaded', function() {
+        var victimsInput = document.getElementById('victims');
+    
+        // Add an event listener for input event
+        victimsInput.addEventListener('input', function() {
+          // Get the input value
+          var inputValue = victimsInput.value;
+    
+          // Replace any non-numeric characters with an empty string
+          var numericValue = inputValue.replace(/\D/g, '');
+    
+          // Check if the first character is zero, and if so, remove it
+          if (numericValue.charAt(0) === '0') {
+            numericValue = numericValue.substring(1);
+          }
+    
+          // Update the input value with only numeric characters
+          victimsInput.value = numericValue;
+        });
+      });
+    </script>
+    
+    
+    <script>
+      //Function to validate contact number
+      function validateContactNumber() {
+        var contactNumberInput = document.getElementById("contact_number");
+        var contactNumber = contactNumberInput.value;
+        var contactNoValidationMessage = document.getElementById("contactNoValidationMessage");
+    
+        // Remove any non-numeric characters
+        contactNumber = contactNumber.replace(/\D/g, "");
+    
+        // Insert dashes after the 4th and 7th digits
+        if (contactNumber.length > 3 && contactNumber.charAt(3) !== '-') {
+          contactNumber = contactNumber.substring(0, 4) + "-" + contactNumber.substring(4);
+        }
+        if (contactNumber.length > 7 && contactNumber.charAt(7) !== '-') {
+          contactNumber = contactNumber.substring(0, 8) + "-" + contactNumber.substring(8);
+        }
+    
+        // Update the input value with formatted contact number
+        contactNumberInput.value = contactNumber;
+    
+        // Regular expression to match the format '09XX-XXX-XXXX'
+        var regex = /^09\d{2}-\d{3}-\d{4}$/;
+
+    
+        if (!regex.test(contactNumber)) {
+          contactNoValidationMessage.textContent = "Please enter a valid contact number in the format 09XX-XXX-XXXX";
+        } else {
+          contactNoValidationMessage.textContent = "";
+        }
+      }
+    </script>
+    
+    
   </body>
 </html>
