@@ -43,10 +43,10 @@
       <a href="#" onclick="history.back();" class="back-button">
         <i class="fas fa-chevron-left"> &nbsp; Back</i>
       </a>
-      <form>
+      <form action="/submit_incident_form" method="POST">
         <div class="form-group">
           <label for="name">Full Name (Optional)</label>
-          <input type="text" class="form-control" id="name" />
+          <input type="text" class="form-control" id="name" name="name"/>
         </div>
         <div class="form-group">
           <label for="contact_number">Contact Number<span class="asterisk">*</span>
@@ -55,6 +55,7 @@
             type="text"
             class="form-control form-control-sm-6"
             id="contact_number"
+            name="contact_number"
             maxlength="13"
             oninput="validateContactNumber()"
             required
@@ -63,9 +64,9 @@
         </div>
 
         <div class="form-group">
-          <label for="name">Location<span class="asterisk">*</span></label>
+          <label for="location">Location<span class="asterisk">*</span></label>
           <span class="input-icon">
-            <input type="text" class="form-control" id="name" required/>
+            <input type="text" class="form-control" id="location" name="location" required/>
           </span>
         </div>
 
@@ -76,6 +77,7 @@
               type="checkbox"
               value=""
               id="shareLocation"
+              onchange="toggleLocationInput()"
             />
             <label class="form-check-label" for="shareLocation">
               Share my location
@@ -86,6 +88,10 @@
           </p>
         </div>
 
+        <!-- Hidden input fields to store latitude and longitude -->
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+
         <div class="form-group">
           <label for="victims"
             >Estimated Number of Victims<span class="asterisk">*</span>
@@ -94,40 +100,31 @@
             type="text"
             class="form-control form-control-sm-2"
             id="victims"
+            name="victims"
             maxlength="3"
             required
           />
         </div>
         <div class="form-group">
-          <div class="row justify-content-center">
+          <video id="video" style="width: 100%; display: none; margin: auto; margin-bottom: 10px;"></video> <!-- Initial display set to none -->
+          <button id="capture-btn" class="btn btn-primary" style="display: none; margin: auto;">Take Photo</button> <!-- Initial display set to none -->
+          <div class="row justify-content-center" id="photoTaken">
             <div class="col-auto">
-              <label
-                for="file-upload1"
-                class="input-group-text no-border"
-                id="uploadIcon1"
-              >
-                <i class="fas fa-camera fa-6x"></i>
+              <label for="dummy" class="input-group-text no-border" id="uploadIcon1">
+                <i class="fas fa-camera fa-6x" id="camera-icon"></i>
               </label>
-              <input
-                type="file"
-                id="file-upload1"
-                style="display: none"
-                multiple
-                required
-              />
+              <input type="file" accept="image/*" capture="camera" id="take-photo" style="display: none;" />
             </div>
           </div>
           <div class="row justify-content-center mt-2 text-center">
-            <label for="photos"
-              >Take a Photo of the Incident<span class="asterisk">*</span>
-            </label>
+            <label for="photos">Take a Photo of the Incident<span class="asterisk">*</span></label>
           </div>
         </div>
 
         <div class="form-group">
           <label for="details" class="red-label"
             >Further Details<span class="asterisk">*</span></label>
-          <textarea class="form-control" id="details" rows="3" maxlength="255" required></textarea>
+          <textarea class="form-control" id="details" rows="3" maxlength="255" name="details" required></textarea>
         </div>
         <div class="row justify-content-center mt-4">
           <button type="submit" class="btn btn-sm submit-button">SUBMIT</button>
@@ -218,6 +215,95 @@
       }
     </script>
     
+    <script>
+      function toggleLocationInput() {
+        var shareLocationCheckbox = document.getElementById("shareLocation");
+        var latitudeInput = document.getElementById("latitude");
+        var longitudeInput = document.getElementById("longitude");
+      
+        if (shareLocationCheckbox.checked) {
+          // If checkbox is checked, get user's location
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              // Set latitude and longitude values
+              latitudeInput.value = position.coords.latitude;
+              longitudeInput.value = position.coords.longitude;
+            });
+          } else {
+            alert("Geolocation is not supported by this browser.");
+          }
+        } else {
+          // If checkbox is unchecked, clear location values
+          latitudeInput.value = "";
+          longitudeInput.value = "";
+        }
+      }
+      </script>
+
+    <script>
+      document.getElementById('camera-icon').addEventListener('click', function() {
+        // Show video element and capture button
+        document.getElementById('video').style.display = 'block';
+        document.getElementById('capture-btn').style.display = 'block';
+        
+        // Check if getUserMedia is available
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          // Request access to the camera
+          navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+              // Display the stream in the video element
+              var video = document.getElementById('video');
+              video.srcObject = stream;
+              video.autoplay = true;
+              video.onloadedmetadata = function(e) {
+                video.play(); // Start playing the video stream
+              };
+            })
+            .catch(function(error) {
+              console.error('Error accessing camera:', error);
+            });
+        } else {
+          console.error('getUserMedia is not supported');
+        }
+      });
+    
+      // Capture button event listener
+      document.getElementById('capture-btn').addEventListener('click', function() {
+        var video = document.getElementById('video');
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        var imageDataURL = canvas.toDataURL('image/jpeg');
+    
+        // Do something with the captured image (e.g., display it)
+        var existingImg = document.getElementById('captured-image');
+        if (existingImg) {
+          existingImg.parentNode.removeChild(existingImg); // Remove existing image if it exists
+        }
+    
+        var img = document.createElement('img');
+        img.id = 'captured-image'; // Set an ID for the image element
+        img.src = imageDataURL;
+        img.style.width = '100%'; // Adjust the width of the image as needed
+        img.style.height = 'auto'; // Maintain aspect ratio
+        img.style.display = 'flex'; // Display the image as a block element
+        img.style.margin = 'auto';
+        img.style.marginBottom = '15px'; // Add some margin below the image
+        var cameraIcon = document.getElementById('photoTaken');
+        cameraIcon.parentNode.insertBefore(img, cameraIcon);
+    
+        // Stop the video stream
+        var tracks = video.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+        video.srcObject = null;
+    
+        // Hide video element and capture button
+        video.style.display = 'none';
+        this.style.display = 'none';
+      });
+    </script>
     
   </body>
 </html>
