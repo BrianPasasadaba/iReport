@@ -61,11 +61,9 @@
               <p class="card-text">ALL INCIDENT REPORTS</p>
             </div>
             <div class="col-8 d-flex">
-              <select class="report-button form-select month-dropdown">
-                <option value="">Month</option>
-                <option value="1">January</option>
-                <option value="2">February</option>
-              </select>
+              <button type="button" class="btn icon-button">
+                <i class="fas fa-print fa-lg"></i>
+              </button>
               <select class="report-button form-select year-dropdown ms-2">
                 <option value="">Year</option>
                 <option value="2023">2023</option>
@@ -134,8 +132,18 @@
   </div>
   </div>
 
-  <!-- Modal -->
+  <!-- Map Modal -->
 <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-body" style="text-align: center;">
+              <div id="map"></div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
       <div class="modal-content">
           <div class="modal-body" style="text-align: center;">
