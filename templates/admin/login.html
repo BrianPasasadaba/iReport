@@ -31,8 +31,29 @@
             color: #000;
         }
 
+        .flash-messages {
+          list-style: none; /* Remove default bullet points */
+          padding: 0;
+          margin: 0; /* Reset margins */
+        }
 
-
+        /* Style for flash messages */
+        .flash-message {
+            background-color: #e07070;
+            color: #000; /* Black color for text */
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .flash-message .close-btn {
+            float: right;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            color: #000;
+        }
     </style>
   </head>
 
@@ -49,6 +70,18 @@
       </div>
       <div class="mr-4"></div>
     </header>
+
+    <!-- Flash message container -->
+    <div class="container">
+      {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              <div class="flash-message">
+                  {{ messages[0] }} <!-- Display only the first flash message, you can modify it as needed -->
+                  <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+              </div>
+          {% endif %}
+      {% endwith %}
+    </div>
 
     <div class="container-fluid">
       <div class="row">

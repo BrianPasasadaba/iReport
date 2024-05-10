@@ -188,7 +188,6 @@ def login():
         if user_data and bcrypt.check_password_hash(user_data[6], password):
             user = User(user_data[5], user_data[6])
             login_user(user)
-            flash('Login successful!', 'success')
             return redirect(url_for('report'))
         else:
             flash('Invalid email or password.', 'danger')
