@@ -106,14 +106,9 @@
                     <td class="text-center">{{ report[3] }}</td>
                     <td class="text-center">
                       {% if report[5] is not none and report[6] is not none %}
-                      <div id="map{{ report[0] }}" style="width: 200px; height: 200px;"></div>
-                      <script>
-                          var map{{ report[0] }} = L.map('map{{ report[0] }}').setView([{{ report[5] }}, {{ report[6] }}], 13);
-                          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                          }).addTo(map{{ report[0] }});
-                          L.marker([{{ report[5] }}, {{ report[6] }}]).addTo(map{{ report[0] }});
-                      </script>
+                      <button type="button" class="btn show-map-btn" data-toggle="modal" data-lat="{{ report[5] }}" data-lng="{{ report[6] }}">
+                        <i class="fas fa-map-marked-alt fa-lg"></i>
+                      </button>
                       {% else %}
                           {{ report[4] }}
                       {% endif %}
@@ -134,14 +129,22 @@
           <div class="scroll-indicator horizontal"></div>
           <div class="scroll-indicator vertical"></div>
         </div>
-
-
-
       </div>
-
     </div>
   </div>
   </div>
+
+  <!-- Modal -->
+<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-body" style="text-align: center;">
+              <div id="map"></div>
+          </div>
+      </div>
+  </div>
+</div>
+
 
   <footer class="footer">
     <div class="container-fluid">
@@ -167,6 +170,39 @@
           "lengthChange": false, // Disable "entries per page" selection
           // Add any other options you need
       });
+  });
+</script>
+
+<script>
+  $(document).ready(function(){
+      $('.show-map-btn').click(function(){
+        $('#mapModal').modal('show');
+          var lat = $(this).data('lat');
+          var lng = $(this).data('lng');
+          $('#mapModal').on('shown.bs.modal', function () {
+          initializeMap(lat, lng);
+        });
+      });
+
+      function initializeMap(lat, lng) {
+          // Remove any existing map instance
+          $('#map').remove();
+
+          // Create a new map container
+          var mapContainer = $('<div id="map" style="width: 100%; height: 100%;"></div>');
+          $('.modal-body').append(mapContainer);
+
+          var map = L.map('map').setView([lat, lng], 17);
+
+          map.setMinZoom(14); // Adjust the maximum zoom level as needed
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
+
+          const marker = L.marker([lat, lng]).addTo(map);
+
+      }
   });
 </script>
 </body>
