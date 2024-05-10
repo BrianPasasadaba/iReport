@@ -197,12 +197,10 @@ def login():
 
 
 @app.route('/analytics')
-
 def analytics():
     return render_template('admin/analytics.html')
 
 @app.route('/announcement')
-
 def announcement():
     return render_template('admin/announcement.html')
 
@@ -226,12 +224,35 @@ def help():
 def report():
     # Fetch data with corresponding status value from MySQL database
     cur = mysql.connection.cursor()
-    cur.execute("SELECT r.report_id, r.date_time, r.phone_number, r.name, r.location, r.latitude, r.longitude, r.estimate_victims, r.report_details, s.report_status FROM reports r JOIN status s ON r.status_id = s.status_id")
+    cur.execute("""
+    SELECT r.report_id, r.date_time, r.phone_number, r.name, r.location, r.latitude, r.longitude, 
+           r.estimate_victims, r.report_details, s.report_status, c.categories
+    FROM reports r 
+    JOIN status s ON r.status_id = s.status_id
+    JOIN category c ON r.category_id = c.category_id
+""")
     reports = cur.fetchall()
     cur.close()
     
     # Pass data to template and render
     return render_template('admin/report.html', reports=reports)
+
+@app.route('/update_report', methods=['POST'])
+def update_report():
+    if request.method == 'POST':
+        # Get form data
+        report_id = request.form['reportId']
+        responder_report = request.form['responder_report']
+        status = request.form['status']
+
+        # Update the corresponding entry in the database
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE reports SET responder_report = %s, status_id = %s WHERE report_id = %s", (responder_report, status, report_id))
+        mysql.connection.commit()
+        cur.close()
+
+        # Return a success response
+        return jsonify({'success': True}), 200
 
 @app.route('/logout')
 def logout():

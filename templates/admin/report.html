@@ -63,21 +63,24 @@
               <div class="col-8">
                 <p class="card-text">ALL INCIDENT REPORTS</p>
               </div>
-              <div class="ml-auto d-flex align-items-center">
+              <button type="button" class="btn icon-button" style="margin-left: 12rem;">
+                <i class="fas fa-print fa-lg"></i>
+              </button>
+              <div class=" d-flex align-items-center">
                   <select class="report-button form-select month-dropdown">
-                    <option value="1">MARCH 2024</option>
-                    <option value="2">APRIL 2024</option>
-                    <option value="3">MAY 2024</option>
-                    <option value="4">JUNE 2024</option>
-                    <option value="5">JULY 2024</option>
-                    <option value="6">AUGUST 2024</option>
+                    <option value="1"> MARCH 2024</option>
+                    <option value="2"> APRIL 2024</option>
+                    <option value="3"> MAY 2024</option>
+                    <option value="4"> JUNE 2024</option>
+                    <option value="5"> JULY 2024</option>
+                    <option value="6"> AUGUST 2024</option>
                   </select>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <table id="reportTable" class="table table-striped" style="width: 120%;">
+            <table id="reportTable" class="table table-striped" style="width: 100%;">
               <thead>
                 <tr>
                   <th class="text-center">Report ID</th>
@@ -108,13 +111,16 @@
                     {{ report[4] }}
                     {% endif %}
                   </td>
-                  <td class="text-center">{{ report[7] }}</td>
-                  <td class="text-center">{{ report[8] }}</td>
-                  <td class="text-center">{{ report[9] }}</td>
-                  <td class="text-center">
-                    <button type="button" class="btn icon-button">
-                      <i class="far fa-file fa-lg"></i>
-                    </button>
+                    <td class="text-center">{{ report[7] }}</td>
+                    <td class="text-center">{{ report[8] }}</td>
+                    <td class="text-center">{{ report[9] }}</td>
+                    <td class="text-center">
+                      <button type="button" class="btn icon-button details-btn" data-toggle="modal" data-target="#detailsModal"
+                              data-report-id="{{ report[0] }}" data-date="{{ report[1] }}" data-phone="{{ report[2] }}"
+                              data-name="{{ report[3] }}" data-location="{{ report[4] }}" data-victims="{{ report[7] }}"
+                              data-details="{{ report[8] }}" data-status="{{ report[9] }}" data-category="{{ report[10] }}">
+                          <i class="far fa-file fa-lg"></i>
+                      </button>
                   </td>
                 </tr>
                 {% endfor %}
@@ -137,17 +143,59 @@
     </div>
   </div>
 
-  <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel"
+  <!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModal"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-body" style="text-align: center;">
-          <div id="map"></div>
+          <div class="modal-header d-flex justify-content-center">
+              <h5 class="modal-title" id="detailsModalLabel">Report Details</h5>
+          </div>
+          <div class="modal-body" style="font-size: large; overflow-y: auto;">
+              <!-- Data will be populated here -->
+          </div>
+          <div class="modal-footer">
+            <!-- Close Button -->
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            <!-- Edit Button -->
+            <button type="button" class="btn btn-primary" id="editReport" data-report-id="{{ reportId }}">Edit</button>   
         </div>
       </div>
     </div>
   </div>
 
+<!-- Edit Details Modal -->
+<div class="modal fade" id="editDetailsModal" tabindex="-1" role="dialog" aria-labelledby="editDetailsModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header d-flex justify-content-center">
+              <h5 class="modal-title" id="detailsModalLabel">Report Details</h5>
+          </div>
+          <div class="modal-body" style="font-size: large; overflow-y: auto;">
+            <form id="editReportForm" action="/update_report" method="POST">
+              <div class="form-group">
+                <label for="responder_report" class="form-label">Incident Details:</label>
+                <textarea class="form-control" id="responder_report" name="responder_report" rows="2" maxlength="255" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="status">Status:</label>
+                <select class="form-control form-select" id="status" name="status" required style="height: 3vw;" >
+                <option value="1">Pending</option>
+                <option value="2">Ongoing</option>
+                <option value="3">Resolved</option>
+                </select>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <!-- Close Button -->
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            <!-- Edit Button -->
+            <button type="submit" class="btn btn-primary" id="saveReport">Save</button>   
+        </div>
+      </form>
+      </div>
+  </div>
+</div>
 
   <footer class="footer">
     <div class="container-fluid">
@@ -208,6 +256,101 @@
       }
     });
   </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var currentReportId; // Variable to store the current reportId  
+    
+    var detailsButtons = document.querySelectorAll(".details-btn");
+      detailsButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+              var reportId = this.getAttribute("data-report-id");
+              var date = this.getAttribute("data-date");
+              var phone = this.getAttribute("data-phone");
+              var name = this.getAttribute("data-name");
+              var location = this.getAttribute("data-location");
+              var victims = this.getAttribute("data-victims");
+              var details = this.getAttribute("data-details");
+              var status = this.getAttribute("data-status");
+              var category = this.getAttribute("data-category");
+
+              // Populate modal header and body with data
+              var modal = document.querySelector("#detailsModal");
+              var modalTitle = modal.querySelector(".modal-title");
+              var modalBody = modal.querySelector(".modal-body");
+
+              modalTitle.innerText = "Incident Report No. " + reportId;
+
+              modalBody.innerHTML = `
+              <p class="mb-3"><span style="color: gray;">Category:</span> ${category}</p>
+              <p class="mb-3"><span style="color: gray;">Date and Time:</span> ${date}</p>
+              <p class="mb-3"><span style="color: gray;">Phone Number:</span> ${phone}</p>
+              <p class="mb-3"><span style="color: gray;">Name:</span> ${name}</p>
+              <p class="mb-3"><span style="color: gray;">Location:</span> ${location}</p>
+              <p class="mb-3"><span style="color: gray;">Victims (Estimated):</span> ${victims}</p>
+              <p class="mb-3"><span style="color: gray;">Further Details:</span> ${details}</p>
+              <p class="mb-3"><span style="color: gray;">Status:</span> ${status}</p>
+              `;
+
+              // Set the title of the editDetailsModal
+              var editModalTitle = document.querySelector("#editDetailsModal .modal-title");
+              editModalTitle.innerText = "Edit Incident Report No. " + reportId;
+              // Add report ID to edit button data attribute
+              currentReportId = this.getAttribute("data-report-id");
+
+              // Show the modal
+              $('#detailsModal').modal('show');
+          });
+      });
+
+      // Event listener for edit button click
+      var editButton = document.getElementById("editReport");
+      editButton.addEventListener("click", function () {
+          // Set the reportId attribute of the edit button
+          editButton.dataset.reportId = currentReportId;
+          // Show the editDetailsModal
+          $('#editDetailsModal').modal('show');
+      });
+
+      // Event listener for form submission
+document.getElementById("editReportForm").addEventListener("submit", function (event) {
+  // Prevent default form submission
+  event.preventDefault();
+
+  // Manually submit the form
+  var form = this;
+
+  // Retrieve the reportId from the stored variable
+  var reportId = currentReportId;
+
+  // Add the reportId to the form data
+  var formData = new FormData(form);
+  formData.append('reportId', reportId);
+
+  $.ajax({
+    url: form.action,
+    method: form.method,
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function (response) {
+      // Reload the page after successful submission
+      location.reload();
+    },
+    error: function (xhr, status, error) {
+      // Handle error response
+      console.error("Error submitting form:", error);
+      console.log("Response:", xhr.responseText);
+      // Optionally display error message to user
+    }
+  });
+});
+
+
+  });
+</script>
+
+
 </body>
 
 </html>
