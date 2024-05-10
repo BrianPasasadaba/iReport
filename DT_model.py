@@ -2,21 +2,33 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+
+def preprocess_data(data):
+    # Remove leading and trailing spaces from the 'Category' column
+    data['Category'] = data['Category'].str.strip()
+    # Select 'Report Details' as input feature (X) and 'Category' as target variable (y)
+    X = data['Report Details']  # Input feature
+    y = data['Category']  # Target variable
+    return X, y
 
 def train_decision_tree_model(X, y):
-    # Train the decision tree model
-    label_encoder = LabelEncoder()
-    y_encoded = label_encoder.fit_transform(y)
+    # Split data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    # Vectorize the text data
     vectorizer = CountVectorizer()
-    X_vectorized = vectorizer.fit_transform(X)
+    X_train_vectorized = vectorizer.fit_transform(X_train)
+    
+    # Initialize and train DecisionTreeClassifier
     clf = DecisionTreeClassifier()
-    clf.fit(X_vectorized, y_encoded)
-    return clf, vectorizer, label_encoder
+    clf.fit(X_train_vectorized, y_train)
+    
+    return clf, vectorizer, X_test, y_test
 
-def predict_category(model, vectorizer, label_encoder, report_details):
+def predict_category(model, vectorizer, report_details):
     report_vectorized = vectorizer.transform([report_details])
-    category_pred = model.predict(report_vectorized)
-    predicted_category = label_encoder.inverse_transform(category_pred)[0]
+    predicted_category = model.predict(report_vectorized)[0]
     return predicted_category
 
 # Define category ID mapping

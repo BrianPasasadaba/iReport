@@ -1,10 +1,15 @@
-from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify
+from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify, Response
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
 from datetime import datetime
-from DT_model import train_decision_tree_model, predict_category, category_id_map
+from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.model_selection import train_test_split
+from DT_model import preprocess_data, train_decision_tree_model, predict_category, category_id_map
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from io import BytesIO
 
 
 
@@ -38,15 +43,20 @@ class User(UserMixin):
 # Load dataset
 data = pd.read_csv('CDRRMO-data.csv')
 
-# Remove leading and trailing spaces from the 'Category' column
-data['Category'] = data['Category'].str.strip()
-
-# Select 'Report Details' as input feature (X) and 'Category' as target variable (y)
-X = data['Report Details']  # Input feature
-y = data['Category']  # Target variable
+# Preprocess data
+X, y = preprocess_data(data)
 
 # Train decision tree model
-clf, vectorizer, label_encoder = train_decision_tree_model(X, y)
+clf, vectorizer, X_test, y_test = train_decision_tree_model(X, y)
+
+# Make predictions on testing set
+y_pred_test = [predict_category(clf, vectorizer, report) for report in X_test]
+
+# Calculate accuracy score on testing set
+accuracy_test = accuracy_score(y_test, y_pred_test)
+
+# Calculate confusion matrix on testing set
+conf_matrix_test = confusion_matrix(y_test, y_pred_test)
 
 # Callback to load user from session
 @login_manager.user_loader
@@ -103,8 +113,8 @@ def submit_incident_form():
     victims = request.form.get('victims')
     details = request.form.get('details')
     
-     # Predict category
-    predicted_category = predict_category(clf, vectorizer, label_encoder, details)
+    # Predict category
+    predicted_category = predict_category(clf, vectorizer, details)
     
     # Map predicted category to category ID
     category_id = category_id_map.get(predicted_category)
@@ -130,6 +140,33 @@ def submit_incident_form():
 
     # Return JSON response with success message
     return jsonify({'message': message})
+
+@app.route('/accuracy', methods=['GET'])
+def get_accuracy():
+    return jsonify({'accuracy': accuracy_test})
+
+@app.route('/confusion_matrix', methods=['GET'])
+def get_confusion_matrix():
+    # Plot confusion matrix
+    def plot_confusion_matrix(conf_matrix, labels):
+        plt.figure(figsize=(8, 6))
+        sns.set(font_scale=1.2)
+        sns.heatmap(conf_matrix, annot=True, cmap="Blues", fmt='g', xticklabels=labels, yticklabels=labels)
+        plt.xlabel('Predicted Label')
+        plt.ylabel('True Label')
+        plt.title('Confusion Matrix')
+        plt.tight_layout()
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        plt.close()
+        return buffer.getvalue()
+
+    # Convert confusion matrix to PNG image
+    cm_image = plot_confusion_matrix(conf_matrix_test, labels=category_id_map.keys())
+
+    # Return PNG image as response
+    return Response(cm_image, mimetype='image/png')
 
 @app.route('/faqs')
 def faqs():

@@ -357,37 +357,43 @@
     </script>
 
 <script>
-$(document).ready(function(){
+  $(document).ready(function(){
 
-// Submit button click listener
-$("#submitButton").click(function(event){
-  event.preventDefault(); // Prevent default form submission
+    // Submit button click listener
+    $("#submitButton").click(function(event){
+      event.preventDefault(); // Prevent default form submission
 
-  // Get form data
-  var formData = $('#reportForm').serialize(); // Use your form ID
+      // Check if form is valid
+      if ($('#reportForm')[0].checkValidity()) {
+        // Get form data
+        var formData = $('#reportForm').serialize(); // Use your form ID
 
-  $.ajax({
-    url: '/submit_incident_form', // Replace with your form submission URL
-    type: 'POST',
-    data: formData,
-    success: function(response) {
-      if (response.message) { // Check for success message
-        $("#viewSuccessModal").modal('show'); // Show modal on success
-        $('#reportForm')[0].reset(); // Clear the form
-        clearCapturedImage(); // Clear captured image
+        $.ajax({
+          url: '/submit_incident_form', // Replace with your form submission URL
+          type: 'POST',
+          data: formData,
+          success: function(response) {
+            if (response.message) { // Check for success message
+              $("#viewSuccessModal").modal('show'); // Show modal on success
+              $('#reportForm')[0].reset(); // Clear the form
+              clearCapturedImage(); // Clear captured image
+            } else {
+              // Handle errors (optional)
+              alert("Error submitting report. Please try again.");
+            }
+          },
+          error: function(error) {
+            // Handle errors (optional)
+            alert("Error submitting report. Please try again.");
+          }
+        });
       } else {
-        // Handle errors (optional)
-        alert("Error submitting report. Please try again.");
+        // Optionally, display a message indicating form is not valid
+        alert("Please fill in all required fields before submitting the form.");
       }
-    },
-    error: function(error) {
-      // Handle errors (optional)
-      alert("Error submitting report. Please try again.");
-    }
+    });
   });
-});
-});
-  </script>
+</script>
 
 
     
