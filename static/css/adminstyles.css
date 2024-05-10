@@ -24,7 +24,6 @@ a:hover {
   color: #fff;
   padding: 2vh;
   font-size: 1.5vw;
-  font-family: "Lato";
 }
 
 .header-logo {
@@ -41,7 +40,6 @@ a:hover {
   width: 100%;
   z-index: 9999;
   font-size: 1vw;
-  font-family: "Lato";
 }
 
 .footer a {
@@ -63,7 +61,6 @@ a:hover {
   padding: 2vh;
   font-size: 1vw;
   height: 25vh;
-  font-family: "Lato";
 }
 .sidebar-header img {
   padding: 2vh;
@@ -86,7 +83,6 @@ a:hover {
   border-right: 0.5vw solid #100a51;
   padding-top: 3vh;
   font-size: 1vw;
-  font-family: "Lato";
 }
 
 .sidebar ul {
@@ -132,7 +128,6 @@ a:hover {
   font-size: 2.5vw;
   padding: 1vw;
   color: #000;
-  font-family: "Poppins";
 }
 
 .card-body {
@@ -187,7 +182,7 @@ a:hover {
   width: 100%;
   border-collapse: collapse;
   background-color: white;
-  font-size: 0.8vw;
+  font-size: 1vw;
 }
 
 th,
