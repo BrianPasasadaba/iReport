@@ -3,6 +3,8 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
 from datetime import datetime
+from DT_model import train_decision_tree_model, predict_category, category_id_map
+import pandas as pd
 
 
 
@@ -33,6 +35,19 @@ class User(UserMixin):
     def get_id(self):
         return self.email
 
+# Load dataset
+data = pd.read_csv('CDRRMO-data.csv')
+
+# Remove leading and trailing spaces from the 'Category' column
+data['Category'] = data['Category'].str.strip()
+
+# Select 'Report Details' as input feature (X) and 'Category' as target variable (y)
+X = data['Report Details']  # Input feature
+y = data['Category']  # Target variable
+
+# Train decision tree model
+clf, vectorizer, label_encoder = train_decision_tree_model(X, y)
+
 # Callback to load user from session
 @login_manager.user_loader
 def load_user(email):
@@ -45,6 +60,7 @@ def load_user(email):
         return User(user_data[5], user_data[6])
     else:
         return None
+    
 
 
 @app.route('/')
@@ -87,6 +103,12 @@ def submit_incident_form():
     victims = request.form.get('victims')
     details = request.form.get('details')
     
+     # Predict category
+    predicted_category = predict_category(clf, vectorizer, label_encoder, details)
+    
+    # Map predicted category to category ID
+    category_id = category_id_map.get(predicted_category)
+
     # Get current date and time
     current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print("Full Name:", full_name)
@@ -96,10 +118,11 @@ def submit_incident_form():
     print("Longitude:", longitude)
     print("Estimated Number of Victims:", victims)
     print("Further Details:", details)
-    # Insert data into MySQL database
+    
+    # Insert data into MySQL database along with predicted category ID
     cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO reports (date_time, name, phone_number, location, latitude, longitude, estimate_victims, report_details) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                (current_datetime, full_name, contact_number, location, latitude, longitude, victims, details))
+    cur.execute("INSERT INTO reports (date_time, name, phone_number, location, latitude, longitude, estimate_victims, report_details, category_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (current_datetime, full_name, contact_number, location, latitude, longitude, victims, details, category_id))
     mysql.connection.commit()
     cur.close()
     # Prepare success message (optional)

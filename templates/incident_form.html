@@ -107,7 +107,7 @@
         </div>
         <div class="form-group">
           <video id="video" style="width: 100%; display: none; margin: auto; margin-bottom: 10px;"></video> <!-- Initial display set to none -->
-          <button id="capture-btn" class="btn btn-primary" style="display: none; margin: auto;">Take Photo</button> <!-- Initial display set to none -->
+          <button id="capture-btn" type="button" class="btn btn-primary" style="display: none; margin: auto;">Take Photo</button> <!-- Initial display set to none -->
           <div class="row justify-content-center" id="photoTaken">
             <div class="col-auto">
               <label for="dummy" class="input-group-text no-border" id="uploadIcon1">
@@ -346,10 +346,18 @@
         video.style.display = 'none';
         this.style.display = 'none';
       });
+
+      // Clear captured image function
+      function clearCapturedImage() {
+        var existingImg = document.getElementById('captured-image');
+        if (existingImg) {
+          existingImg.parentNode.removeChild(existingImg); // Remove existing image if it exists
+        }
+      }
     </script>
 
 <script>
-  $(document).ready(function(){
+$(document).ready(function(){
 
 // Submit button click listener
 $("#submitButton").click(function(event){
@@ -365,6 +373,8 @@ $("#submitButton").click(function(event){
     success: function(response) {
       if (response.message) { // Check for success message
         $("#viewSuccessModal").modal('show'); // Show modal on success
+        $('#reportForm')[0].reset(); // Clear the form
+        clearCapturedImage(); // Clear captured image
       } else {
         // Handle errors (optional)
         alert("Error submitting report. Please try again.");
