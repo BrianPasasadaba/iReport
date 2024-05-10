@@ -113,12 +113,13 @@
                   </td>
                     <td class="text-center">{{ report[7] }}</td>
                     <td class="text-center">{{ report[8] }}</td>
-                    <td class="text-center">{{ report[9] }}</td>
+                    <td class="text-center">{{ report[10] }}</td>
                     <td class="text-center">
                       <button type="button" class="btn icon-button details-btn" data-toggle="modal" data-target="#detailsModal"
                               data-report-id="{{ report[0] }}" data-date="{{ report[1] }}" data-phone="{{ report[2] }}"
                               data-name="{{ report[3] }}" data-location="{{ report[4] }}" data-victims="{{ report[7] }}"
-                              data-details="{{ report[8] }}" data-status="{{ report[9] }}" data-category="{{ report[10] }}">
+                              data-details="{{ report[8] }}" data-responder="{{ report[9] }}"data-status="{{ report[10] }}" 
+                              data-category="{{ report[11] }}">
                           <i class="far fa-file fa-lg"></i>
                       </button>
                   </td>
@@ -273,6 +274,7 @@
               var details = this.getAttribute("data-details");
               var status = this.getAttribute("data-status");
               var category = this.getAttribute("data-category");
+              var responder = this.getAttribute("data-responder");
 
               // Populate modal header and body with data
               var modal = document.querySelector("#detailsModal");
@@ -285,11 +287,11 @@
               <p class="mb-3"><span style="color: gray;">Category:</span> ${category}</p>
               <p class="mb-3"><span style="color: gray;">Date and Time:</span> ${date}</p>
               <p class="mb-3"><span style="color: gray;">Phone Number:</span> ${phone}</p>
-              <p class="mb-3"><span style="color: gray;">Name:</span> ${name}</p>
+              <p class="mb-3"><span style="color: gray;">Reported by:</span> ${name}</p>
               <p class="mb-3"><span style="color: gray;">Location:</span> ${location}</p>
-              <p class="mb-3"><span style="color: gray;">Victims (Estimated):</span> ${victims}</p>
+              <p class="mb-3"><span style="color: gray;">Estimated Number of Victims:</span> ${victims}</p>
               <p class="mb-3"><span style="color: gray;">Further Details:</span> ${details}</p>
-              <p class="mb-3"><span style="color: gray;">Status:</span> ${status}</p>
+              <p class="mb-3"><span style="color: gray;">Incident Details:</span> ${responder}</p>
               `;
 
               // Set the title of the editDetailsModal

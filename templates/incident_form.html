@@ -395,6 +395,42 @@
   });
 </script>
 
+<script>
+  // Function to save form data to local storage
+  function saveFormData() {
+    var formData = {
+      'name': document.getElementById('name').value,
+      'contact_number': document.getElementById('contact_number').value,
+      'location': document.getElementById('location').value,
+      'victims': document.getElementById('victims').value,
+      'details': document.getElementById('details').value
+    };
+    localStorage.setItem('formData', JSON.stringify(formData));
+  }
+
+  // Function to load form data from local storage
+  function loadFormData() {
+    var formData = localStorage.getItem('formData');
+    if (formData) {
+      formData = JSON.parse(formData);
+      document.getElementById('name').value = formData.name;
+      document.getElementById('contact_number').value = formData.contact_number;
+      document.getElementById('location').value = formData.location;
+      document.getElementById('victims').value = formData.victims;
+      document.getElementById('details').value = formData.details;
+    }
+  }
+
+  // Call loadFormData() when the page loads
+  window.onload = loadFormData;
+
+  // Save form data whenever any input field changes
+  var inputs = document.querySelectorAll('input, textarea');
+  inputs.forEach(function(input) {
+    input.addEventListener('input', saveFormData);
+  });
+</script>
+
 
     
   </body>
