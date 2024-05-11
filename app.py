@@ -205,6 +205,7 @@ def login():
 
 
 @app.route('/analytics')
+@login_required
 def analytics():
     return render_template('admin/analytics.html')
 
@@ -225,10 +226,12 @@ def faqs_add():
     return render_template('admin/faqs_add.html')
 
 @app.route('/help')
+@login_required
 def help():
     return render_template('admin/help.html')
 
 @app.route('/report')
+@login_required
 def report():
     # Fetch data with corresponding status value from MySQL database
     cur = mysql.connection.cursor()
@@ -326,6 +329,7 @@ def print_report_pdf():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     flash('You have been logged out!', 'success')
