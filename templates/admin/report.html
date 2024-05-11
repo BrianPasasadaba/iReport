@@ -63,7 +63,7 @@
               <div class="col-8">
                 <p class="card-text">ALL INCIDENT REPORTS</p>
               </div>
-              <button type="button" class="btn icon-button" style="margin-left: 12rem;">
+              <button type="button" class="btn icon-button" style="margin-left: 12rem;" onclick="printReportPDF()">
                 <i class="fas fa-print fa-lg"></i>
               </button>
               <div class=" d-flex align-items-center">
@@ -351,6 +351,12 @@ document.getElementById("editReportForm").addEventListener("submit", function (e
 
   });
 </script>
+
+<script>
+  function printReportPDF() {
+    window.location.href = "/report/print-pdf";  // Redirect to the new route
+  }
+  </script>
 
 
 </body>

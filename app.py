@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify, Response
+from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify, Response, send_file, make_response
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
@@ -9,7 +9,16 @@ from DT_model import preprocess_data, train_decision_tree_model, predict_categor
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from io import BytesIO
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import landscape, A4, LEGAL
+from reportlab.lib.units import inch
+from reportlab.lib.enums import TA_CENTER
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
+import io
+import textwrap
 
 
 
@@ -156,7 +165,7 @@ def get_confusion_matrix():
         plt.ylabel('True Label')
         plt.title('Confusion Matrix')
         plt.tight_layout()
-        buffer = BytesIO()
+        buffer = io.BytesIO()
         plt.savefig(buffer, format='png')
         buffer.seek(0)
         plt.close()
@@ -252,6 +261,69 @@ def update_report():
 
         # Return a success response
         return jsonify({'success': True}), 200
+
+@app.route('/report/print-pdf')
+def print_report_pdf():
+    # Fetch data from database (same as report() function)
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT r.report_id, r.date_time, r.phone_number, r.name, r.location,
+            r.responder_report, c.categories
+        FROM reports r
+        JOIN category c ON r.category_id = c.category_id
+        WHERE r.status_id = 3
+    """)
+    reports = cur.fetchall()
+    cur.close()
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=landscape(LEGAL))
+
+    styles = getSampleStyleSheet()
+    style_normal = styles["Normal"]
+    style_normal.alignment = 1  # Center alignment
+    style_normal.fontSize = 18  # Set font size to 10
+
+    # Create table data
+    data = [["Report ID", "Date and Time", "Phone Number", "Name",
+             "Location", "Details", "Category"]]
+    for report in reports:
+        wrapped_report = [textwrap.fill(str(value), width=30) for value in report]  # Adjust width as needed
+        data.append(wrapped_report)
+
+    # Define column widths and maximum widths
+    col_widths = [1*inch, 1.5*inch, 1.5*inch, 2*inch, 2*inch, 2.5*inch, 1.5*inch]
+
+    table_style = [
+        ("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+        ("BACKGROUND", (0, 1), (-1, -1), colors.white),
+        ("GRID", (0, 0), (-1, -1), 1, colors.black),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),  # Vertical alignment
+        ("WORDWRAP", (0, 0), (-1, -1), True),
+        ("MIN_ROW_HEIGHT", (0, 0), (-1, -1), 12),  # Set minimum row height
+    ]
+
+    table = Table(data, colWidths=col_widths, style=table_style)
+
+    # Add spacer between title and table
+    spacer = Spacer(1, 0.5*inch)  # Adjust the size of the spacer as needed
+
+    elements = [Paragraph("Emergency Report", style=style_normal),spacer, table]
+
+    doc.build(elements)
+
+    buffer.seek(0)
+    pdf_content = buffer.getvalue()
+
+    response = make_response(pdf_content)
+    response.headers['Content-Disposition'] = 'attachment; filename=report.pdf'
+    response.headers['Content-type'] = 'application/pdf'
+    return response
+
 
 @app.route('/logout')
 def logout():
