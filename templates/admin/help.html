@@ -47,42 +47,19 @@
         </div>
         <div class="sidebar">
           <ul>
-            <li class="dropdown sub-btn">
-              <a><i class="fa fa-home"></i> Home</a> &nbsp;<i
-                class="fa fa-chevron-down"
-              ></i>
-              <div class="sub-menu">
-                <ul>
-                  <li>
-                    <a href="{{ url_for('report') }}"
-                      ><i class="fa fa-list-alt"></i> Reports</a
-                    >
-                  </li>
-                  <li>
-                    <a href="{{ url_for('announcement') }}"
-                      ><i class="fa fa-bullhorn"></i> Announcements</a
-                    >
-                  </li>
-                  <li>
-                    <a href="{{ url_for('admin_faqs') }}"
-                      ><i class="fa fa-question"></i> FAQs</a
-                    >
-                  </li>
-                </ul>
-              </div>
+            <li>
+              <a href="{{ url_for('report') }}"><i class="fa fa-list-alt"></i> Reports</a>
+            </li>
+  
             </li>
             <li>
-              <a href="{{ url_for('analytics') }}"
-                ><i class="fas fa-chart-bar"></i> Analytics</a
-              >
+              <a href="{{ url_for('analytics') }}"><i class="fas fa-chart-bar"></i> Analytics</a>
             </li>
             <li>
-              <a href="{{ url_for('help') }}"
-                ><i class="fa fa-question-circle"></i> Help</a
-              >
+              <a href="{{ url_for('help') }}"><i class="fa fa-question-circle"></i> Help</a>
             </li>
           </ul>
-        </div>
+        </div>  
 
         <div class="main-content">
           <div class="scrollable-container help">
@@ -102,7 +79,15 @@
                   </button>
                   <div class="accordion-panel">
                     <div class="accordion-content">
-                      <p>Insert your instructions here.</p>
+                      <p>Change the status into Ongoing:</p>
+                      <p>Step 1: Click the file icon in the View Details column.</p>
+                      <p>Step 2: Locate and click the "Edit" button. </p>
+                      <p>Step 3: Locate the status dropdown and change it into Ongoing.</p>
+                      <p>Change the status into Resolved:</p>
+                      <p>Step 1: Click the file icon in the View Details column.</p>
+                      <p>Step 2: Locate and click the "Edit" button. </p>
+                      <p>Step 3: Fill out the incident details field with information from the rescue team. </p>
+                      <p>Step 4: Locate the status dropdown and change it into Resolved.</p>
                     </div>
                   </div>
 
@@ -131,7 +116,7 @@
                       <div class="row">
                         <div class="col-6 text-left mb-4">
                           <span class="d-inline-block">Approval Form</span>
-                          <a href="approval.html"
+                          <a href=""
                             ><i
                               class="fas fa-print fa-2x ml-2"
                               style="color: #a91212"
@@ -140,7 +125,7 @@
                         </div>
                         <div class="col-6 text-left mb-4">
                           <span class="d-inline-block">Refusal Form</span>
-                          <a href="refusal.html"
+                          <a href=""
                             ><i
                               class="fas fa-print fa-2x ml-2"
                               style="color: #a91212"

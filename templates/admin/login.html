@@ -10,6 +10,51 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/adminstyles.css') }}" />
+
+    <style>
+      /* Disable eye button in Microsoft Edge */
+      input[type="password"]::-ms-reveal,
+      input[type="password"]::-ms-clear {
+          display: none;
+      }
+      .password-container {
+            position: relative;
+            width: fit-content;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #000;
+        }
+
+        .flash-messages {
+          list-style: none; /* Remove default bullet points */
+          padding: 0;
+          margin: 0; /* Reset margins */
+        }
+
+        /* Style for flash messages */
+        .flash-message {
+            background-color: #e07070;
+            color: #000; /* Black color for text */
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .flash-message .close-btn {
+            float: right;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            color: #000;
+        }
+    </style>
   </head>
 
   <body>    
@@ -25,6 +70,18 @@
       </div>
       <div class="mr-4"></div>
     </header>
+
+    <!-- Flash message container -->
+    <div class="container">
+      {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              <div class="flash-message">
+                  {{ messages[0] }} <!-- Display only the first flash message, you can modify it as needed -->
+                  <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+              </div>
+          {% endif %}
+      {% endwith %}
+    </div>
 
     <div class="container-fluid">
       <div class="row">
@@ -47,7 +104,10 @@
               </div>
               <div class="form-group">
                 <label for="password" class="mb-0">PASSWORD</label>
-                <input type="password" class="form-control" id="password" name="password" required />
+                <div class="password-container">
+                  <input type="password" class="form-control" id="password" name="password" required />
+                  <i id="togglePassword" class="toggle-password fas fa-eye"></i>
+                </div>
               </div>
               <div class="row justify-content-center">
                 <button type="submit" class="btn btn-tertiary login-button">
@@ -70,5 +130,21 @@
     <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
     <script src="{{ url_for('static', filename='js/adminscripts.js') }}"></script>
+
+    <script>
+      // Get the eye button and the password input field
+      const togglePassword = document.getElementById('togglePassword');
+      const password = document.getElementById('password');
+    
+      // Add click event listener to the eye button
+      togglePassword.addEventListener('click', function() {
+        // Toggle the type attribute of the password field between 'password' and 'text'
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // Change the eye icon based on the password field's visibility
+        togglePassword.classList.toggle('fa-eye-slash');
+      });
+    </script>
+  
   </body>
 </html>

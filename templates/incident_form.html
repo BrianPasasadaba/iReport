@@ -40,30 +40,34 @@
     </header>
 
     <div class="container mt-4">
-      <a href="#" onclick="history.back();" class="back-button"
-        ><i class="fas fa-chevron-left"> &nbsp; Back</i></a
-      >
-      <form>
+      <a href="#" onclick="history.back();" class="back-button">
+        <i class="fas fa-chevron-left"> &nbsp; Back</i>
+      </a>
+      <form id="reportForm" action="/submit_incident_form" method="POST">
         <div class="form-group">
           <label for="name">Full Name (Optional)</label>
-          <input type="text" class="form-control" id="name" />
+          <input type="text" class="form-control" id="name" name="name" maxlength="50" placeholder="Ex. Juan Dela Cruz"/>
         </div>
         <div class="form-group">
-          <label for="contact_number"
-            >Contact Number<span class="asterisk">*</span></label
-          >
+          <label for="contact_number">Contact Number<span class="asterisk">*</span>
+          </label>
           <input
             type="text"
             class="form-control form-control-sm-6"
             id="contact_number"
+            name="contact_number"
+            maxlength="13"
+            oninput="validateContactNumber()"
+            required
+            placeholder="Ex. 0929-628-1362"
           />
+          <div id="contactNoValidationMessage" class="text-danger"></div>
         </div>
 
         <div class="form-group">
-          <label for="name">Location</label>
+          <label for="location">Location<span class="asterisk">*</span></label>
           <span class="input-icon">
-            <i class="fas fa-map-marker"></i>
-            <input type="text" class="form-control" id="name" />
+            <input type="text" class="form-control" id="location" name="location" required placeholder="Ex. Phase 1 Lot 1 Block 1, Brgy. Bayabas, Cabuyao, Laguna"/>
           </span>
         </div>
 
@@ -74,6 +78,7 @@
               type="checkbox"
               value=""
               id="shareLocation"
+              onchange="toggleLocationInput()"
             />
             <label class="form-check-label" for="shareLocation">
               Share my location
@@ -84,51 +89,47 @@
           </p>
         </div>
 
+        <!-- Hidden input fields to store latitude and longitude -->
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+
         <div class="form-group">
           <label for="victims"
-            >Estimated Number of Victims<span class="asterisk">*</span></label
-          >
+            >Estimated Number of Victims<span class="asterisk">*</span>
+          </label>
           <input
             type="text"
             class="form-control form-control-sm-2"
             id="victims"
+            name="victims"
+            maxlength="3"
+            required
+            placeholder="Ex. 1"
           />
         </div>
         <div class="form-group">
-          <div class="row justify-content-center">
+          <video id="video" style="width: 100%; display: none; margin: auto; margin-bottom: 10px;"></video> <!-- Initial display set to none -->
+          <button id="capture-btn" type="button" class="btn btn-primary" style="display: none; margin: auto;">Take Photo</button> <!-- Initial display set to none -->
+          <div class="row justify-content-center" id="photoTaken">
             <div class="col-auto">
-              <label
-                for="file-upload1"
-                class="input-group-text no-border"
-                id="uploadIcon1"
-              >
-                <i class="fas fa-camera fa-6x"></i>
+              <label for="dummy" class="input-group-text no-border" id="uploadIcon1">
+                <i class="fas fa-camera fa-6x" id="camera-icon"></i>
               </label>
-              <input
-                type="file"
-                id="file-upload1"
-                style="display: none"
-                multiple
-              />
+              <input type="file" accept="image/*" capture="camera" id="take-photo" style="display: none;" />
             </div>
           </div>
           <div class="row justify-content-center mt-2 text-center">
-            <label for="photos"
-              >Take a Photos of the Incidents<span class="asterisk"
-                >*</span
-              ></label
-            >
+            <label for="photos">Take a Photo of the Incident<span class="asterisk">*</span></label>
           </div>
         </div>
 
         <div class="form-group">
           <label for="details" class="red-label"
-            >Further Details<span class="asterisk">*</span></label
-          >
-          <textarea class="form-control" id="details" rows="3"></textarea>
+            >Further Details<span class="asterisk">*</span></label>
+          <textarea class="form-control" id="details" rows="3" maxlength="255" name="details" required placeholder="Ex. May dalawang kotseng nagkabanggaan dito"></textarea>
         </div>
         <div class="row justify-content-center mt-4">
-          <button type="submit" class="btn btn-sm submit-button">SUBMIT</button>
+          <button id="submitButton" type="submit" class="btn btn-sm submit-button">SUBMIT</button>
         </div>
       </form>
     </div>
@@ -154,8 +155,282 @@
 
     <div id="scrollIndicator"></div>
 
+    <!-- Start of Success Modal -->
+    <div id="viewSuccessModal" class="modal fade" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <!-- Modal Body -->
+              <div class="modal-body" style="text-align: center;">
+                <i class="fa fa-ambulance fa-4x" aria-hidden="true"></i>
+                  <h5> Report has been submitted!</h5>
+                  <p>First Responders are on their way.</p>
+              </div>
+              <!-- Modal Footer -->
+              <div class="modal-footer d-flex justify-content-center align-items-center">
+                  <!-- Close Button -->
+                  <button type="button" class=" btn btn-primary" data-bs-dismiss="modal">OKAY</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
     <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+    <script>
+      // Function to format the name input
+      document.addEventListener('DOMContentLoaded', function() {
+        var nameInput = document.getElementById('name');
+
+        nameInput.addEventListener('input', function() {
+          var inputValue = nameInput.value;
+
+          // Allow alphabet, periods, and spaces but require alphabet as the first character
+          var alphaValue = inputValue.replace(/^([^A-Za-z]+)|[^A-Za-z\s.]/g, '');
+
+          // Capitalize first letter of each word
+          alphaValue = alphaValue.toLowerCase().replace(/\b\w/g, function(firstLetter) {
+            return firstLetter.toUpperCase();
+          });
+
+          nameInput.value = alphaValue;
+        });
+      });
+    </script>
+
+    <script>
+      // Function to format the estimated number of victims
+      document.addEventListener('DOMContentLoaded', function() {
+        var victimsInput = document.getElementById('victims');
+    
+        // Add an event listener for input event
+        victimsInput.addEventListener('input', function() {
+          // Get the input value
+          var inputValue = victimsInput.value;
+    
+          // Replace any non-numeric characters with an empty string
+          var numericValue = inputValue.replace(/\D/g, '');
+    
+          // Check if the first character is zero, and if so, remove it
+          if (numericValue.charAt(0) === '0') {
+            numericValue = numericValue.substring(1);
+          }
+    
+          // Update the input value with only numeric characters
+          victimsInput.value = numericValue;
+        });
+      });
+    </script>
+    
+    
+    <script>
+      //Function to validate contact number
+      function validateContactNumber() {
+        var contactNumberInput = document.getElementById("contact_number");
+        var contactNumber = contactNumberInput.value;
+        var contactNoValidationMessage = document.getElementById("contactNoValidationMessage");
+    
+        // Remove any non-numeric characters
+        contactNumber = contactNumber.replace(/\D/g, "");
+    
+        // Insert dashes after the 4th and 7th digits
+        if (contactNumber.length > 3 && contactNumber.charAt(3) !== '-') {
+          contactNumber = contactNumber.substring(0, 4) + "-" + contactNumber.substring(4);
+        }
+        if (contactNumber.length > 7 && contactNumber.charAt(7) !== '-') {
+          contactNumber = contactNumber.substring(0, 8) + "-" + contactNumber.substring(8);
+        }
+    
+        // Update the input value with formatted contact number
+        contactNumberInput.value = contactNumber;
+    
+        // Regular expression to match the format '09XX-XXX-XXXX'
+        var regex = /^09\d{2}-\d{3}-\d{4}$/;
+
+    
+        if (!regex.test(contactNumber)) {
+          contactNoValidationMessage.textContent = "Please enter a valid contact number in the format 09XX-XXX-XXXX";
+        } else {
+          contactNoValidationMessage.textContent = "";
+        }
+      }
+    </script>
+    
+    <script>
+      function toggleLocationInput() {
+        var shareLocationCheckbox = document.getElementById("shareLocation");
+        var latitudeInput = document.getElementById("latitude");
+        var longitudeInput = document.getElementById("longitude");
+      
+        if (shareLocationCheckbox.checked) {
+          // If checkbox is checked, get user's location
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              // Set latitude and longitude values
+              latitudeInput.value = position.coords.latitude;
+              longitudeInput.value = position.coords.longitude;
+            });
+          } else {
+            alert("Geolocation is not supported by this browser.");
+          }
+        } else {
+          // If checkbox is unchecked, clear location values
+          latitudeInput.value = "";
+          longitudeInput.value = "";
+        }
+      }
+      </script>
+
+    <script>
+      document.getElementById('camera-icon').addEventListener('click', function() {
+        // Show video element and capture button
+        document.getElementById('video').style.display = 'block';
+        document.getElementById('capture-btn').style.display = 'block';
+        
+        // Check if getUserMedia is available
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          // Request access to the camera
+          navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+              // Display the stream in the video element
+              var video = document.getElementById('video');
+              video.srcObject = stream;
+              video.autoplay = true;
+              video.onloadedmetadata = function(e) {
+                video.play(); // Start playing the video stream
+              };
+            })
+            .catch(function(error) {
+              console.error('Error accessing camera:', error);
+            });
+        } else {
+          console.error('getUserMedia is not supported');
+        }
+      });
+    
+      // Capture button event listener
+      document.getElementById('capture-btn').addEventListener('click', function() {
+        var video = document.getElementById('video');
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        var imageDataURL = canvas.toDataURL('image/jpeg');
+    
+        // Do something with the captured image (e.g., display it)
+        var existingImg = document.getElementById('captured-image');
+        if (existingImg) {
+          existingImg.parentNode.removeChild(existingImg); // Remove existing image if it exists
+        }
+    
+        var img = document.createElement('img');
+        img.id = 'captured-image'; // Set an ID for the image element
+        img.src = imageDataURL;
+        img.style.width = '100%'; // Adjust the width of the image as needed
+        img.style.height = 'auto'; // Maintain aspect ratio
+        img.style.display = 'flex'; // Display the image as a block element
+        img.style.margin = 'auto';
+        img.style.marginBottom = '15px'; // Add some margin below the image
+        var cameraIcon = document.getElementById('photoTaken');
+        cameraIcon.parentNode.insertBefore(img, cameraIcon);
+    
+        // Stop the video stream
+        var tracks = video.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+        video.srcObject = null;
+    
+        // Hide video element and capture button
+        video.style.display = 'none';
+        this.style.display = 'none';
+      });
+
+      // Clear captured image function
+      function clearCapturedImage() {
+        var existingImg = document.getElementById('captured-image');
+        if (existingImg) {
+          existingImg.parentNode.removeChild(existingImg); // Remove existing image if it exists
+        }
+      }
+    </script>
+
+<script>
+  $(document).ready(function(){
+
+    // Submit button click listener
+    $("#submitButton").click(function(event){
+      event.preventDefault(); // Prevent default form submission
+
+      // Check if form is valid
+      if ($('#reportForm')[0].checkValidity()) {
+        // Get form data
+        var formData = $('#reportForm').serialize(); // Use your form ID
+
+        $.ajax({
+          url: '/submit_incident_form', // Replace with your form submission URL
+          type: 'POST',
+          data: formData,
+          success: function(response) {
+            if (response.message) { // Check for success message
+              $("#viewSuccessModal").modal('show'); // Show modal on success
+              $('#reportForm')[0].reset(); // Clear the form
+              clearCapturedImage(); // Clear captured image
+            } else {
+              // Handle errors (optional)
+              alert("Error submitting report. Please try again.");
+            }
+          },
+          error: function(error) {
+            // Handle errors (optional)
+            alert("Error submitting report. Please try again.");
+          }
+        });
+      } else {
+        // Optionally, display a message indicating form is not valid
+        alert("Please fill in all required fields before submitting the form.");
+      }
+    });
+  });
+</script>
+
+<script>
+  // Function to save form data to local storage
+  function saveFormData() {
+    var formData = {
+      'name': document.getElementById('name').value,
+      'contact_number': document.getElementById('contact_number').value,
+      'location': document.getElementById('location').value,
+      'victims': document.getElementById('victims').value,
+      'details': document.getElementById('details').value
+    };
+    localStorage.setItem('formData', JSON.stringify(formData));
+  }
+
+  // Function to load form data from local storage
+  function loadFormData() {
+    var formData = localStorage.getItem('formData');
+    if (formData) {
+      formData = JSON.parse(formData);
+      document.getElementById('name').value = formData.name;
+      document.getElementById('contact_number').value = formData.contact_number;
+      document.getElementById('location').value = formData.location;
+      document.getElementById('victims').value = formData.victims;
+      document.getElementById('details').value = formData.details;
+    }
+  }
+
+  // Call loadFormData() when the page loads
+  window.onload = loadFormData;
+
+  // Save form data whenever any input field changes
+  var inputs = document.querySelectorAll('input, textarea');
+  inputs.forEach(function(input) {
+    input.addEventListener('input', saveFormData);
+  });
+</script>
+
+
+    
   </body>
 </html>
