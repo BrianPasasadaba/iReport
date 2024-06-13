@@ -56,10 +56,10 @@
             class="form-control form-control-sm-6"
             id="contact_number"
             name="contact_number"
-            maxlength="13"
+            maxlength="11"
             oninput="validateContactNumber()"
             required
-            placeholder="Ex. 0929-628-1362"
+            placeholder="Ex. 09296281362"
           />
           <div id="contactNoValidationMessage" class="text-danger"></div>
         </div>
@@ -225,32 +225,23 @@
     
     
     <script>
-      //Function to validate contact number
+      /// Function to validate contact number
       function validateContactNumber() {
         var contactNumberInput = document.getElementById("contact_number");
         var contactNumber = contactNumberInput.value;
         var contactNoValidationMessage = document.getElementById("contactNoValidationMessage");
-    
+
         // Remove any non-numeric characters
         contactNumber = contactNumber.replace(/\D/g, "");
-    
-        // Insert dashes after the 4th and 7th digits
-        if (contactNumber.length > 3 && contactNumber.charAt(3) !== '-') {
-          contactNumber = contactNumber.substring(0, 4) + "-" + contactNumber.substring(4);
-        }
-        if (contactNumber.length > 7 && contactNumber.charAt(7) !== '-') {
-          contactNumber = contactNumber.substring(0, 8) + "-" + contactNumber.substring(8);
-        }
-    
+
         // Update the input value with formatted contact number
         contactNumberInput.value = contactNumber;
-    
-        // Regular expression to match the format '09XX-XXX-XXXX'
-        var regex = /^09\d{2}-\d{3}-\d{4}$/;
 
-    
+        // Regular expression to match the format '09XXXXXXXXX'
+        var regex = /^09\d{9}$/;
+
         if (!regex.test(contactNumber)) {
-          contactNoValidationMessage.textContent = "Please enter a valid contact number in the format 09XX-XXX-XXXX";
+          contactNoValidationMessage.textContent = "Please enter a valid contact number in the format 09XXXXXXXXX";
         } else {
           contactNoValidationMessage.textContent = "";
         }
