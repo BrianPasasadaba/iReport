@@ -1,0 +1,20 @@
+{
+  "name": "sad-cdrrmo",
+  "version": "1.0.0",
+  "description": "An app for citizens of Cabuyao City to report emergencies to the CDRRMO.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "release": {
+    "branches": ["dev"],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github"
+    ]
+  }
+}
