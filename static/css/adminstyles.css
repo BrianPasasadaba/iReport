@@ -173,8 +173,8 @@ a:hover {
 .scrollable-container {
   position: relative;
   overflow: auto;
-  width: 170vh;
-  height: 60vh;
+  width: 170vw;
+  height: 65vh;
   align-items: center;
 }
 
@@ -191,12 +191,14 @@ td {
   padding: 1%;
   border-radius: 1%;
   margin-bottom: 0.5vh;
+  border-bottom: 1px solid #d9d9d9;
 }
 
 th {
   background-color: rgba(16, 10, 81, 0.15);
   color: #000;
   width: 10%;
+  border-top: 1px solid #656565;
 }
 
 .announcement-container {
@@ -573,6 +575,7 @@ th {
 
 .login_img {
   max-width: 35vw;
+  min-width: 35vw;
   margin-bottom: 20px;
 }
 
@@ -580,10 +583,11 @@ th {
   background-color: #100a51;
   padding: 2vw;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 2vh;
   font-size: 1vw;
   color: white;
-  height: 50vh;
+  height: 55vh;
+  width: 30vw;
+  margin-top: 5vw;
 }
 
 .login-header {
@@ -596,6 +600,13 @@ th {
 
 .form-group {
   margin-bottom: 5vh;
+  width: 100%;
+}
+
+.form-control {
+  font-size: 1vw;
+  width: 100%;
+  height: 4vh;
 }
 
 .login-button {
@@ -604,12 +615,6 @@ th {
   height: 5vh;
   margin-bottom: 7vh;
   color: white;
-}
-
-.form-control {
-  font-size: 1.5vw;
-  width: 100%;
-  height: 5vh;
 }
 
 .filter {
