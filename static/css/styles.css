@@ -101,6 +101,12 @@ a {
   align-items: center;
   padding: 1vw;
   border-radius: 3px;
+  text-decoration: none;
+}
+
+.report-button:hover {
+  color: white;
+  text-decoration: none;
 }
 
 .report-button a {
