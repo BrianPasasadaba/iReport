@@ -255,6 +255,11 @@ a:hover {
   font-weight: 500;
 }
 
+.submit-button:hover {
+  background-color: #a91212;
+  color: white;
+}
+
 .asterisk {
   color: #a91212;
 }
