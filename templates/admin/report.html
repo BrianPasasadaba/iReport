@@ -57,13 +57,13 @@
 
 
       <div class="main-content">
-        <div class="report-container col-12">
+        <div class="report-container col-10">
           <div class="incident-title">
             <div class="card-body d-flex">
-              <div class="col-8">
+              <div class="col-10">
                 <p class="card-text">ALL INCIDENT REPORTS</p>
               </div>
-              <button type="button" class="btn icon-button" style="margin-left: 12rem;" onclick="printReportPDF()">
+              <button type="button" class="btn icon-button"  onclick="printReportPDF()">
                 <i class="fas fa-print fa-lg"></i>
               </button>
               <div class=" d-flex align-items-center">
@@ -103,7 +103,7 @@
                   <td class="text-center">{{ report[3] }}</td>
                   <td class="text-center">
                     {% if report[5] !=0 and report[6] !=0 %}
-                    <button type="button" class="btn show-map-btn" data-toggle="modal" data-lat="{{ report[5] }}"
+                    <button type="button" class="btn icon-button show-map-btn" data-toggle="modal" data-lat="{{ report[5] }}"
                       data-lng="{{ report[6] }}">
                       <i class="fas fa-map-marked-alt fa-lg"></i>
                     </button>
