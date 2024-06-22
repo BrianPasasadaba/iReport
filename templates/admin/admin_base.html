@@ -24,7 +24,9 @@
 <body>
   <header class="header d-flex justify-content-between align-items-center py-3">
     <div class="ml-4">
-      <img src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}" alt="Left Logo" class="header-logo" />
+      <a href="{{ url_for('report') }}">
+        <img src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}" alt="Left Logo" class="header-logo" />
+      </a>      
     </div>
     <div class="text-center">
       <div>i-Report</div>
