@@ -747,6 +747,49 @@ th {
 .btn.icon-button i {
   font-size: 2vw;
 }
+
+/* Disable eye button in Microsoft Edge */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #000;
+}
+
+.flash-messages {
+  list-style: none; /* Remove default bullet points */
+  padding: 0;
+  margin: 0; /* Reset margins */
+}
+
+/* Style for flash messages */
+.flash-message {
+  background-color: #e07070;
+  color: #000; /* Black color for text */
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+.flash-message .close-btn {
+  float: right;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+  color: #000;
+}
 @media only screen and (max-width: 1680px) and (max-height: 1050px) {
 }
 
