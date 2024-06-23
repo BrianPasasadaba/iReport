@@ -60,14 +60,7 @@
         panel.style.display = "block";
       }
 
-      // Close other panels
-      var activeAccordions = document.querySelectorAll(".accordion.active");
-      for (var j = 0; j < activeAccordions.length; j++) {
-        if (activeAccordions[j] !== this) {
-          activeAccordions[j].classList.remove("active");
-          activeAccordions[j].nextElementSibling.style.display = "none";
-        }
-      }
+      
     });
   }
 </script>
