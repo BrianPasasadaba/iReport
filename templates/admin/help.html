@@ -111,18 +111,7 @@
           icon.classList.add("fa-chevron-down");
         }
 
-        // Close other panels
-        var activeAccordions =
-          document.querySelectorAll(".accordion.active");
-        for (var j = 0; j < activeAccordions.length; j++) {
-          if (activeAccordions[j] !== this) {
-            activeAccordions[j].classList.remove("active");
-            activeAccordions[j].nextElementSibling.style.maxHeight = null;
-            var activeIcon = activeAccordions[j].querySelector("i");
-            activeIcon.classList.remove("fa-chevron-up");
-            activeIcon.classList.add("fa-chevron-down");
-          }
-        }
+        
       });
     }
   });
