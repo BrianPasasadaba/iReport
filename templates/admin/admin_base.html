@@ -73,7 +73,9 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-1">
+          {% block footer %}
           <a href="{{ url_for('logout') }}">LOGOUT</a>
+          {% endblock %}
         </div>
       </div>
     </div>
