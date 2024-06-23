@@ -16,9 +16,9 @@
       <div class="card-body">
         <div class="row"> 
           <div class="col-8">
-              <h3 class="card-title mb-0">INCIDENTS FOR THE MONTH OF</h3>
+              <h3 class="card-title mb-0" >INCIDENTS FOR THE MONTH OF</h3>
           </div>
-          <div class="col-4">
+          <div class="col-4  d-flex justify-content-end align-middle">
               <select id="month-dropdown" class="report-button form-select month-dropdown">
                   <option value="1">January</option>
                   <option value="2">February</option>
@@ -37,38 +37,35 @@
       </div>
 
       <div class="row">
-        <div class="col">
+        <div class="col mt-3">
             <div class="legend-container">
                 <span class="legend-circle medical"></span>
                 <span class="legend-text">Medical Emergency</span>
             </div>
         </div>
-        <div class="col">
+        <div class="col mt-3">
             <div class="legend-container">
                 <span class="legend-circle vehicular"></span>
                 <span class="legend-text">Vehicular Accident</span>
             </div>
         </div>
-        <div class="col">
+        <div class="col mt-3">
             <div class="legend-container">
                 <span class="legend-circle other"></span>
                 <span class="legend-text">Other Emergencies</span>
             </div>
         </div>
-        <div class="col">
-          <div class="row">
-            <div>
-                <label for="status">YEAR</label>
+        <div class="col d-flex justify-content-end align-middle">
+            <div class="analytic-year mt-3" >
+                <label for="year">YEAR</label>
             </div>
-            <div>
-                <select id="year" class="report-button form-select month-dropdown">
-                    <option selected>2024</option>
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                    <!-- Add more years if necessary -->
-                </select>
-            </div>
+            <select id="year" class="report-button form-select month-dropdown">
+                <option selected>2024</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <!-- Add more years if necessary -->
+            </select>
         </div>      
     </div> 
     </div>
