@@ -245,22 +245,6 @@ def analytics():
     return render_template('admin/analytics.html', coordinates=coordinates, labels=labels, values=values)
 
 
-@app.route('/announcement')
-def announcement():
-    return render_template('admin/announcement.html')
-
-@app.route('/detail_report')
-def detail_report():
-    return render_template('admin/detail_report.html')
-
-@app.route('/adminfaqs')
-def admin_faqs():
-    return render_template('admin/faqs.html')
-
-@app.route('/faqs_add')
-def faqs_add():
-    return render_template('admin/faqs_add.html')
-
 @app.route('/help')
 @login_required
 def help():
