@@ -207,7 +207,31 @@ def login():
 @app.route('/analytics')
 @login_required
 def analytics():
-    return render_template('admin/analytics.html')
+    cursor = mysql.connection.cursor()
+
+    # Count occurrences for each category
+    query = """
+        SELECT
+            CASE category_id
+                WHEN 1 THEN 'Medical Emergency'
+                WHEN 2 THEN 'Vehicular Accident'
+                WHEN 3 THEN 'Other Emergency'
+                ELSE 'Unknown'
+            END AS category_name,
+            COUNT(*) AS count
+        FROM reports
+        GROUP BY category_id
+    """
+    cursor.execute(query)
+    data = cursor.fetchall()
+
+    # Extract labels and values from data
+    labels = [row[0] for row in data]
+    values = [int(row[1]) for row in data]
+
+    cursor.close()
+
+    return render_template('admin/analytics.html', labels=labels, values=values)
 
 @app.route('/announcement')
 def announcement():

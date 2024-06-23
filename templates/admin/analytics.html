@@ -1,6 +1,8 @@
 {% extends 'admin/admin_base.html' %}
 
 {% block content%}
+
+
 <div class="main-content">
   <div class="report-container col-12">
     <div class="incident-title">
@@ -33,8 +35,6 @@
               </select>
           </div>
       </div>
-      
-     
 
       <div class="row">
         <div class="col">
@@ -69,13 +69,14 @@
                     <!-- Add more years if necessary -->
                 </select>
             </div>
-        </div>
-       
+        </div>      
+    </div> 
+    </div>
+    <div style="height: 24vw;">
+        <canvas id="barChart"></canvas>
     </div>
     
     </div>
-    
-      </div>
     </div>
 
     <div class="analytics-container">
@@ -85,7 +86,6 @@
                   <h3 class="card-title mb-5">INCIDENTS PER BARANGAY</h3>
               </div>
           </div>
-  
           <div class="row">
               <div class="col-4">
                   <div class="legend-container mr-3">
@@ -100,9 +100,9 @@
                       <span class="legend-circle other"></span>
                       <span class="legend-text">Other Emergencies</span>
                   </div>
-              </div>
-              
+              </div>          
           </div>
+
       </div>
   </div>
   
@@ -112,5 +112,53 @@
 </div>
 </div>
 </div>
+
+{% endblock %} 
+
+{% block script %}
+
+<script>
+    var ctx = document.getElementById('barChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels | tojson }},
+            datasets: [{
+                label: 'Count of Incidents',
+                backgroundColor: [
+                    'rgba(169, 18, 18, 0.7)', // Red
+                    'rgba(16, 10, 81, 0.7)', // Blue
+                    'rgba(40, 40, 40, 0.7)'   // Dark Gray
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)', // Red
+                    'rgba(54, 162, 235, 1)', // Blue
+                    'rgba(73, 73, 73, 1)'   // Dark Gray
+                ],
+                borderWidth: 1,
+                data: {{ values | tojson }}
+            }]
+        },
+        options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+            min: 0,
+            ticks: {
+                // forces step size to be 50 units
+                stepSize: 1
+            }
+            }
+        }
+        },
+    });
+</script>
+
 
 {% endblock %}

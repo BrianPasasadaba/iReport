@@ -472,7 +472,7 @@ th {
 
 .analytics-container {
   width: 70%;
-  height: 90%;
+  height: 120%;
   background-color: white;
   margin: 2vw auto;
   padding: 1vw;
@@ -724,7 +724,7 @@ th {
 }
 
 .other {
-  background-color: #000;
+  background-color: #282828;
 }
 
 .legend-text {
