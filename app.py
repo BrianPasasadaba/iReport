@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify, Response, send_file, make_response
+from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify, Response, send_file, make_response, send_from_directory
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
@@ -19,7 +19,9 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 import io
 import textwrap
-
+import base64
+import os
+import time
 
 
 app = Flask(__name__)
@@ -121,6 +123,7 @@ def submit_incident_form():
     longitude = request.form.get('longitude')
     victims = request.form.get('victims')
     details = request.form.get('details')
+    picture = request.form.get('picture')
     
     # Predict category
     predicted_category = predict_category(clf, vectorizer, details)
@@ -140,8 +143,8 @@ def submit_incident_form():
     
     # Insert data into MySQL database along with predicted category ID
     cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO reports (date_time, name, phone_number, location, latitude, longitude, estimate_victims, report_details, category_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (current_datetime, full_name, contact_number, location, latitude, longitude, victims, details, category_id))
+    cur.execute("INSERT INTO reports (date_time, name, phone_number, location, latitude, longitude, estimate_victims, report_details, pictures, category_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (current_datetime, full_name, contact_number, location, latitude, longitude, victims, details, picture, category_id))
     mysql.connection.commit()
     cur.close()
     # Prepare success message (optional)
@@ -176,6 +179,40 @@ def get_confusion_matrix():
 
     # Return PNG image as response
     return Response(cm_image, mimetype='image/png')
+
+@app.route('/save-image', methods=['POST'])
+def save_image():
+    try:
+        # Get base64 image data from request
+        image_data = request.json.get('image')
+
+        # Strip off the data:image/jpeg;base64 header to get the raw base64 data
+        base64_data = image_data.split(',')[1]
+
+        # Decode base64 data
+        image_binary = base64.b64decode(base64_data)
+
+        # Generate unique filename (you can use UUID or timestamp-based names)
+        filename = f'image_{int(time.time())}.jpeg'
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        # Save image to static/uploads directory
+        with open(filepath, 'wb') as f:
+            f.write(image_binary)
+
+        # Construct URL for the saved image
+        image_url = f'/uploads/{filename}'
+
+        # Return the URL of the saved image
+        return jsonify({'imageUrl': image_url}), 200
+
+    except Exception as e:
+        print(f"Error saving image: {e}")
+        return jsonify({'error': 'Failed to save image'}), 500
+    
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/faqs')
 def faqs():
@@ -356,4 +393,5 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == "__main__":
+    app.config['UPLOAD_FOLDER'] = 'static/uploads'
     app.run(debug=True)

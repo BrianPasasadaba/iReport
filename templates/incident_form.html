@@ -123,6 +123,9 @@
       </div>
     </div>
 
+    <!-- Hidden input field to store image URL -->
+    <input type="hidden" id="picture" name="picture" />
+
     <div class="form-group">
       <label for="details" class="red-label"
         >Further Details<span class="asterisk">*</span></label
@@ -308,7 +311,7 @@
     }
   });
 
-  // Capture button event listener
+  // Capture button click listener
   document.getElementById("capture-btn").addEventListener("click", function () {
     var video = document.getElementById("video");
     var canvas = document.createElement("canvas");
@@ -318,31 +321,50 @@
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     var imageDataURL = canvas.toDataURL("image/jpeg");
 
-    // Do something with the captured image (e.g., display it)
-    var existingImg = document.getElementById("captured-image");
-    if (existingImg) {
-      existingImg.parentNode.removeChild(existingImg); // Remove existing image if it exists
-    }
+    // Send captured image data to server for saving
+    fetch("/save-image", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image: imageDataURL }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Assuming server responds with the saved image URL
+        var imageURL = data.imageUrl;
 
-    var img = document.createElement("img");
-    img.id = "captured-image"; // Set an ID for the image element
-    img.src = imageDataURL;
-    img.style.width = "100%"; // Adjust the width of the image as needed
-    img.style.height = "auto"; // Maintain aspect ratio
-    img.style.display = "flex"; // Display the image as a block element
-    img.style.margin = "auto";
-    img.style.marginBottom = "15px"; // Add some margin below the image
-    var cameraIcon = document.getElementById("photoTaken");
-    cameraIcon.parentNode.insertBefore(img, cameraIcon);
+        // Set the imageURL to the hidden input field
+        document.getElementById("picture").value = imageURL;
 
-    // Stop the video stream
-    var tracks = video.srcObject.getTracks();
-    tracks.forEach((track) => track.stop());
-    video.srcObject = null;
+        // Display the captured image
+        var existingImg = document.getElementById("captured-image");
+        if (existingImg) {
+          existingImg.parentNode.removeChild(existingImg); // Remove existing image if it exists
+        }
+        var img = document.createElement("img");
+        img.id = "captured-image";
+        img.src = imageURL;
+        img.style.width = "100%";
+        img.style.height = "auto";
+        img.style.display = "flex";
+        img.style.margin = "auto";
+        img.style.marginBottom = "15px";
+        var cameraIcon = document.getElementById("photoTaken");
+        cameraIcon.parentNode.insertBefore(img, cameraIcon);
 
-    // Hide video element and capture button
-    video.style.display = "none";
-    this.style.display = "none";
+        // Stop the video stream
+        var tracks = video.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+        video.srcObject = null;
+
+        // Hide video element and capture button
+        video.style.display = "none";
+        this.style.display = "none";
+      })
+      .catch(error => {
+        console.error("Error saving image:", error);
+      });
   });
 
   // Clear captured image function
@@ -363,10 +385,10 @@
       // Check if form is valid
       if ($("#reportForm")[0].reportValidity()) {
         // Get form data
-        var formData = $("#reportForm").serialize(); // Use your form ID
+        var formData = $("#reportForm").serialize();
 
         $.ajax({
-          url: "/submit_incident_form", // Replace with your form submission URL
+          url: "/submit_incident_form",
           type: "POST",
           data: formData,
           success: function (response) {
