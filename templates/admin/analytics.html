@@ -83,25 +83,30 @@
       <div class="card-body">
           <div class="row">
               <div>
-                  <h3 class="card-title mb-5">INCIDENTS PER BARANGAY</h3>
+                  <h3 class="card-title mb-4">INCIDENTS PER BARANGAY</h3>
               </div>
           </div>
           <div class="row">
-              <div class="col-4">
-                  <div class="legend-container mr-3">
+              <div class="col-3">
+                  <div class="legend-container mb-3">
                       <span class="legend-circle medical"></span>
                       <span class="legend-text">Medical Emergency</span>
                   </div>
-                  <div class="legend-container mr-3">
+                  <div class="legend-container mb-3">
                       <span class="legend-circle vehicular"></span>
                       <span class="legend-text">Vehicular Accident</span>
                   </div>
-                  <div class="legend-container">
+                  <div class="legend-container mb-3">
                       <span class="legend-circle other"></span>
                       <span class="legend-text">Other Emergencies</span>
                   </div>
-              </div>          
+              </div> 
+              <div class="col-9">
+                <div id="map" style="height: 27vw;"></div>
+              </div>
           </div>
+
+          
 
       </div>
   </div>
@@ -158,6 +163,28 @@
         }
         },
     });
+</script>
+<script>
+    var map = L.map('map');
+
+    // Add the OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Coordinates passed from Flask app
+    var coordinates = {{ coordinates | tojson }};
+    
+    // Set initial map view (replace with your desired zoom level)
+    map.setView([14.247142, 121.136673], 12); // Adjust zoom level as needed
+
+
+    // Iterate through each coordinate and add a marker
+    coordinates.forEach(function(coord) {
+        var marker = L.marker([coord.lat, coord.lng]).addTo(map);
+    });
+
+
 </script>
 
 

@@ -208,9 +208,21 @@ def login():
 @login_required
 def analytics():
     cursor = mysql.connection.cursor()
+    
+     # Query to get the valid coordinates
+    coordinates_query = """
+        SELECT latitude, longitude
+        FROM reports
+        WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+          AND latitude != 0 AND longitude != 0
+    """
+    cursor.execute(coordinates_query)
+    coordinates_data = cursor.fetchall()
 
-    # Count occurrences for each category
-    query = """
+    coordinates = [{'lat': lat, 'lng': lng} for lat, lng in coordinates_data]
+
+    # Query to get the analytics data
+    analytics_query = """
         SELECT
             CASE category_id
                 WHEN 1 THEN 'Medical Emergency'
@@ -222,16 +234,16 @@ def analytics():
         FROM reports
         GROUP BY category_id
     """
-    cursor.execute(query)
-    data = cursor.fetchall()
+    cursor.execute(analytics_query)
+    analytics_data = cursor.fetchall()
 
-    # Extract labels and values from data
-    labels = [row[0] for row in data]
-    values = [int(row[1]) for row in data]
+    labels = [row[0] for row in analytics_data]
+    values = [int(row[1]) for row in analytics_data]
 
     cursor.close()
 
-    return render_template('admin/analytics.html', labels=labels, values=values)
+    return render_template('admin/analytics.html', coordinates=coordinates, labels=labels, values=values)
+
 
 @app.route('/announcement')
 def announcement():
