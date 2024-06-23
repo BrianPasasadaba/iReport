@@ -80,25 +80,30 @@
       <div class="card-body">
           <div class="row">
               <div>
-                  <h3 class="card-title mb-5">INCIDENTS PER BARANGAY</h3>
+                  <h3 class="card-title mb-4">INCIDENTS PER BARANGAY</h3>
               </div>
           </div>
           <div class="row">
-              <div class="col-4">
-                  <div class="legend-container mr-3">
+              <div class="col-3">
+                  <div class="legend-container mb-3">
                       <span class="legend-circle medical"></span>
                       <span class="legend-text">Medical Emergency</span>
                   </div>
-                  <div class="legend-container mr-3">
+                  <div class="legend-container mb-3">
                       <span class="legend-circle vehicular"></span>
                       <span class="legend-text">Vehicular Accident</span>
                   </div>
-                  <div class="legend-container">
+                  <div class="legend-container mb-3">
                       <span class="legend-circle other"></span>
                       <span class="legend-text">Other Emergencies</span>
                   </div>
-              </div>          
+              </div> 
+              <div class="col-9">
+                <div id="map" style="height: 27vw;"></div>
+              </div>
           </div>
+
+          
 
       </div>
   </div>
@@ -155,6 +160,72 @@
         }
         },
     });
+</script>
+<script>
+    var map = L.map('map');
+
+    // Add the OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Coordinates passed from Flask app
+    var coordinates = {{ coordinates | tojson }};
+    
+    // Set initial map view (replace with your desired zoom level)
+    map.setView([14.247142, 121.136673], 12); // Adjust zoom level as needed
+
+    // Define marker icons
+    var redIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    var blueIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    var blackIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+
+    // Iterate through each coordinate and add a marker with appropriate icon
+    coordinates.forEach(function(coord) {
+        var markerIcon;
+        switch (coord.category_id) {
+            case 1:
+                markerIcon = redIcon;
+                break;
+            case 2:
+                markerIcon = blueIcon;
+                break;
+            case 3:
+                markerIcon = blackIcon;
+                break;
+            default:
+                markerIcon = redIcon; // Default to red if category_id doesn't match
+                break;
+        }
+
+        var marker = L.marker([coord.lat, coord.lng], { icon: markerIcon }).addTo(map);
+    });
+
+
 </script>
 
 

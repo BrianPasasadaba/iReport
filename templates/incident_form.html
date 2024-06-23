@@ -361,7 +361,7 @@
       event.preventDefault(); // Prevent default form submission
 
       // Check if form is valid
-      if ($("#reportForm")[0].checkValidity()) {
+      if ($("#reportForm")[0].reportValidity()) {
         // Get form data
         var formData = $("#reportForm").serialize(); // Use your form ID
 
@@ -386,8 +386,8 @@
           },
         });
       } else {
-        // Optionally, display a message indicating form is not valid
-        alert("Please fill in all required fields before submitting the form.");
+        // Optionally, display a message indicating form is not valid. Uncomment the line below to display an alert message.
+        // alert("Please fill in all required fields before submitting the form."); 
       }
     });
   });
