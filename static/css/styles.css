@@ -3,6 +3,7 @@ body {
   margin: 0;
   padding: 0;
   font-weight: bold;
+  font-family: "Inter";
 }
 
 .container-fluid {
@@ -12,6 +13,7 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+  font-family: "Inter";
 }
 
 .header {
@@ -205,6 +207,7 @@ a:hover {
 
 .back-button {
   color: #a91212;
+  font-family: "Inter";
 }
 
 .form-control-sm-6 {
