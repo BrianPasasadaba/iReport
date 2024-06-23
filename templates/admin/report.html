@@ -64,8 +64,8 @@
                 <button type="button" class="btn icon-button details-btn" data-toggle="modal" data-target="#detailsModal"
                         data-report-id="{{ report[0] }}" data-date="{{ report[1] }}" data-phone="{{ report[2] }}"
                         data-name="{{ report[3] }}" data-location="{{ report[4] }}" data-victims="{{ report[7] }}"
-                        data-details="{{ report[8] }}" data-responder="{{ report[9] }}"data-status="{{ report[10] }}" 
-                        data-category="{{ report[11] }}">
+                        data-details="{{ report[8] }}" data-picture="{{ report[9] }}" data-responder="{{ report[10] }}"
+                        data-status="{{ report[11] }}" data-category="{{ report[12] }}">
                     <i class="far fa-file fa-lg"></i>
                 </button>
             </td>
@@ -196,47 +196,53 @@ document.addEventListener("DOMContentLoaded", function () {
   var currentReportId; // Variable to store the current reportId  
   
   var detailsButtons = document.querySelectorAll(".details-btn");
-    detailsButtons.forEach(function (button) {
-        button.addEventListener("click", function () {
-            var reportId = this.getAttribute("data-report-id");
-            var date = this.getAttribute("data-date");
-            var phone = this.getAttribute("data-phone");
-            var name = this.getAttribute("data-name");
-            var location = this.getAttribute("data-location");
-            var victims = this.getAttribute("data-victims");
-            var details = this.getAttribute("data-details");
-            var status = this.getAttribute("data-status");
-            var category = this.getAttribute("data-category");
-            var responder = this.getAttribute("data-responder");
+  detailsButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+          var reportId = this.getAttribute("data-report-id");
+          var date = this.getAttribute("data-date");
+          var phone = this.getAttribute("data-phone");
+          var name = this.getAttribute("data-name");
+          var location = this.getAttribute("data-location");
+          var victims = this.getAttribute("data-victims");
+          var details = this.getAttribute("data-details");
+          var status = this.getAttribute("data-status");
+          var category = this.getAttribute("data-category");
+          var responder = this.getAttribute("data-responder");
+          var picture = this.getAttribute("data-picture"); // Get picture URL
 
-            // Populate modal header and body with data
-            var modal = document.querySelector("#detailsModal");
-            var modalTitle = modal.querySelector(".modal-title");
-            var modalBody = modal.querySelector(".modal-body");
+          // Populate modal header and body with data
+          var modal = document.querySelector("#detailsModal");
+          var modalTitle = modal.querySelector(".modal-title");
+          var modalBody = modal.querySelector(".modal-body");
 
-            modalTitle.innerText = "Incident Report No. " + reportId;
+          modalTitle.innerText = "Incident Report No. " + reportId;
 
-            modalBody.innerHTML = `
-            <p class="mb-3"><span style="color: gray;">Category:</span> ${category}</p>
-            <p class="mb-3"><span style="color: gray;">Date and Time:</span> ${date}</p>
-            <p class="mb-3"><span style="color: gray;">Phone Number:</span> ${phone}</p>
-            <p class="mb-3"><span style="color: gray;">Reported by:</span> ${name}</p>
-            <p class="mb-3"><span style="color: gray;">Location:</span> ${location}</p>
-            <p class="mb-3"><span style="color: gray;">Estimated Number of Victims:</span> ${victims}</p>
-            <p class="mb-3"><span style="color: gray;">Further Details:</span> ${details}</p>
-            <p class="mb-3"><span style="color: gray;">Incident Details:</span> ${responder}</p>
-            `;
+          modalBody.innerHTML = `
+          <p class="mb-3"><span style="color: gray;">Category:</span> ${category}</p>
+          <p class="mb-3"><span style="color: gray;">Date and Time:</span> ${date}</p>
+          <p class="mb-3"><span style="color: gray;">Phone Number:</span> ${phone}</p>
+          <p class="mb-3"><span style="color: gray;">Reported by:</span> ${name}</p>
+          <p class="mb-3"><span style="color: gray;">Location:</span> ${location}</p>
+          <p class="mb-3"><span style="color: gray;">Estimated Number of Victims:</span> ${victims}</p>
+          <p class="mb-3"><span style="color: gray;">Further Details:</span> ${details}</p>
+          <p class="mb-3"><span style="color: gray;">Incident Details:</span> ${responder}</p>
+          ${picture !== 'None' && picture !== null ?  // Check for both null and "None"
+            `<p class="mb-3"><span style="color: gray;">Picture:</span><br><img src="${picture}" alt="Incident Picture" style="display: block; margin: 0 auto; max-width: 40%; height: auto;"></p>` :
+            '<p class="mb-3"><span style="color: gray;">Picture:</span> No picture available</p>'
+          }
 
-            // Set the title of the editDetailsModal
-            var editModalTitle = document.querySelector("#editDetailsModal .modal-title");
-            editModalTitle.innerText = "Edit Incident Report No. " + reportId;
-            // Add report ID to edit button data attribute
-            currentReportId = this.getAttribute("data-report-id");
+          `;
 
-            // Show the modal
-            $('#detailsModal').modal('show');
-        });
-    });
+          // Set the title of the editDetailsModal
+          var editModalTitle = document.querySelector("#editDetailsModal .modal-title");
+          editModalTitle.innerText = "Edit Incident Report No. " + reportId;
+          // Add report ID to edit button data attribute
+          currentReportId = this.getAttribute("data-report-id");
+
+          // Show the modal
+          $('#detailsModal').modal('show');
+      });
+  });
 
     // Event listener for edit button click
     var editButton = document.getElementById("editReport");
