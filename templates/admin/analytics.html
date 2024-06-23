@@ -178,10 +178,54 @@
     // Set initial map view (replace with your desired zoom level)
     map.setView([14.247142, 121.136673], 12); // Adjust zoom level as needed
 
+    // Define marker icons
+    var redIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
 
-    // Iterate through each coordinate and add a marker
+    var blueIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    var blackIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+
+    // Iterate through each coordinate and add a marker with appropriate icon
     coordinates.forEach(function(coord) {
-        var marker = L.marker([coord.lat, coord.lng]).addTo(map);
+        var markerIcon;
+        switch (coord.category_id) {
+            case 1:
+                markerIcon = redIcon;
+                break;
+            case 2:
+                markerIcon = blueIcon;
+                break;
+            case 3:
+                markerIcon = blackIcon;
+                break;
+            default:
+                markerIcon = redIcon; // Default to red if category_id doesn't match
+                break;
+        }
+
+        var marker = L.marker([coord.lat, coord.lng], { icon: markerIcon }).addTo(map);
     });
 
 

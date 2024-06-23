@@ -211,7 +211,7 @@ def analytics():
     
      # Query to get the valid coordinates
     coordinates_query = """
-        SELECT latitude, longitude
+        SELECT latitude, longitude, category_id
         FROM reports
         WHERE latitude IS NOT NULL AND longitude IS NOT NULL
           AND latitude != 0 AND longitude != 0
@@ -219,7 +219,7 @@ def analytics():
     cursor.execute(coordinates_query)
     coordinates_data = cursor.fetchall()
 
-    coordinates = [{'lat': lat, 'lng': lng} for lat, lng in coordinates_data]
+    coordinates = [{'lat': lat, 'lng': lng, 'category_id': category_id} for lat, lng, category_id in coordinates_data]
 
     # Query to get the analytics data
     analytics_query = """
