@@ -59,7 +59,11 @@
             <div class="analytic-year mt-3">
               <label for="year">YEAR</label>
             </div>
-            <select id="year" class="report-button form-select month-dropdown">
+            <select
+              id="year"
+              class="report-button form-select month-dropdown"
+              style="font-size: 1vw"
+            >
               <option selected>2024</option>
               <option value="2022">2022</option>
               <option value="2023">2023</option>
@@ -109,45 +113,45 @@
 {% endblock %} {% block script %}
 
 <script>
-  var ctx = document.getElementById('barChart').getContext('2d');
-  var chart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: {{ labels | tojson }},
-  datasets: [{
-      label: 'Count of Incidents',
-      backgroundColor: [
-          'rgba(169, 18, 18, 0.7)', // Red
-          'rgba(16, 10, 81, 0.7)', // Blue
-          'rgba(40, 40, 40, 0.7)'   // Dark Gray
-      ],
-      borderColor: [
-          'rgba(255, 99, 132, 1)', // Red
-          'rgba(54, 162, 235, 1)', // Blue
-          'rgba(73, 73, 73, 1)'   // Dark Gray
-      ],
-      borderWidth: 1,
-      data: {{ values | tojson }}
+    var ctx = document.getElementById('barChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels | tojson }},
+    datasets: [{
+        label: 'Count of Incidents',
+        backgroundColor: [
+            'rgba(169, 18, 18, 0.7)', // Red
+            'rgba(16, 10, 81, 0.7)', // Blue
+            'rgba(40, 40, 40, 0.7)'   // Dark Gray
+        ],
+        borderColor: [
+            'rgba(255, 99, 132, 1)', // Red
+            'rgba(54, 162, 235, 1)', // Blue
+            'rgba(73, 73, 73, 1)'   // Dark Gray
+        ],
+        borderWidth: 1,
+        data: {{ values | tojson }}
           }]
       },
-  options: {
-      plugins: {
-          legend: {
-              display: false
-          }
-      },
-      responsive: true,
-          maintainAspectRatio: false,
-              scales: {
-          y: {
-              min: 0,
-                  ticks: {
-                  // forces step size to be 50 units
-                  stepSize: 1
-              }
-          }
-      }
-  },
+    options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        responsive: true,
+            maintainAspectRatio: false,
+                scales: {
+            y: {
+                min: 0,
+                    ticks: {
+                    // forces step size to be 50 units
+                    stepSize: 1
+                }
+            }
+        }
+    },
   });
 </script>
 <script>
