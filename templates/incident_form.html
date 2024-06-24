@@ -2,7 +2,7 @@
 
 <div class="container mt-4">
   <a href="#" onclick="history.back();" class="back-button">
-    <i class="fas fa-chevron-left"> &nbsp; Back</i>
+    <i class="fas fa-chevron-left"></i> &nbsp;Back
   </a>
   <form id="reportForm" action="/submit_incident_form" method="POST">
     <div class="form-group">
@@ -329,8 +329,8 @@
       },
       body: JSON.stringify({ image: imageDataURL }),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         // Assuming server responds with the saved image URL
         var imageURL = data.imageUrl;
 
@@ -355,14 +355,14 @@
 
         // Stop the video stream
         var tracks = video.srcObject.getTracks();
-        tracks.forEach(track => track.stop());
+        tracks.forEach((track) => track.stop());
         video.srcObject = null;
 
         // Hide video element and capture button
         video.style.display = "none";
         this.style.display = "none";
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error saving image:", error);
       });
   });
@@ -409,7 +409,7 @@
         });
       } else {
         // Optionally, display a message indicating form is not valid. Uncomment the line below to display an alert message.
-        // alert("Please fill in all required fields before submitting the form."); 
+        // alert("Please fill in all required fields before submitting the form.");
       }
     });
   });
