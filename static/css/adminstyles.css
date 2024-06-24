@@ -110,12 +110,15 @@ a:hover {
 .sidebar a:hover {
   background-color: white;
   color: #100a51;
+  padding: 0.25vw;
+  border-radius: 0.5vw;
 }
 
 .sidebar a.active {
   background-color: white;
   color: #100a51;
-  padding: 0.25vw;
+  padding: 0.5vw;
+  border-radius: 0.5vw;
 }
 
 .sub-menu ul li {
