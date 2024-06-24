@@ -3,17 +3,23 @@
 {% block content%}
 
 <style>
-  td.wrap {
-    white-space: normal;
+  table#reportTable tbody tr td:nth-child(5) {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 20%;
+    overflow: hidden;
+    white-space: normal; /* Allow wrapping */ 
+  } 
+
+
+  table#reportTable tbody tr td:nth-child(7) {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 30%;
+    overflow: hidden;
+    white-space: normal; /* Allow wrapping */  
   }
 
-  .text-wrap{
-    white-space:normal;
-  }
-
-  table.dataTable tbody td {
-    word-break: break-word; word-break: break-all; white-space: normal;
-  }
 </style>
 
 <div class="main-content">
