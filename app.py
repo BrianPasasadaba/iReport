@@ -307,7 +307,7 @@ def report():
     cur = mysql.connection.cursor()
     cur.execute("""
     SELECT r.report_id, r.date_time, r.phone_number, r.name, r.location, r.latitude, r.longitude, 
-           r.estimate_victims, r.report_details, r.pictures, r.responder_report, s.report_status, c.categories
+           r.estimate_victims, r.report_details, r.pictures, r.responder_report, r.cluster, r.cluster_distance, s.report_status, c.categories
     FROM reports r 
     JOIN status s ON r.status_id = s.status_id
     JOIN category c ON r.category_id = c.category_id
