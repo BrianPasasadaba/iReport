@@ -22,6 +22,7 @@ import textwrap
 import base64
 import os
 import time
+from clustering_model import load_data_and_train_model, predict_cluster_and_distance
 
 
 app = Flask(__name__)
@@ -54,6 +55,7 @@ class User(UserMixin):
 # Load dataset
 data = pd.read_csv('CDRRMO-data.csv')
 
+# Start of Decision Tree model
 # Preprocess data
 X, y = preprocess_data(data)
 
@@ -68,6 +70,13 @@ accuracy_test = accuracy_score(y_test, y_pred_test)
 
 # Calculate confusion matrix on testing set
 conf_matrix_test = confusion_matrix(y_test, y_pred_test)
+
+# Start of KMeans clustering model
+# Extract report details from your loaded data (assuming 'Report Details' column)
+report_details = data['Report Details']
+
+# Train the models using the loaded report details
+clusterVectorizer, kmeans = load_data_and_train_model(report_details)
 
 # Callback to load user from session
 @login_manager.user_loader
@@ -127,6 +136,9 @@ def submit_incident_form():
     
     # Predict category
     predicted_category = predict_category(clf, vectorizer, details)
+
+    # Predict cluster and distance
+    predicted_cluster, distance_to_nearest_centroid = predict_cluster_and_distance(clusterVectorizer, kmeans, details)
     
     # Map predicted category to category ID
     category_id = category_id_map.get(predicted_category)
@@ -143,8 +155,9 @@ def submit_incident_form():
     
     # Insert data into MySQL database along with predicted category ID
     cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO reports (date_time, name, phone_number, location, latitude, longitude, estimate_victims, report_details, pictures, category_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (current_datetime, full_name, contact_number, location, latitude, longitude, victims, details, picture, category_id))
+    # Insert data with predicted cluster and distance
+    cur.execute("INSERT INTO reports (date_time, name, phone_number, location, latitude, longitude, estimate_victims, report_details, pictures, category_id, cluster, cluster_distance) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (current_datetime, full_name, contact_number, location, latitude, longitude, victims, details, picture, category_id, predicted_cluster, distance_to_nearest_centroid))
     mysql.connection.commit()
     cur.close()
     # Prepare success message (optional)
