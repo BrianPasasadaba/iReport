@@ -110,7 +110,8 @@ a:hover {
 .sidebar a:hover {
   background-color: white;
   color: #100a51;
-  padding: 0.25vw;
+  padding: 0.5vw;
+  padding-right: 5vw;
   border-radius: 0.5vw;
 }
 
@@ -118,6 +119,7 @@ a:hover {
   background-color: white;
   color: #100a51;
   padding: 0.5vw;
+  padding-right: 5vw;
   border-radius: 0.5vw;
 }
 
@@ -826,6 +828,14 @@ input[type="password"]::-ms-clear {
 
 .print-icon:hover {
   color: #a91212;
+}
+
+.form-icon {
+  color: #a91212;
+}
+
+.form-icon:hover {
+  color: #100a51;
 }
 @media only screen and (max-width: 1680px) and (max-height: 1050px) {
 }
