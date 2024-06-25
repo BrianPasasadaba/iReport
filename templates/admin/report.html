@@ -267,6 +267,28 @@ document.addEventListener("DOMContentLoaded", function () {
           // Add report ID to edit button data attribute
           currentReportId = this.getAttribute("data-report-id");
 
+          // Pre-fill the editDetailsModal form fields with the passed data
+          var editResponderReport = document.querySelector("#editDetailsModal #responder_report");
+          var editStatus = document.querySelector("#editDetailsModal #status");
+          editResponderReport.value = responder;
+          // Map status string to corresponding value
+          var statusValue;
+          switch(status.toLowerCase()) {
+              case 'pending':
+                  statusValue = 1;
+                  break;
+              case 'ongoing':
+                  statusValue = 2;
+                  break;
+              case 'resolved':
+                  statusValue = 3;
+                  break;
+              default:
+                  statusValue = 1; // Default to 'Pending' if status is not recognized
+          }
+
+          editStatus.value = statusValue;
+
           // Show the modal
           $('#detailsModal').modal('show');
       });
