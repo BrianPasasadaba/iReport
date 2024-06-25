@@ -289,6 +289,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
           editStatus.value = statusValue;
 
+          // Disable "Pending" option if current status is "Ongoing"
+          var pendingOption = editStatus.querySelector("option[value='1']");
+          if (statusValue === 2) {
+              pendingOption.disabled = true;
+          } else {
+              pendingOption.disabled = false;
+          }
+
+          // Disable the edit report button if status is "Resolved"
+          var editButton = document.getElementById("editReport");
+          if (statusValue === 3) {
+              editButton.disabled = true;
+          } else {
+              editButton.disabled = false;
+          }
+
           // Show the modal
           $('#detailsModal').modal('show');
       });
