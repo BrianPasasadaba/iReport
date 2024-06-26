@@ -2,6 +2,26 @@
 
 {% block content%}
 
+<style>
+  table#reportTable tbody tr td:nth-child(5) {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 20%;
+    overflow: hidden;
+    white-space: normal; /* Allow wrapping */ 
+  } 
+
+
+  table#reportTable tbody tr td:nth-child(7) {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 30%;
+    overflow: hidden;
+    white-space: normal; /* Allow wrapping */  
+  }
+
+</style>
+
 <div class="main-content">
   <div class="report-container col-10">
     <div class="incident-title">
@@ -14,12 +34,10 @@
         </button>
         <div class=" d-flex align-items-center">
             <select class="report-button form-select month-dropdown">
-              <option value="1"> MARCH 2024</option>
-              <option value="2"> APRIL 2024</option>
-              <option value="3"> MAY 2024</option>
-              <option value="4"> JUNE 2024</option>
-              <option value="5"> JULY 2024</option>
-              <option value="6"> AUGUST 2024</option>
+              <option value="1"> JUNE 2024</option>
+              <option value="2"> JULY 2024</option>
+              <option value="3"> AUGUST 2024</option>
+              <option value="4"> SEPTEMBER 2024</option> 
             </select>
         </div>
       </div>
@@ -59,13 +77,14 @@
             </td>
               <td class="text-center">{{ report[7] }}</td>
               <td class="text-center">{{ report[8] }}</td>
-              <td class="text-center">{{ report[10] }}</td>
+              <td class="text-center">{{ report[13] }}</td>
               <td class="text-center">
                 <button type="button" class="btn icon-button details-btn" data-toggle="modal" data-target="#detailsModal"
                         data-report-id="{{ report[0] }}" data-date="{{ report[1] }}" data-phone="{{ report[2] }}"
                         data-name="{{ report[3] }}" data-location="{{ report[4] }}" data-victims="{{ report[7] }}"
                         data-details="{{ report[8] }}" data-picture="{{ report[9] }}" data-responder="{{ report[10] }}"
-                        data-status="{{ report[11] }}" data-category="{{ report[12] }}">
+                        data-status="{{ report[13] }}" data-category="{{ report[14] }}" data-cluster="{{ report[11]}}" 
+                        data-distance="{{ report[12]}}">
                     <i class="far fa-file fa-lg"></i>
                 </button>
             </td>
@@ -209,6 +228,8 @@ document.addEventListener("DOMContentLoaded", function () {
           var category = this.getAttribute("data-category");
           var responder = this.getAttribute("data-responder");
           var picture = this.getAttribute("data-picture"); // Get picture URL
+          var cluster = this.getAttribute("data-cluster");
+          var distance = this.getAttribute("data-distance");
 
           // Populate modal header and body with data
           var modal = document.querySelector("#detailsModal");
@@ -217,7 +238,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
           modalTitle.innerText = "Incident Report No. " + reportId;
 
+          var warningMessage = " ";
+          // Display a warning message if the cluster distance is less than 0.75
+          if (distance < 0.75) {
+            warningMessage = `<p style="color: red; font-weight: bold; margin-bottom: 10px;">**Warning:** This report may be fraudulent or suspicious. Verify report details thoroughly.</p>`;
+          }
+
           modalBody.innerHTML = `
+          ${warningMessage}
           <p class="mb-3"><span style="color: gray;">Category:</span> ${category}</p>
           <p class="mb-3"><span style="color: gray;">Date and Time:</span> ${date}</p>
           <p class="mb-3"><span style="color: gray;">Phone Number:</span> ${phone}</p>
@@ -238,6 +266,44 @@ document.addEventListener("DOMContentLoaded", function () {
           editModalTitle.innerText = "Edit Incident Report No. " + reportId;
           // Add report ID to edit button data attribute
           currentReportId = this.getAttribute("data-report-id");
+
+          // Pre-fill the editDetailsModal form fields with the passed data
+          var editResponderReport = document.querySelector("#editDetailsModal #responder_report");
+          var editStatus = document.querySelector("#editDetailsModal #status");
+          editResponderReport.value = responder;
+          // Map status string to corresponding value
+          var statusValue;
+          switch(status.toLowerCase()) {
+              case 'pending':
+                  statusValue = 1;
+                  break;
+              case 'ongoing':
+                  statusValue = 2;
+                  break;
+              case 'resolved':
+                  statusValue = 3;
+                  break;
+              default:
+                  statusValue = 1; // Default to 'Pending' if status is not recognized
+          }
+
+          editStatus.value = statusValue;
+
+          // Disable "Pending" option if current status is "Ongoing"
+          var pendingOption = editStatus.querySelector("option[value='1']");
+          if (statusValue === 2) {
+              pendingOption.disabled = true;
+          } else {
+              pendingOption.disabled = false;
+          }
+
+          // Disable the edit report button if status is "Resolved"
+          var editButton = document.getElementById("editReport");
+          if (statusValue === 3) {
+              editButton.disabled = true;
+          } else {
+              editButton.disabled = false;
+          }
 
           // Show the modal
           $('#detailsModal').modal('show');
