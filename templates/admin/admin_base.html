@@ -1,96 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>iReport</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/adminstyles.css') }}" />
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <!-- Make sure you put this AFTER Leaflet's CSS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iReport</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/adminstyles.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <style></style>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  </head>
 
-
-     
-</head>
-
-<body>
-  <header class="header d-flex justify-content-between align-items-center py-3">
-    <div class="ml-4">
-      <a href="{{ url_for('report') }}">
-        <img src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}" alt="Left Logo" class="header-logo" />
-      </a>      
-    </div>
-    <div class="text-center">
-      <div>i-Report</div>
-      <div>CABUYAO CITY DISASTER RISK REDUCTION AND MANAGEMENT OFFICE</div>
-    </div>
-    <div class="mr-4"></div>
-  </header>
-
-{%  block navbar %}
-  <div class="container-fluid">
-    <div class="row">
-      <div class="sidebar-header">
-        <img src="{{ url_for('static', filename='image/user.png') }}" alt="Sidebar Image" />
-        <p>Operator Cruz</p>
+  <body>
+    <header
+      class="header d-flex justify-content-between align-items-center py-3"
+    >
+      <div class="ml-4">
+        <a href="{{ url_for('report') }}">
+          <img
+            src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}"
+            alt="Left Logo"
+            class="header-logo"
+          />
+        </a>
       </div>
-      <div class="sidebar">
-        <ul>
-          <li>
-            <a href="{{ url_for('report') }}"><i class="fa fa-list-alt"></i> REPORTS</a>
-          </li>
-
-          </li>
-          <li>
-            <a href="{{ url_for('analytics') }}"><i class="fas fa-chart-bar"></i> ANALYTICS</a>
-          </li>
-          <li>
-            <a href="{{ url_for('help') }}"><i class="fa fa-question-circle"></i> HELP</a>
-          </li>
-        </ul>
+      <div class="text-center">
+        <div>i-Report</div>
+        <div>CABUYAO CITY DISASTER RISK REDUCTION AND MANAGEMENT OFFICE</div>
       </div>
+      <div class="mr-4"></div>
+    </header>
 
-{% endblock %}
-
-{% block content %}
-{% endblock %}
-     
-
-  <footer class="footer">
+    {% block navbar %}
     <div class="container-fluid">
       <div class="row">
-        <div class="col-1">
-          {% block footer %}
-          <a href="{{ url_for('logout') }}">LOGOUT</a>
-          {% endblock %}
+        <div class="col-md-3">
+          <div class="sidebar d-flex flex-column justify-content-between">
+            <div class="sidebar-header text-center">
+              <img
+                src="{{ url_for('static', filename='image/user.png') }}"
+                alt="Sidebar Image"
+                class="img-fluid rounded-circle"
+              />
+              <p>Operator Cruz</p>
+            </div>
+            <div class="list-group mx-2">
+              <a
+                class="list-group-item list-group-item-action"
+                id="list-reports-list"
+                href="{{ url_for('report') }}"
+                role="tab"
+                aria-controls="list-reports"
+              >
+                <i class="fa fa-list-alt"></i> REPORTS
+              </a>
+              <a
+                class="list-group-item list-group-item-action"
+                id="list-analytics-list"
+                href="{{ url_for('analytics') }}"
+                role="tab"
+                aria-controls="list-analytics"
+              >
+                <i class="fas fa-chart-bar"></i> ANALYTICS
+              </a>
+              <a
+                class="list-group-item list-group-item-action"
+                id="list-help-list"
+                href="{{ url_for('help') }}"
+                role="tab"
+                aria-controls="list-help"
+              >
+                <i class="fa fa-question-circle"></i> HELP
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </footer>
+    {% endblock %} {% block content %} {% endblock %}
 
-  <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
-  <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
-  <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-  <script src="{{ url_for('static', filename='js/adminscripts.js') }}"></script>
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-1">
+            {% block footer %}
+            <a href="{{ url_for('logout') }}">LOGOUT</a>
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+    </footer>
 
-  {% block script %}
-  {% endblock %}
-  
+    <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+    <script src="{{ url_for('static', filename='js/adminscripts.js') }}"></script>
 
-</body>
-
+    {% block script %} {% endblock %}
+  </body>
 </html>
