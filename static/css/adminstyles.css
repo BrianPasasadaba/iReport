@@ -25,9 +25,7 @@ a:hover {
   padding: 2vh;
   font-size: 1.5vw;
   font-family: "Inter";
-
-  width: 100%;
-
+  z-index: 1000;
 }
 
 .header-logo {
@@ -67,6 +65,7 @@ a:hover {
   font-size: 1vw;
   height: 25vh;
   font-family: "Inter";
+  z-index: 300;
 }
 .sidebar-header img {
   padding: 2vh;
@@ -89,7 +88,34 @@ a:hover {
   border-right: 0.5vw solid #100a51;
   padding-top: 3vh;
   font-size: 1vw;
-  font-family: "Lato";
+  font-family: "Lato", sans-serif;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.sidebar .list-group {
+  position: relative; /* Ensure relative positioning within the sidebar */
+  width: 100%; /* Take full width of the sidebar */
+  max-width: calc(
+    15vw - 1vw
+  ); /* Adjust based on the sidebar width and padding */
+  overflow-x: hidden; /* Hide horizontal overflow */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  padding: 0.5rem; /* Adjust padding as needed */
+}
+
+.sidebar .list-group-item {
+  background-color: #100a51 !important;
+  color: white !important;
+  border-radius: 5px;
+  border: none;
+  position: relative;
+}
+
+.sidebar .list-group-item:hover,
+.sidebar .list-group-item.active {
+  background-color: white !important;
+  color: #100a51 !important;
 }
 
 .sidebar ul {
@@ -108,22 +134,6 @@ a:hover {
 .sidebar a {
   text-decoration: none;
   color: white;
-}
-
-.sidebar a:hover {
-  background-color: white;
-  color: #100a51;
-  padding: 0.5vw;
-  padding-right: 4vw;
-  border-radius: 0.5vw;
-}
-
-.sidebar a.active {
-  background-color: white;
-  color: #100a51;
-  padding: 0.5vw;
-  padding-right: 4vw;
-  border-radius: 0.5vw;
 }
 
 .sub-menu ul li {
