@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iReport</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-3 col-md-1">
+            <a href="{{ url_for('index') }}">
+              <img
+                src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}"
+                alt="Left Logo"
+                class="header_img"
+              />
+            </a>
+          </div>
+          <div class="col-9 col-md-10 text-left">
+            <div>i-Report</div>
+            <div>
+              CABUYAO CITY DISASTER RISK REDUCTION AND MANAGEMENT OFFICE
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {% block content %} {% endblock %}
+
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h5>CONTACT US</h5>
+            <p>
+              EMAIL:
+              <a href="mailto:cdrrmo.cabuyao@gmail.com"
+                >cdrrmo.cabuyao@gmail.com</a
+              >
+            </p>
+            <p>HOTLINE NUMBER: +49 5081 159</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    {% block modal %} {% endblock %}
+
+    <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    {% block script %} {% endblock%}
+  </body>
+</html>

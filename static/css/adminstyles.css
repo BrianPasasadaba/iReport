@@ -20,14 +20,16 @@ a:hover {
 
 .header {
   background-color: #a91212;
-  height: 20vh;
+  height: 15vh;
   color: #fff;
   padding: 2vh;
   font-size: 1.5vw;
+  font-family: "Inter";
+  z-index: 1000;
 }
 
 .header-logo {
-  height: 15vh;
+  height: 14vh;
 }
 
 .footer {
@@ -40,6 +42,7 @@ a:hover {
   width: 100%;
   z-index: 9999;
   font-size: 1vw;
+  font-family: "Inter";
 }
 
 .footer a {
@@ -57,10 +60,12 @@ a:hover {
   align-items: center;
   background-color: #100a51;
   border-right: 0.5vw solid #100a51;
-  top: 20vh;
+  top: 15vh;
   padding: 2vh;
   font-size: 1vw;
   height: 25vh;
+  font-family: "Inter";
+  z-index: 300;
 }
 .sidebar-header img {
   padding: 2vh;
@@ -83,6 +88,34 @@ a:hover {
   border-right: 0.5vw solid #100a51;
   padding-top: 3vh;
   font-size: 1vw;
+  font-family: "Lato", sans-serif;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.sidebar .list-group {
+  position: relative; /* Ensure relative positioning within the sidebar */
+  width: 100%; /* Take full width of the sidebar */
+  max-width: calc(
+    15vw - 1vw
+  ); /* Adjust based on the sidebar width and padding */
+  overflow-x: hidden; /* Hide horizontal overflow */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  padding: 0.5rem; /* Adjust padding as needed */
+}
+
+.sidebar .list-group-item {
+  background-color: #100a51 !important;
+  color: white !important;
+  border-radius: 5px;
+  border: none;
+  position: relative;
+}
+
+.sidebar .list-group-item:hover,
+.sidebar .list-group-item.active {
+  background-color: white !important;
+  color: #100a51 !important;
 }
 
 .sidebar ul {
@@ -101,17 +134,6 @@ a:hover {
 .sidebar a {
   text-decoration: none;
   color: white;
-}
-
-.sidebar a:hover {
-  background-color: white;
-  color: #100a51;
-}
-
-.sidebar a.active {
-  background-color: white;
-  color: #100a51;
-  padding: 0.25vw;
 }
 
 .sub-menu ul li {
@@ -149,6 +171,7 @@ a:hover {
   height: 6vh;
   font-size: 1vw;
   padding: 0.5vw;
+  font-family: "Inter";
 }
 
 .search-bar {
@@ -173,8 +196,8 @@ a:hover {
 .scrollable-container {
   position: relative;
   overflow: auto;
-  width: 170vh;
-  height: 60vh;
+  width: 60vw;
+  height: 65vh;
   align-items: center;
 }
 
@@ -191,12 +214,19 @@ td {
   padding: 1%;
   border-radius: 1%;
   margin-bottom: 0.5vh;
+  border-bottom: 1px solid #d9d9d9;
 }
 
 th {
   background-color: rgba(16, 10, 81, 0.15);
   color: #000;
   width: 10%;
+  border-top: 1px solid #656565;
+  font-family: "Inter";
+}
+
+td {
+  font-family: "Manrope";
 }
 
 .announcement-container {
@@ -297,7 +327,7 @@ th {
 }
 
 .btn.btn-tertiary {
-  color: #a91212;
+  color: #100a51;
   font-weight: bold;
   background-color: white;
 }
@@ -470,7 +500,7 @@ th {
 
 .analytics-container {
   width: 70%;
-  height: 90%;
+  height: 120%;
   background-color: white;
   margin: 2vw auto;
   padding: 1vw;
@@ -573,6 +603,7 @@ th {
 
 .login_img {
   max-width: 35vw;
+  min-width: 35vw;
   margin-bottom: 20px;
 }
 
@@ -580,10 +611,11 @@ th {
   background-color: #100a51;
   padding: 2vw;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 2vh;
   font-size: 1vw;
   color: white;
-  height: 50vh;
+  height: 55vh;
+  width: 30vw;
+  margin-top: 5vw;
 }
 
 .login-header {
@@ -596,6 +628,13 @@ th {
 
 .form-group {
   margin-bottom: 5vh;
+  width: 100%;
+}
+
+.form-control {
+  font-size: 1vw;
+  width: 100%;
+  height: 4vh;
 }
 
 .login-button {
@@ -604,12 +643,6 @@ th {
   height: 5vh;
   margin-bottom: 7vh;
   color: white;
-}
-
-.form-control {
-  font-size: 1.5vw;
-  width: 100%;
-  height: 5vh;
 }
 
 .filter {
@@ -719,7 +752,7 @@ th {
 }
 
 .other {
-  background-color: #000;
+  background-color: #282828;
 }
 
 .legend-text {
@@ -737,8 +770,86 @@ th {
   background-position: right center;
   background-repeat: no-repeat;
   padding-right: 2vw;
+  font-size: 0.5vw;
 }
 
+.btn.icon-button i {
+  font-size: 2vw;
+}
+
+/* Disable eye button in Microsoft Edge */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #000;
+}
+
+.flash-messages {
+  list-style: none; /* Remove default bullet points */
+  padding: 0;
+  margin: 0; /* Reset margins */
+}
+
+/* Style for flash messages */
+.flash-message {
+  background-color: #e07070;
+  color: #000; /* Black color for text */
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+.flash-message .close-btn {
+  float: right;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+  color: #000;
+}
+
+.card-text {
+  font-family: "Poppins";
+}
+
+.card-title {
+  font-family: "Poppins";
+  font-weight: bold;
+}
+
+.analytic-year {
+  font-family: "Poppins";
+  font-size: 1.2vw;
+  font-weight: bold;
+}
+
+.print-icon {
+  color: #d9d9d9;
+}
+
+.print-icon:hover {
+  color: #a91212;
+}
+
+.form-icon {
+  color: #a91212;
+}
+
+.form-icon:hover {
+  color: #100a51;
+}
 @media only screen and (max-width: 1680px) and (max-height: 1050px) {
 }
 

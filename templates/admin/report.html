@@ -1,364 +1,367 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'admin/admin_base.html' %}
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>iReport</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/adminstyles.css') }}" />
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700|Lato:wght@300;400;700|Poppins:wght@300;400;500;600;700|Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">  
-  <link href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <!-- Make sure you put this AFTER Leaflet's CSS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    
-</head>
+{% block content%}
 
-<body>
-  <header class="header d-flex justify-content-between align-items-center py-3">
-    <div class="ml-4">
-      <img src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}" alt="Left Logo" class="header-logo" />
+<style>
+  table#reportTable tbody tr td:nth-child(5) {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 20%;
+    overflow: hidden;
+    white-space: normal; /* Allow wrapping */ 
+  } 
+
+
+  table#reportTable tbody tr td:nth-child(7) {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 30%;
+    overflow: hidden;
+    white-space: normal; /* Allow wrapping */  
+  }
+
+</style>
+
+<div class="main-content">
+  <div class="report-container col-10">
+    <div class="incident-title">
+      <div class="card-body d-flex">
+        <div class="col-10">
+          <p class="card-text">ALL INCIDENT REPORTS</p>
+        </div>
+        <button type="button" class="btn icon-button"  onclick="printReportPDF()">
+          <i class="fas fa-print fa-lg print-icon"></i>
+        </button>
+        <div class=" d-flex align-items-center">
+            <select class="report-button form-select month-dropdown">
+              <option value="1"> JUNE 2024</option>
+              <option value="2"> JULY 2024</option>
+              <option value="3"> AUGUST 2024</option>
+              <option value="4"> SEPTEMBER 2024</option> 
+            </select>
+        </div>
+      </div>
     </div>
-    <div class="text-center">
-      <div>i-Report</div>
-      <div>CABUYAO CITY DISASTER RISK REDUCTION AND MANAGEMENT OFFICE</div>
-    </div>
-    <div class="mr-4"></div>
-  </header>
 
-  <div class="container-fluid">
     <div class="row">
-      <div class="sidebar-header">
-        <img src="{{ url_for('static', filename='image/user.png') }}" alt="Sidebar Image" />
-        <p>Operator Cruz</p>
-      </div>
-      <div class="sidebar">
-        <ul>
-          <li>
-            <a href="{{ url_for('report') }}"><i class="fa fa-list-alt"></i> Reports</a>
-          </li>
-
-          </li>
-          <li>
-            <a href="{{ url_for('analytics') }}"><i class="fas fa-chart-bar"></i> Analytics</a>
-          </li>
-          <li>
-            <a href="{{ url_for('help') }}"><i class="fa fa-question-circle"></i> Help</a>
-          </li>
-        </ul>
-      </div>
-
-
-
-      <div class="main-content">
-        <div class="report-container col-12">
-          <div class="incident-title">
-            <div class="card-body d-flex">
-              <div class="col-8">
-                <p class="card-text">ALL INCIDENT REPORTS</p>
-              </div>
-              <button type="button" class="btn icon-button" style="margin-left: 12rem;" onclick="printReportPDF()">
-                <i class="fas fa-print fa-lg"></i>
+      <table id="reportTable" style="width: 100%;">
+        <thead>
+          <tr>
+            <th class="text-center">Report ID</th>
+            <th class="text-center">Date and Time</th>
+            <th class="text-center">Phone Number</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Location</th>
+            <th class="text-center">Victims (Estimated)</th>
+            <th class="text-center">Further Details</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">View Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for report in reports %}
+          <tr>
+            <td class="text-center">{{ report[0] }}</td>
+            <td class="text-center">{{ report[1] }}</td>
+            <td class="text-center">{{ report[2] }}</td>
+            <td class="text-center">{{ report[3] }}</td>
+            <td class="text-center">
+              {% if report[5] !=0 and report[6] !=0 %}
+              <button type="button" class="btn icon-button show-map-btn" data-toggle="modal" data-lat="{{ report[5] }}"
+                data-lng="{{ report[6] }}">
+                <i class="fas fa-map-marked-alt fa-lg"></i>
               </button>
-              <div class=" d-flex align-items-center">
-                  <select class="report-button form-select month-dropdown">
-                    <option value="1"> MARCH 2024</option>
-                    <option value="2"> APRIL 2024</option>
-                    <option value="3"> MAY 2024</option>
-                    <option value="4"> JUNE 2024</option>
-                    <option value="5"> JULY 2024</option>
-                    <option value="6"> AUGUST 2024</option>
-                  </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <table id="reportTable" class="table table-striped" style="width: 100%;">
-              <thead>
-                <tr>
-                  <th class="text-center">Report ID</th>
-                  <th class="text-center">Date and Time</th>
-                  <th class="text-center">Phone Number</th>
-                  <th class="text-center">Name</th>
-                  <th class="text-center">Location</th>
-                  <th class="text-center">Victims (Estimated)</th>
-                  <th class="text-center">Further Details</th>
-                  <th class="text-center">Status</th>
-                  <th class="text-center">View Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for report in reports %}
-                <tr>
-                  <td class="text-center">{{ report[0] }}</td>
-                  <td class="text-center">{{ report[1] }}</td>
-                  <td class="text-center">{{ report[2] }}</td>
-                  <td class="text-center">{{ report[3] }}</td>
-                  <td class="text-center">
-                    {% if report[5] !=0 and report[6] !=0 %}
-                    <button type="button" class="btn show-map-btn" data-toggle="modal" data-lat="{{ report[5] }}"
-                      data-lng="{{ report[6] }}">
-                      <i class="fas fa-map-marked-alt fa-lg"></i>
-                    </button>
-                    {% else %}
-                      {{ report[4] }}
-                    {% endif %}
-                  </td>
-                    <td class="text-center">{{ report[7] }}</td>
-                    <td class="text-center">{{ report[8] }}</td>
-                    <td class="text-center">{{ report[10] }}</td>
-                    <td class="text-center">
-                      <button type="button" class="btn icon-button details-btn" data-toggle="modal" data-target="#detailsModal"
-                              data-report-id="{{ report[0] }}" data-date="{{ report[1] }}" data-phone="{{ report[2] }}"
-                              data-name="{{ report[3] }}" data-location="{{ report[4] }}" data-victims="{{ report[7] }}"
-                              data-details="{{ report[8] }}" data-responder="{{ report[9] }}"data-status="{{ report[10] }}" 
-                              data-category="{{ report[11] }}">
-                          <i class="far fa-file fa-lg"></i>
-                      </button>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
+              {% else %}
+                {{ report[4] }}
+              {% endif %}
+            </td>
+              <td class="text-center">{{ report[7] }}</td>
+              <td class="text-center">{{ report[8] }}</td>
+              <td class="text-center">{{ report[13] }}</td>
+              <td class="text-center">
+                <button type="button" class="btn icon-button details-btn" data-toggle="modal" data-target="#detailsModal"
+                        data-report-id="{{ report[0] }}" data-date="{{ report[1] }}" data-phone="{{ report[2] }}"
+                        data-name="{{ report[3] }}" data-location="{{ report[4] }}" data-victims="{{ report[7] }}"
+                        data-details="{{ report[8] }}" data-picture="{{ report[9] }}" data-responder="{{ report[10] }}"
+                        data-status="{{ report[13] }}" data-category="{{ report[14] }}" data-cluster="{{ report[11]}}" 
+                        data-distance="{{ report[12]}}">
+                    <i class="far fa-file fa-lg"></i>
+                </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-  </div>
-  <!-- Map Modal -->
-  <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-body" style="text-align: center;">
-          <div id="map"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Details Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModal"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header d-flex justify-content-center">
-              <h5 class="modal-title" id="detailsModalLabel">Report Details</h5>
-          </div>
-          <div class="modal-body" style="font-size: large; overflow-y: auto;">
-              <!-- Data will be populated here -->
-          </div>
-          <div class="modal-footer">
-            <!-- Close Button -->
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-            <!-- Edit Button -->
-            <button type="button" class="btn btn-primary" id="editReport" data-report-id="{{ reportId }}">Edit</button>   
-        </div>
-      </div>
-    </div>
-  </div>
-
-<!-- Edit Details Modal -->
-<div class="modal fade" id="editDetailsModal" tabindex="-1" role="dialog" aria-labelledby="editDetailsModal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header d-flex justify-content-center">
-              <h5 class="modal-title" id="detailsModalLabel">Report Details</h5>
-          </div>
-          <div class="modal-body" style="font-size: large; overflow-y: auto;">
-            <form id="editReportForm" action="/update_report" method="POST">
-              <div class="form-group">
-                <label for="responder_report" class="form-label">Incident Details:</label>
-                <textarea class="form-control" id="responder_report" name="responder_report" rows="2" maxlength="255"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="status">Status:</label>
-                <select class="form-control form-select" id="status" name="status" required style="height: 3vw;" >
-                <option value="1">Pending</option>
-                <option value="2">Ongoing</option>
-                <option value="3">Resolved</option>
-                </select>
-              </div>
-          </div>
-          <div class="modal-footer">
-            <!-- Close Button -->
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-            <!-- Edit Button -->
-            <button type="submit" class="btn btn-primary" id="saveReport">Save</button>   
-        </div>
-      </form>
-      </div>
   </div>
 </div>
 
-  <footer class="footer">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-1">
-          <a href="{{ url_for('logout') }}">LOGOUT</a>
-        </div>
-      </div>
+</div>
+</div>
+<!-- Map Modal -->
+<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+  <div class="modal-body" style="text-align: center;">
+    <div id="map"></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModal"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+    <div class="modal-header d-flex justify-content-center">
+        <h5 class="modal-title" id="detailsModalLabel">Report Details</h5>
     </div>
-  </footer>
+    <div class="modal-body" style="font-size: large; overflow-y: auto;">
+        <!-- Data will be populated here -->
+    </div>
+    <div class="modal-footer">
+      <!-- Close Button -->
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      <!-- Edit Button -->
+      <button type="button" class="btn btn-primary" id="editReport" data-report-id="{{ reportId }}">Edit</button>   
+  </div>
+</div>
+</div>
+</div>
 
-  <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
-  <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
-  <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-  <script src="{{ url_for('static', filename='js/adminscripts.js') }}"></script>
+<!-- Edit Details Modal -->
+<div class="modal fade" id="editDetailsModal" tabindex="-1" role="dialog" aria-labelledby="editDetailsModal" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+    <div class="modal-header d-flex justify-content-center">
+        <h5 class="modal-title" id="detailsModalLabel">Report Details</h5>
+    </div>
+    <div class="modal-body" style="font-size: large; overflow-y: auto;">
+      <form id="editReportForm" action="/update_report" method="POST">
+        <div class="form-group">
+          <label for="responder_report" class="form-label">Incident Details:</label>
+          <textarea class="form-control" id="responder_report" name="responder_report" rows="2" maxlength="255"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="status">Status:</label>
+          <select class="form-control form-select" id="status" name="status" required style="height: 3vw;" >
+          <option value="1">Pending</option>
+          <option value="2">Ongoing</option>
+          <option value="3">Resolved</option>
+          </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <!-- Close Button -->
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      <!-- Edit Button -->
+      <button type="submit" class="btn btn-primary" id="saveReport">Save</button>   
+  </div>
+</form>
+</div>
+</div>
+</div>
 
-  <script>
-    $(document).ready(function () {
-      $('#reportTable').DataTable({
-        //"searching": false, // Disable search bar
-        //"paging": false, // Disable pagination
-        "lengthChange": false, // Disable "entries per page" selection
-        // Add any other options you need
-      });
-    });
-  </script>
+{% endblock %} 
 
-  <script>
-    $(document).ready(function () {
-      $('.show-map-btn').click(function () {
-        $('#mapModal').modal('show');
-        var lat = $(this).data('lat');
-        var lng = $(this).data('lng');
-        $('#mapModal').on('shown.bs.modal', function () {
-          initializeMap(lat, lng);
-        });
-      });
-
-      function initializeMap(lat, lng) {
-        // Remove any existing map instance
-        $('#map').remove();
-
-        // Create a new map container
-        var mapContainer = $('<div id="map" style="width: 100%; height: 100%;"></div>');
-        $('.modal-body').append(mapContainer);
-
-        var map = L.map('map').setView([lat, lng], 17);
-
-        map.setMinZoom(14); // Adjust the maximum zoom level as needed
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        const marker = L.marker([lat, lng]).addTo(map);
-
-      }
-    });
-  </script>
-
+{% block script %}
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var currentReportId; // Variable to store the current reportId  
-    
-    var detailsButtons = document.querySelectorAll(".details-btn");
-      detailsButtons.forEach(function (button) {
-          button.addEventListener("click", function () {
-              var reportId = this.getAttribute("data-report-id");
-              var date = this.getAttribute("data-date");
-              var phone = this.getAttribute("data-phone");
-              var name = this.getAttribute("data-name");
-              var location = this.getAttribute("data-location");
-              var victims = this.getAttribute("data-victims");
-              var details = this.getAttribute("data-details");
-              var status = this.getAttribute("data-status");
-              var category = this.getAttribute("data-category");
-              var responder = this.getAttribute("data-responder");
-
-              // Populate modal header and body with data
-              var modal = document.querySelector("#detailsModal");
-              var modalTitle = modal.querySelector(".modal-title");
-              var modalBody = modal.querySelector(".modal-body");
-
-              modalTitle.innerText = "Incident Report No. " + reportId;
-
-              modalBody.innerHTML = `
-              <p class="mb-3"><span style="color: gray;">Category:</span> ${category}</p>
-              <p class="mb-3"><span style="color: gray;">Date and Time:</span> ${date}</p>
-              <p class="mb-3"><span style="color: gray;">Phone Number:</span> ${phone}</p>
-              <p class="mb-3"><span style="color: gray;">Reported by:</span> ${name}</p>
-              <p class="mb-3"><span style="color: gray;">Location:</span> ${location}</p>
-              <p class="mb-3"><span style="color: gray;">Estimated Number of Victims:</span> ${victims}</p>
-              <p class="mb-3"><span style="color: gray;">Further Details:</span> ${details}</p>
-              <p class="mb-3"><span style="color: gray;">Incident Details:</span> ${responder}</p>
-              `;
-
-              // Set the title of the editDetailsModal
-              var editModalTitle = document.querySelector("#editDetailsModal .modal-title");
-              editModalTitle.innerText = "Edit Incident Report No. " + reportId;
-              // Add report ID to edit button data attribute
-              currentReportId = this.getAttribute("data-report-id");
-
-              // Show the modal
-              $('#detailsModal').modal('show');
-          });
-      });
-
-      // Event listener for edit button click
-      var editButton = document.getElementById("editReport");
-      editButton.addEventListener("click", function () {
-          // Set the reportId attribute of the edit button
-          editButton.dataset.reportId = currentReportId;
-          // Show the editDetailsModal
-          $('#editDetailsModal').modal('show');
-      });
-
-      // Event listener for form submission
-document.getElementById("editReportForm").addEventListener("submit", function (event) {
-  // Prevent default form submission
-  event.preventDefault();
-
-  // Manually submit the form
-  var form = this;
-
-  // Retrieve the reportId from the stored variable
-  var reportId = currentReportId;
-
-  // Add the reportId to the form data
-  var formData = new FormData(form);
-  formData.append('reportId', reportId);
-
-  $.ajax({
-    url: form.action,
-    method: form.method,
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: function (response) {
-      // Reload the page after successful submission
-      location.reload();
-    },
-    error: function (xhr, status, error) {
-      // Handle error response
-      console.error("Error submitting form:", error);
-      console.log("Response:", xhr.responseText);
-      // Optionally display error message to user
-    }
-  });
-});
-
-
+  $(document).ready(function () {
+    $('#reportTable').DataTable({
+      //"searching": false, // Disable search bar
+      //"paging": false, // Disable pagination
+      "lengthChange": false, // Disable "entries per page" selection
+      // Add any other options you need
+    });
   });
 </script>
 
 <script>
-  function printReportPDF() {
-    window.location.href = "/report/print-pdf";  // Redirect to the new route
+  $(document).ready(function () {
+    $('.show-map-btn').click(function () {
+      $('#mapModal').modal('show');
+      var lat = $(this).data('lat');
+      var lng = $(this).data('lng');
+      $('#mapModal').on('shown.bs.modal', function () {
+        initializeMap(lat, lng);
+      });
+    });
+
+    function initializeMap(lat, lng) {
+      // Remove any existing map instance
+      $('#map').remove();
+
+      // Create a new map container
+      var mapContainer = $('<div id="map" style="width: 100%; height: 100%;"></div>');
+      $('.modal-body').append(mapContainer);
+
+      var map = L.map('map').setView([lat, lng], 17);
+
+      map.setMinZoom(14); // Adjust the maximum zoom level as needed
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      const marker = L.marker([lat, lng]).addTo(map);
+
+    }
+  });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var currentReportId; // Variable to store the current reportId  
+  
+  var detailsButtons = document.querySelectorAll(".details-btn");
+  detailsButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+          var reportId = this.getAttribute("data-report-id");
+          var date = this.getAttribute("data-date");
+          var phone = this.getAttribute("data-phone");
+          var name = this.getAttribute("data-name");
+          var location = this.getAttribute("data-location");
+          var victims = this.getAttribute("data-victims");
+          var details = this.getAttribute("data-details");
+          var status = this.getAttribute("data-status");
+          var category = this.getAttribute("data-category");
+          var responder = this.getAttribute("data-responder");
+          var picture = this.getAttribute("data-picture"); // Get picture URL
+          var cluster = this.getAttribute("data-cluster");
+          var distance = this.getAttribute("data-distance");
+
+          // Populate modal header and body with data
+          var modal = document.querySelector("#detailsModal");
+          var modalTitle = modal.querySelector(".modal-title");
+          var modalBody = modal.querySelector(".modal-body");
+
+          modalTitle.innerText = "Incident Report No. " + reportId;
+
+          var warningMessage = " ";
+          // Display a warning message if the cluster distance is less than 0.75
+          if (distance < 0.75) {
+            warningMessage = `<p style="color: red; font-weight: bold; margin-bottom: 10px;">**Warning:** This report may be fraudulent or suspicious. Verify report details thoroughly.</p>`;
+          }
+
+          modalBody.innerHTML = `
+          ${warningMessage}
+          <p class="mb-3"><span style="color: gray;">Category:</span> ${category}</p>
+          <p class="mb-3"><span style="color: gray;">Date and Time:</span> ${date}</p>
+          <p class="mb-3"><span style="color: gray;">Phone Number:</span> ${phone}</p>
+          <p class="mb-3"><span style="color: gray;">Reported by:</span> ${name}</p>
+          <p class="mb-3"><span style="color: gray;">Location:</span> ${location}</p>
+          <p class="mb-3"><span style="color: gray;">Estimated Number of Victims:</span> ${victims}</p>
+          <p class="mb-3"><span style="color: gray;">Further Details:</span> ${details}</p>
+          <p class="mb-3"><span style="color: gray;">Incident Details:</span> ${responder}</p>
+          ${picture !== 'None' && picture !== null ?  // Check for both null and "None"
+            `<p class="mb-3"><span style="color: gray;">Picture:</span><br><img src="${picture}" alt="Incident Picture" style="display: block; margin: 0 auto; max-width: 40%; height: auto;"></p>` :
+            '<p class="mb-3"><span style="color: gray;">Picture:</span> No picture available</p>'
+          }
+
+          `;
+
+          // Set the title of the editDetailsModal
+          var editModalTitle = document.querySelector("#editDetailsModal .modal-title");
+          editModalTitle.innerText = "Edit Incident Report No. " + reportId;
+          // Add report ID to edit button data attribute
+          currentReportId = this.getAttribute("data-report-id");
+
+          // Pre-fill the editDetailsModal form fields with the passed data
+          var editResponderReport = document.querySelector("#editDetailsModal #responder_report");
+          var editStatus = document.querySelector("#editDetailsModal #status");
+          editResponderReport.value = responder;
+          // Map status string to corresponding value
+          var statusValue;
+          switch(status.toLowerCase()) {
+              case 'pending':
+                  statusValue = 1;
+                  break;
+              case 'ongoing':
+                  statusValue = 2;
+                  break;
+              case 'resolved':
+                  statusValue = 3;
+                  break;
+              default:
+                  statusValue = 1; // Default to 'Pending' if status is not recognized
+          }
+
+          editStatus.value = statusValue;
+
+          // Disable "Pending" option if current status is "Ongoing"
+          var pendingOption = editStatus.querySelector("option[value='1']");
+          if (statusValue === 2) {
+              pendingOption.disabled = true;
+          } else {
+              pendingOption.disabled = false;
+          }
+
+          // Disable the edit report button if status is "Resolved"
+          var editButton = document.getElementById("editReport");
+          if (statusValue === 3) {
+              editButton.disabled = true;
+          } else {
+              editButton.disabled = false;
+          }
+
+          // Show the modal
+          $('#detailsModal').modal('show');
+      });
+  });
+
+    // Event listener for edit button click
+    var editButton = document.getElementById("editReport");
+    editButton.addEventListener("click", function () {
+        // Set the reportId attribute of the edit button
+        editButton.dataset.reportId = currentReportId;
+        // Show the editDetailsModal
+        $('#editDetailsModal').modal('show');
+    });
+
+    // Event listener for form submission
+document.getElementById("editReportForm").addEventListener("submit", function (event) {
+// Prevent default form submission
+event.preventDefault();
+
+// Manually submit the form
+var form = this;
+
+// Retrieve the reportId from the stored variable
+var reportId = currentReportId;
+
+// Add the reportId to the form data
+var formData = new FormData(form);
+formData.append('reportId', reportId);
+
+$.ajax({
+  url: form.action,
+  method: form.method,
+  data: formData,
+  processData: false,
+  contentType: false,
+  success: function (response) {
+    // Reload the page after successful submission
+    location.reload();
+  },
+  error: function (xhr, status, error) {
+    // Handle error response
+    console.error("Error submitting form:", error);
+    console.log("Response:", xhr.responseText);
+    // Optionally display error message to user
   }
-  </script>
+});
+});
 
 
-</body>
+});
+</script>
 
-</html>
+<script>
+function printReportPDF() {
+  window.location.href = "/report/print-pdf";  // Redirect to the new route
+}
+</script>
+
+
+{% endblock %}

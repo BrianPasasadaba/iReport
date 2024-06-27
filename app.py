@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify, Response, send_file, make_response
+from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify, Response, send_file, make_response, send_from_directory
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
@@ -19,7 +19,10 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 import io
 import textwrap
-
+import base64
+import os
+import time
+from clustering_model import load_data_and_train_model, predict_cluster_and_distance
 
 
 app = Flask(__name__)
@@ -52,6 +55,7 @@ class User(UserMixin):
 # Load dataset
 data = pd.read_csv('CDRRMO-data.csv')
 
+# Start of Decision Tree model
 # Preprocess data
 X, y = preprocess_data(data)
 
@@ -66,6 +70,13 @@ accuracy_test = accuracy_score(y_test, y_pred_test)
 
 # Calculate confusion matrix on testing set
 conf_matrix_test = confusion_matrix(y_test, y_pred_test)
+
+# Start of KMeans clustering model
+# Extract report details from your loaded data (assuming 'Report Details' column)
+report_details = data['Report Details']
+
+# Train the models using the loaded report details
+clusterVectorizer, kmeans = load_data_and_train_model(report_details)
 
 # Callback to load user from session
 @login_manager.user_loader
@@ -121,9 +132,13 @@ def submit_incident_form():
     longitude = request.form.get('longitude')
     victims = request.form.get('victims')
     details = request.form.get('details')
+    picture = request.form.get('picture')
     
     # Predict category
     predicted_category = predict_category(clf, vectorizer, details)
+
+    # Predict cluster and distance
+    predicted_cluster, distance_to_nearest_centroid = predict_cluster_and_distance(clusterVectorizer, kmeans, details)
     
     # Map predicted category to category ID
     category_id = category_id_map.get(predicted_category)
@@ -140,8 +155,9 @@ def submit_incident_form():
     
     # Insert data into MySQL database along with predicted category ID
     cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO reports (date_time, name, phone_number, location, latitude, longitude, estimate_victims, report_details, category_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (current_datetime, full_name, contact_number, location, latitude, longitude, victims, details, category_id))
+    # Insert data with predicted cluster and distance
+    cur.execute("INSERT INTO reports (date_time, name, phone_number, location, latitude, longitude, estimate_victims, report_details, pictures, category_id, cluster, cluster_distance) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (current_datetime, full_name, contact_number, location, latitude, longitude, victims, details, picture, category_id, predicted_cluster, distance_to_nearest_centroid))
     mysql.connection.commit()
     cur.close()
     # Prepare success message (optional)
@@ -177,6 +193,40 @@ def get_confusion_matrix():
     # Return PNG image as response
     return Response(cm_image, mimetype='image/png')
 
+@app.route('/save-image', methods=['POST'])
+def save_image():
+    try:
+        # Get base64 image data from request
+        image_data = request.json.get('image')
+
+        # Strip off the data:image/jpeg;base64 header to get the raw base64 data
+        base64_data = image_data.split(',')[1]
+
+        # Decode base64 data
+        image_binary = base64.b64decode(base64_data)
+
+        # Generate unique filename (you can use UUID or timestamp-based names)
+        filename = f'image_{int(time.time())}.jpeg'
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        # Save image to static/uploads directory
+        with open(filepath, 'wb') as f:
+            f.write(image_binary)
+
+        # Construct URL for the saved image
+        image_url = f'/uploads/{filename}'
+
+        # Return the URL of the saved image
+        return jsonify({'imageUrl': image_url}), 200
+
+    except Exception as e:
+        print(f"Error saving image: {e}")
+        return jsonify({'error': 'Failed to save image'}), 500
+    
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 @app.route('/faqs')
 def faqs():
     return render_template('faqs.html')
@@ -207,23 +257,43 @@ def login():
 @app.route('/analytics')
 @login_required
 def analytics():
-    return render_template('admin/analytics.html')
+    cursor = mysql.connection.cursor()
+    
+     # Query to get the valid coordinates
+    coordinates_query = """
+        SELECT latitude, longitude, category_id
+        FROM reports
+        WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+          AND latitude != 0 AND longitude != 0
+    """
+    cursor.execute(coordinates_query)
+    coordinates_data = cursor.fetchall()
 
-@app.route('/announcement')
-def announcement():
-    return render_template('admin/announcement.html')
+    coordinates = [{'lat': lat, 'lng': lng, 'category_id': category_id} for lat, lng, category_id in coordinates_data]
 
-@app.route('/detail_report')
-def detail_report():
-    return render_template('admin/detail_report.html')
+    # Query to get the analytics data
+    analytics_query = """
+        SELECT
+            CASE category_id
+                WHEN 1 THEN 'Medical Emergency'
+                WHEN 2 THEN 'Vehicular Accident'
+                WHEN 3 THEN 'Other Emergency'
+                ELSE 'Unknown'
+            END AS category_name,
+            COUNT(*) AS count
+        FROM reports
+        GROUP BY category_id
+    """
+    cursor.execute(analytics_query)
+    analytics_data = cursor.fetchall()
 
-@app.route('/adminfaqs')
-def admin_faqs():
-    return render_template('admin/faqs.html')
+    labels = [row[0] for row in analytics_data]
+    values = [int(row[1]) for row in analytics_data]
 
-@app.route('/faqs_add')
-def faqs_add():
-    return render_template('admin/faqs_add.html')
+    cursor.close()
+
+    return render_template('admin/analytics.html', coordinates=coordinates, labels=labels, values=values)
+
 
 @app.route('/help')
 @login_required
@@ -237,7 +307,7 @@ def report():
     cur = mysql.connection.cursor()
     cur.execute("""
     SELECT r.report_id, r.date_time, r.phone_number, r.name, r.location, r.latitude, r.longitude, 
-           r.estimate_victims, r.report_details, r.responder_report, s.report_status, c.categories
+           r.estimate_victims, r.report_details, r.pictures, r.responder_report, r.cluster, r.cluster_distance, s.report_status, c.categories
     FROM reports r 
     JOIN status s ON r.status_id = s.status_id
     JOIN category c ON r.category_id = c.category_id
@@ -336,4 +406,5 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == "__main__":
+    app.config['UPLOAD_FOLDER'] = 'static/uploads'
     app.run(debug=True)
