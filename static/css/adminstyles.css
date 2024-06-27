@@ -25,6 +25,9 @@ a:hover {
   padding: 2vh;
   font-size: 1.5vw;
   font-family: "Inter";
+
+  width: 100%;
+
 }
 
 .header-logo {
