@@ -110,3 +110,5 @@ werkzeug==3.0.3
     #   -r requirements.in
     #   flask
     #   flask-login
+
+gunicorn
