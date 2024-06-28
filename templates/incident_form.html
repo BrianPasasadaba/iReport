@@ -284,32 +284,50 @@
 </script>
 
 <script>
-  document.getElementById("camera-icon").addEventListener("click", function () {
-    // Show video element and capture button
-    document.getElementById("video").style.display = "block";
-    document.getElementById("capture-btn").style.display = "block";
+ document.getElementById("camera-icon").addEventListener("click", function () {
+  // Show video element and capture button
+  document.getElementById("video").style.display = "block";
+  document.getElementById("capture-btn").style.display = "block";
 
-    // Check if getUserMedia is available
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      // Request access to the camera
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then(function (stream) {
-          // Display the stream in the video element
-          var video = document.getElementById("video");
-          video.srcObject = stream;
-          video.autoplay = true;
-          video.onloadedmetadata = function (e) {
-            video.play(); // Start playing the video stream
-          };
-        })
-        .catch(function (error) {
-          console.error("Error accessing camera:", error);
-        });
-    } else {
-      console.error("getUserMedia is not supported");
-    }
-  });
+  // Check if getUserMedia is available
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    const videoConstraints = { video: { facingMode: "environment" } };
+
+    // Prefer rear facing camera
+    navigator.mediaDevices
+      .getUserMedia(videoConstraints)
+      .then(function (stream) {
+        // Display the stream in the video element
+        var video = document.getElementById("video");
+        video.srcObject = stream;
+        video.autoplay = true;
+        video.onloadedmetadata = function (e) {
+          video.play(); // Start playing the video stream
+        };
+      })
+      .catch(function (error) {
+        // If rear facing fails, use any available camera
+        console.warn("Error accessing rear camera:", error);
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then(function (stream) {
+            // Display the stream in the video element (fallback)
+            var video = document.getElementById("video");
+            video.srcObject = stream;
+            video.autoplay = true;
+            video.onloadedmetadata = function (e) {
+              video.play(); // Start playing the video stream
+            };
+          })
+          .catch(function (error) {
+            console.error("Error accessing any camera:", error);
+          });
+      });
+  } else {
+    console.error("getUserMedia is not supported");
+  }
+});
+
 
   // Capture button click listener
   document.getElementById("capture-btn").addEventListener("click", function () {
