@@ -45,12 +45,12 @@ mysql = MySQL(app)
 
 # Define User model
 class User(UserMixin):
-    def __init__(self, email, password):
-        self.email = email
+    def __init__(self, employee_id, password):
+        self.employee_id = employee_id
         self.password = password
 
     def get_id(self):
-        return self.email
+        return self.employee_id
 
 # Load dataset
 data = pd.read_csv('CDRRMO-data.csv')
@@ -80,14 +80,14 @@ clusterVectorizer, kmeans = load_data_and_train_model(report_details)
 
 # Callback to load user from session
 @login_manager.user_loader
-def load_user(email):
+def load_user(employee_id):
     cursor = mysql.connection.cursor()
-    query = "SELECT * FROM admins WHERE email = %s"
-    cursor.execute(query, (email,))
+    query = "SELECT * FROM admins WHERE employee_id = %s"
+    cursor.execute(query, (employee_id,))
     user_data = cursor.fetchone()
     cursor.close()
     if user_data:
-        return User(user_data[5], user_data[6])
+        return User(user_data[5], user_data[7])  # employee_id is at index 5 and password is at index 7
     else:
         return None
     
@@ -260,21 +260,21 @@ def faqs():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
+        email = request.form['employee_id']
         password = request.form['password']
 
         cursor = mysql.connection.cursor()
-        query = "SELECT * FROM admins WHERE email = %s"
+        query = "SELECT * FROM admins WHERE employee_id = %s"
         cursor.execute(query, (email,))
         user_data = cursor.fetchone()
         cursor.close()
 
-        if user_data and bcrypt.check_password_hash(user_data[6], password):
-            user = User(user_data[5], user_data[6])
+        if user_data and bcrypt.check_password_hash(user_data[7], password):
+            user = User(user_data[5], user_data[7])
             login_user(user)
             return redirect(url_for('report'))
         else:
-            flash('Invalid email or password.', 'danger')
+            flash('Invalid employee ID or password.', 'danger')
 
     return render_template('admin/login.html')
 

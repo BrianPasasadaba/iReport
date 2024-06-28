@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2024 at 08:32 AM
+-- Generation Time: Jun 28, 2024 at 01:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,6 +33,7 @@ CREATE TABLE `admins` (
   `first_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'First name of admin.',
   `middle_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'Middle name of admin.',
   `name_suffix` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'Name suffixes (e.g. Jr., Sr., and II).',
+  `employee_id` varchar(13) DEFAULT NULL,
   `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'E-mail of admin account.',
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Password of admin account.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -41,8 +42,8 @@ CREATE TABLE `admins` (
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `name_suffix`, `email`, `password`) VALUES
-(3, 'Admin', 'CDRRMO', NULL, NULL, 'admin@cdrrmo.com', '$2b$12$f.g/WgSBWFaiCqTM8CnlJ.neGyJKDpDrTc2VJ7E1csyicXXffVm7.');
+INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `name_suffix`, `employee_id`, `email`, `password`) VALUES
+(3, 'Admin', 'CDRRMO', NULL, NULL, 'CDRRMO-ADM-01', 'admin@cdrrmo.com', '$2b$12$f.g/WgSBWFaiCqTM8CnlJ.neGyJKDpDrTc2VJ7E1csyicXXffVm7.');
 
 -- --------------------------------------------------------
 
@@ -95,6 +96,7 @@ CREATE TABLE `reports` (
   `status_id` int(11) DEFAULT 1,
   `category_id` int(11) DEFAULT NULL,
   `responder_report` varchar(255) DEFAULT NULL,
+  `cluster` tinyint(1) DEFAULT NULL,
   `cluster_distance` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -102,12 +104,15 @@ CREATE TABLE `reports` (
 -- Dumping data for table `reports`
 --
 
-INSERT INTO `reports` (`report_id`, `date_time`, `name`, `phone_number`, `location`, `latitude`, `longitude`, `estimate_victims`, `report_details`, `pictures`, `status_id`, `category_id`, `responder_report`, `cluster_distance`) VALUES
-(3, '2024-05-10 00:26:01', 'Pasasadaba, Brian Cyber R.', '0949-593-1396', 'San Isidro Heights, Banlic, Cabuyao, Laguna', 14.23554500, 121.13740000, 3, 'Several family members fainted due to heatstroke, pls send help', NULL, 1, 1, NULL, NULL),
-(5, '2024-05-10 12:27:13', 'Pasasadaba Brian Cyber R', '0949-593-1396', 'San Isidro Heights, Banlic, Cabuyao, Laguna', 14.23554500, 121.13740000, 21, 'my mother slipped and fell on the floor, she is bleeding and unresponsive please send help', NULL, 1, 1, NULL, NULL),
-(6, '2024-05-10 12:32:44', 'Pasasadaba Brian Cyber R', '0949-593-1396', 'San Isidro Heights, Banlic, Cabuyao, Laguna', 14.23554500, 121.13740000, 3, 'there is a fire in the neighborhood, some people are still trapped send help immediately', NULL, 1, 3, NULL, NULL),
-(7, '2024-05-10 12:37:12', 'Juan Reyes', '0912-345-6789', 'San Isidro Heights, Banlic, Cabuyao, Laguna', 14.23564700, 121.13735200, 4, 'a car got into a collision with a motorbike here, send responders', NULL, 1, 1, NULL, NULL),
-(9, '2024-05-10 14:01:59', 'John R Doe', '0949-593-1396', 'San Isidro Heights, Banlic, Cabuyao, Laguna', 14.23554500, 121.13740000, 1, 'my brother is tripped and fell, his head is now bleeding profusely, we need an ambulance', NULL, 1, 1, NULL, NULL);
+INSERT INTO `reports` (`report_id`, `date_time`, `name`, `phone_number`, `location`, `latitude`, `longitude`, `estimate_victims`, `report_details`, `pictures`, `status_id`, `category_id`, `responder_report`, `cluster`, `cluster_distance`) VALUES
+(28, '2024-06-28 09:44:10', 'Brian', '09284562914', 'Blk20 Lot46 Ph2 San Isidro Heights, Banlic, Cabuyao', 0.00000000, 0.00000000, 1, 'May mga kotseng nagbanggaan dito, sugatan yung mga pasahero', '/uploads/image_1719538983.jpeg', 3, 1, '', 0, 0.997154),
+(29, '2024-06-28 14:48:53', 'Ae', '09993481154', 'CDRRMO', 14.27759450, 121.12403150, 3, 'thx sa libre po', '/uploads/image_1719557324.jpeg', 1, 3, NULL, 0, 0.156994),
+(30, '2024-06-28 14:55:34', 'Ax ', '09263838373', 'CDRRMO', 14.27746840, 121.12410090, 3, 'presentation naaaa', '/uploads/image_1719557727.jpeg', 1, 2, NULL, 0, 0.156994),
+(31, '2024-06-28 14:56:02', '', '09348739244', 'Cabuyao, Laguna', 14.27747030, 121.12412170, 3, 'May sunog po Dito tulong ', '/uploads/image_1719557743.jpeg', 1, 3, NULL, 0, 0.970598),
+(32, '2024-06-28 14:57:06', 'Leo', '09753125100', 'Sitio', 14.27747030, 121.12412170, 3, 'May nasusunog send ng medic', '/uploads/image_1719557813.jpeg', 1, 2, NULL, 1, 0.992105),
+(33, '2024-06-28 14:57:49', 'Axel', '09727272828', 'CDRRMO', 14.27746740, 121.12412640, 6, 'may nasagasaan dito, pasend ng medic', '/uploads/image_1719557848.jpeg', 1, 2, NULL, 0, 1.00262),
+(34, '2024-06-28 14:57:57', 'Joe Mama', '09753125140', 'Cabuyao City, laguna', 14.27747030, 121.12412170, 1, 'My head is bleeding there\'s no one here send ambulance please', '/uploads/image_1719557856.jpeg', 1, 1, NULL, 1, 0.946837),
+(35, '2024-06-28 15:41:52', 'Colin', '09171630653', 'Cabuyao City Hall', 0.00000000, 0.00000000, 1, 'A', '/uploads/image_1719560499.jpeg', 1, 2, NULL, 0, 0.156994);
 
 -- --------------------------------------------------------
 
@@ -186,7 +191,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `status`
