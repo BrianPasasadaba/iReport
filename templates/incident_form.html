@@ -116,11 +116,19 @@
           />
         </div>
       </div>
-      <div class="row justify-content-center mt-2 text-center">
+      <div class="row justify-content-center mt-2 text-center" id="photoLabel">
         <label for="photos"
           >Click the icon to take a photo<span class="asterisk">*</span></label
         >
       </div>
+      <button
+        id="retake-btn"
+        type="button"
+        class="btn btn-secondary"
+        style="display: none; margin: auto"
+      >
+        Retake Photo
+      </button>
     </div>
 
     <!-- Hidden input field to store image URL -->
@@ -284,50 +292,56 @@
 </script>
 
 <script>
- document.getElementById("camera-icon").addEventListener("click", function () {
-  // Show video element and capture button
-  document.getElementById("video").style.display = "block";
-  document.getElementById("capture-btn").style.display = "block";
+  // Define the previousImageUrl variable outside of functions
+  let previousImageUrl = null;
 
-  // Check if getUserMedia is available
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    const videoConstraints = { video: { facingMode: "environment" } };
+  document.getElementById("camera-icon").addEventListener("click", function () {
+    // Hide the photoTaken section and the label
+    document.getElementById("photoTaken").style.display = "none";
+    document.getElementById("photoLabel").style.display = "none";
 
-    // Prefer rear facing camera
-    navigator.mediaDevices
-      .getUserMedia(videoConstraints)
-      .then(function (stream) {
-        // Display the stream in the video element
-        var video = document.getElementById("video");
-        video.srcObject = stream;
-        video.autoplay = true;
-        video.onloadedmetadata = function (e) {
-          video.play(); // Start playing the video stream
-        };
-      })
-      .catch(function (error) {
-        // If rear facing fails, use any available camera
-        console.warn("Error accessing rear camera:", error);
-        navigator.mediaDevices
-          .getUserMedia({ video: true })
-          .then(function (stream) {
-            // Display the stream in the video element (fallback)
-            var video = document.getElementById("video");
-            video.srcObject = stream;
-            video.autoplay = true;
-            video.onloadedmetadata = function (e) {
-              video.play(); // Start playing the video stream
-            };
-          })
-          .catch(function (error) {
-            console.error("Error accessing any camera:", error);
-          });
-      });
-  } else {
-    console.error("getUserMedia is not supported");
-  }
-});
+    // Show video element and capture button
+    document.getElementById("video").style.display = "block";
+    document.getElementById("capture-btn").style.display = "block";
 
+    // Check if getUserMedia is available
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      const videoConstraints = { video: { facingMode: "environment" } };
+
+      // Prefer rear facing camera
+      navigator.mediaDevices
+        .getUserMedia(videoConstraints)
+        .then(function (stream) {
+          // Display the stream in the video element
+          var video = document.getElementById("video");
+          video.srcObject = stream;
+          video.autoplay = true;
+          video.onloadedmetadata = function (e) {
+            video.play(); // Start playing the video stream
+          };
+        })
+        .catch(function (error) {
+          // If rear facing fails, use any available camera
+          console.warn("Error accessing rear camera:", error);
+          navigator.mediaDevices
+            .getUserMedia({ video: true })
+            .then(function (stream) {
+              // Display the stream in the video element (fallback)
+              var video = document.getElementById("video");
+              video.srcObject = stream;
+              video.autoplay = true;
+              video.onloadedmetadata = function (e) {
+                video.play(); // Start playing the video stream
+              };
+            })
+            .catch(function (error) {
+              console.error("Error accessing any camera:", error);
+            });
+        });
+    } else {
+      console.error("getUserMedia is not supported");
+    }
+  });
 
   // Capture button click listener
   document.getElementById("capture-btn").addEventListener("click", function () {
@@ -338,6 +352,24 @@
     canvas.height = video.videoHeight;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     var imageDataURL = canvas.toDataURL("image/jpeg");
+
+    // Delete previous image if it exists
+    if (previousImageUrl) {
+      fetch("/delete-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ imageUrl: previousImageUrl }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Previous image deleted:", data);
+        })
+        .catch((error) => {
+          console.error("Error deleting previous image:", error);
+        });
+    }
 
     // Send captured image data to server for saving
     fetch("/save-image", {
@@ -354,6 +386,9 @@
 
         // Set the imageURL to the hidden input field
         document.getElementById("picture").value = imageURL;
+
+        // Save the new image URL as the previous image URL
+        previousImageUrl = imageURL;
 
         // Display the captured image
         var existingImg = document.getElementById("captured-image");
@@ -378,11 +413,44 @@
 
         // Hide video element and capture button
         video.style.display = "none";
-        this.style.display = "none";
+        document.getElementById("capture-btn").style.display = "none";
+        document.getElementById("retake-btn").style.display = "block";
       })
       .catch((error) => {
         console.error("Error saving image:", error);
       });
+  });
+
+  // Retake button click listener
+  document.getElementById("retake-btn").addEventListener("click", function () {
+    // Remove the captured image
+    clearCapturedImage();
+
+    // Show video element and capture button again
+    document.getElementById("video").style.display = "block";
+    document.getElementById("capture-btn").style.display = "block";
+    document.getElementById("retake-btn").style.display = "none";
+
+    // Restart the video stream
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      const videoConstraints = { video: { facingMode: "environment" } };
+
+      navigator.mediaDevices
+        .getUserMedia(videoConstraints)
+        .then(function (stream) {
+          var video = document.getElementById("video");
+          video.srcObject = stream;
+          video.autoplay = true;
+          video.onloadedmetadata = function (e) {
+            video.play(); // Start playing the video stream
+          };
+        })
+        .catch(function (error) {
+          console.error("Error accessing rear camera:", error);
+        });
+    } else {
+      console.error("getUserMedia is not supported");
+    }
   });
 
   // Clear captured image function

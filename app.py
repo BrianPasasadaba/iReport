@@ -223,6 +223,31 @@ def save_image():
         print(f"Error saving image: {e}")
         return jsonify({'error': 'Failed to save image'}), 500
     
+@app.route('/delete-image', methods=['POST'])
+def delete_image():
+    try:
+        # Get image URL from request
+        image_url = request.json.get('imageUrl')
+        
+        # Extract the filename from the URL
+        filename = os.path.basename(image_url)
+        
+        # Construct the file path
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        
+        # Check if the file exists
+        if os.path.exists(filepath):
+            # Delete the file
+            os.remove(filepath)
+            return jsonify({'message': 'Image deleted successfully'}), 200
+        else:
+            return jsonify({'error': 'Image not found'}), 404
+
+    except Exception as e:
+        print(f"Error deleting image: {e}")
+        return jsonify({'error': 'Failed to delete image'}), 500
+
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
