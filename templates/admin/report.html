@@ -167,6 +167,40 @@ aria-hidden="true">
 </div>
 </div>
 
+<!-- Start of Success Modal -->
+<div
+  id="viewSuccessModal"
+  class="modal fade"
+  tabindex="-1"
+  aria-labelledby="successModalLabel"
+  aria-hidden="true"
+  
+>
+  <div class="modal-dialog " style="margin: auto;">
+    <div class="modal-content" style="width: 500px; height: 300px; display: flex;    position: absolute;
+    top: 10px;
+    right: 100px;
+    bottom: 0;
+    left: 210px;
+    z-index: 10040;">
+      <!-- Modal Body -->
+      <div class="modal-body" style="text-align: center">
+        <i class="fa fa-check-circle fa-8x mb-3" style="color: #02ca2a;"></i>
+        <h5>Report has been updated.</h5>
+      </div>
+      <!-- Modal Footer -->
+      <div
+        class="modal-footer d-flex justify-content-center align-items-center"
+      >
+        <!-- Close Button -->
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          OKAY
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %} 
 
 {% block script %}
@@ -349,8 +383,11 @@ $.ajax({
   processData: false,
   contentType: false,
   success: function (response) {
-    // Reload the page after successful submission
-    location.reload();
+        // Hide the editDetailsModal
+        $('#detailsModal').modal('hide');
+        $('#editDetailsModal').modal('hide');
+        // Show the success modal
+        $('#viewSuccessModal').modal('show');
   },
   error: function (xhr, status, error) {
     // Handle error response
@@ -361,8 +398,14 @@ $.ajax({
 });
 });
 
+// Event listener for the OKAY button in the success modal
+$('#viewSuccessModal').on('hidden.bs.modal', function () {
+    location.reload();
+  });
+
 
 });
+
 </script>
 
 <script>
