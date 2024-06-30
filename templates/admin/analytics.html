@@ -16,17 +16,22 @@
             <h3 class="card-title mb-0">INCIDENTS FOR THE MONTH OF</h3>
           </div>
           <div class="col-4 d-flex justify-content-end align-middle">
-            <select
-              id="month-dropdown"
-              class="report-button form-select month-dropdown"
-            >
-              
-              <option value="1">June</option>
-              <option value="2">July</option>
-              <option value="3">August</option>
-              <option value="4">September</option>
-              
-            </select>
+            <select id="month-dropdown" class="report-button form-select month-dropdown">
+              <option value="">All Months</option>
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6" selected>June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+              <!-- Add other months as needed -->
+          </select>
           </div>
         </div>
 
@@ -53,17 +58,11 @@
             <div class="analytic-year mt-3">
               <label for="year">YEAR</label>
             </div>
-            <select
-              id="year"
-              class="report-button form-select month-dropdown"
-              style="font-size: 1vw"
-            >
-             
-           
-              <option value="2024">2024</option>
+            <select id="year-dropdown" class="report-button form-select month-dropdown" style="width: 6vw;">
+              <option value="2024" selected>2024</option>
               <option value="2025">2025</option>
-              <!-- Add more years if necessary -->
-            </select>
+              <!-- Add other years as needed -->
+          </select>
           </div>
         </div>
       </div>
@@ -148,6 +147,7 @@
     },
   });
 </script>
+
 <script>
   var map = L.map('map');
 

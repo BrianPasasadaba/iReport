@@ -26,19 +26,20 @@
   <div class="report-container col-10">
     <div class="incident-title">
       <div class="card-body d-flex">
-        <div class="col-10">
-          <p class="card-text">ALL INCIDENT REPORTS</p>
+        <div class="col-9">
+          <p class="card-text">INCIDENT REPORTS</p>
         </div>
         <button type="button" class="btn icon-button"  onclick="printReportPDF()">
           <i class="fas fa-print fa-lg print-icon"></i>
         </button>
-        <div class=" d-flex align-items-center">
-            <select class="report-button form-select month-dropdown">
-              <option value="1"> JUNE 2024</option>
-              <option value="2"> JULY 2024</option>
-              <option value="3"> AUGUST 2024</option>
-              <option value="4"> SEPTEMBER 2024</option> 
-            </select>
+        <div id="filterByStatusSection" class="input-group">
+          <label class="input-group-text" for="filterByStatus">Filter:</label>
+          <select name="filterByStatus" id="filterByStatus" class="form-select" style="font-size: .75rem; color: white;">
+              <option value="all">All Reports</option>    
+              <option value="1">Pending</option>
+              <option value="2">Ongoing</option>
+              <option value="3">Resolve</option>
+          </select>
         </div>
       </div>
     </div>
@@ -114,15 +115,18 @@
 aria-hidden="true">
 <div class="modal-dialog" role="document">
 <div class="modal-content">
-    <div class="modal-header d-flex justify-content-center">
+    <div class="modal-header d-flex justify-content-between">
         <h5 class="modal-title" id="detailsModalLabel">Report Details</h5>
+        <button type="button" class="btn-close btn-lg" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.2rem;">
+        </button>
     </div>
     <div class="modal-body" style="font-size: large; overflow-y: auto;">
         <!-- Data will be populated here -->
     </div>
     <div class="modal-footer">
       <!-- Close Button -->
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" id="deleteReport">Delete</button>
+      <button type="button" class="btn btn-primary" id="printReport">Print</button>
       <!-- Edit Button -->
       <button type="button" class="btn btn-primary" id="editReport" data-report-id="{{ reportId }}">Edit</button>   
   </div>
@@ -136,6 +140,8 @@ aria-hidden="true">
 <div class="modal-content">
     <div class="modal-header d-flex justify-content-center">
         <h5 class="modal-title" id="detailsModalLabel">Report Details</h5>
+        <button type="button" class="btn-close btn-lg" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.2rem;">
+        </button>
     </div>
     <div class="modal-body" style="font-size: large; overflow-y: auto;">
       <form id="editReportForm" action="/update_report" method="POST">
@@ -150,17 +156,49 @@ aria-hidden="true">
           <option value="2">Ongoing</option>
           <option value="3">Resolved</option>
           </select>
-        </div>
+        </div>  
     </div>
     <div class="modal-footer">
-      <!-- Close Button -->
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
       <!-- Edit Button -->
       <button type="submit" class="btn btn-primary" id="saveReport">Save</button>   
   </div>
 </form>
 </div>
 </div>
+</div>
+
+<!-- Start of Success Modal -->
+<div
+  id="viewSuccessModal"
+  class="modal fade"
+  tabindex="-1"
+  aria-labelledby="successModalLabel"
+  aria-hidden="true"
+  
+>
+  <div class="modal-dialog " style="margin: auto;">
+    <div class="modal-content" style="width: 500px; height: 300px; display: flex;    position: absolute;
+    top: 10px;
+    right: 100px;
+    bottom: 0;
+    left: 210px;
+    z-index: 10040;">
+      <!-- Modal Body -->
+      <div class="modal-body" style="text-align: center">
+        <i class="fa fa-check-circle fa-8x mb-3" style="color: #02ca2a;"></i>
+        <h5>Report has been updated.</h5>
+      </div>
+      <!-- Modal Footer -->
+      <div
+        class="modal-footer d-flex justify-content-center align-items-center"
+      >
+        <!-- Close Button -->
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          OKAY
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %} 
@@ -172,7 +210,7 @@ aria-hidden="true">
       //"searching": false, // Disable search bar
       //"paging": false, // Disable pagination
       "lengthChange": false, // Disable "entries per page" selection
-      // Add any other options you need
+      "order": [[ 0, "desc" ]] // Order by Report ID in descending order
     });
   });
 </script>
@@ -270,7 +308,11 @@ document.addEventListener("DOMContentLoaded", function () {
           // Pre-fill the editDetailsModal form fields with the passed data
           var editResponderReport = document.querySelector("#editDetailsModal #responder_report");
           var editStatus = document.querySelector("#editDetailsModal #status");
-          editResponderReport.value = responder;
+          if (responder !== 'None') {
+            editResponderReport.value = responder;
+          } else {
+            editResponderReport.value = ''; // or any other default value you prefer
+          }
           // Map status string to corresponding value
           var statusValue;
           switch(status.toLowerCase()) {
@@ -341,8 +383,11 @@ $.ajax({
   processData: false,
   contentType: false,
   success: function (response) {
-    // Reload the page after successful submission
-    location.reload();
+        // Hide the editDetailsModal
+        $('#detailsModal').modal('hide');
+        $('#editDetailsModal').modal('hide');
+        // Show the success modal
+        $('#viewSuccessModal').modal('show');
   },
   error: function (xhr, status, error) {
     // Handle error response
@@ -353,8 +398,14 @@ $.ajax({
 });
 });
 
+// Event listener for the OKAY button in the success modal
+$('#viewSuccessModal').on('hidden.bs.modal', function () {
+    location.reload();
+  });
+
 
 });
+
 </script>
 
 <script>
