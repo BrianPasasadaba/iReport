@@ -9,10 +9,10 @@ from DT_model import preprocess_data, train_decision_tree_model, predict_categor
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer, KeepTogether
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import landscape, A4, LEGAL
+from reportlab.lib.pagesizes import landscape, portrait, A4, LEGAL
 from reportlab.lib.units import inch
 from reportlab.lib.enums import TA_CENTER
 from reportlab.pdfbase.ttfonts import TTFont
@@ -419,6 +419,88 @@ def print_report_pdf():
 
     response = make_response(pdf_content)
     response.headers['Content-Disposition'] = 'attachment; filename=report.pdf'
+    response.headers['Content-type'] = 'application/pdf'
+    return response
+
+
+@app.route('/report/print-individual/<int:report_id>')
+def print_individual_report(report_id):
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT r.report_id, r.date_time, r.phone_number, r.name, r.location,
+               r.estimate_victims, r.report_details, r.responder_report, 
+               s.report_status, c.categories
+        FROM reports r
+        JOIN status s ON r.status_id = s.status_id
+        JOIN category c ON r.category_id = c.category_id
+        WHERE r.report_id = %s
+    """, (report_id,))
+    report = cur.fetchone()
+    cur.close()
+
+    if not report:
+        return "Report not found", 404
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=portrait(A4))
+
+    styles = getSampleStyleSheet()
+    style_normal = styles["Normal"]
+    style_title = styles["Title"]
+    style_normal.alignment = 1  # Center alignment
+    style_normal.fontSize = 16  # Set font size to 12
+
+    # Adding additional spacing
+    space_large = Spacer(1, 0.5*inch)
+    space_small = Spacer(1, 0.2*inch)
+
+    # Custom style for report details
+    custom_style = ParagraphStyle(
+        'Custom',
+        parent=style_normal,
+        fontSize=14,
+        leading=18,
+        spaceBefore=10,
+        spaceAfter=10,
+        alignment=0  # Left alignment
+    )
+
+    elements = [
+        Paragraph("Report Details", style=style_title),
+        Spacer(1, 0.5*inch),
+        KeepTogether([Paragraph(f"Report ID: {report[0]}", style=custom_style)]),
+        Spacer(1, 0.1*inch),
+        KeepTogether([Paragraph(f"Category: {report[9]}", style=custom_style)]),
+        Spacer(1, 0.1*inch),
+        KeepTogether([Paragraph(f"Report Status: {report[8]}", style=custom_style)]),
+        Spacer(1, 0.1*inch),
+        KeepTogether([Paragraph(f"Date and Time: {report[1]}", style=custom_style)]),
+        Spacer(1, 0.1*inch),
+        KeepTogether([Paragraph(f"Phone Number: {report[2]}", style=custom_style)]),
+        Spacer(1, 0.1*inch),
+        KeepTogether([Paragraph(f"Name: {report[3]}", style=custom_style)]),
+        Spacer(1, 0.1*inch),
+        KeepTogether([Paragraph(f"Location: {report[4]}", style=custom_style)]),
+        Spacer(1, 0.1*inch),
+        KeepTogether([Paragraph(f"Estimated Victims: {report[5]}", style=custom_style)]),
+        Spacer(1, 0.1*inch),
+        KeepTogether([Paragraph(f"Report Details: {report[6]}", style=custom_style)]),
+        Spacer(1, 0.1*inch),
+        
+    ]
+
+    if report[7]:  # Only add Responder Report if it is not null
+        elements.append(KeepTogether([Paragraph(f"Responder Report: {report[7]}", style=custom_style)]))
+        elements.append(Spacer(1, 0.2*inch))
+
+
+    doc.build(elements)
+
+    buffer.seek(0)
+    pdf_content = buffer.getvalue()
+
+    response = make_response(pdf_content)
+    response.headers['Content-Disposition'] = f'attachment; filename=report_{report_id}.pdf'
     response.headers['Content-type'] = 'application/pdf'
     return response
 
