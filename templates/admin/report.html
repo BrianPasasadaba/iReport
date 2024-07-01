@@ -352,6 +352,11 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 
+  // Print button event listener
+  document.getElementById("printReportButton").addEventListener("click", function () {
+        printIndividualReport(currentReportId);
+    });
+
     // Event listener for edit button click
     var editButton = document.getElementById("editReport");
     editButton.addEventListener("click", function () {
@@ -412,7 +417,39 @@ $('#viewSuccessModal').on('hidden.bs.modal', function () {
 function printReportPDF() {
   window.location.href = "/report/print-pdf";  // Redirect to the new route
 }
+function printIndividualReport(reportId) {
+    fetch(`/report/print-individual/${reportId}`)
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `report_${reportId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+// JavaScript for filtering
+document.getElementById('filterByStatus').addEventListener('change', function() {
+    let statusFilter = this.value;
+    let rows = document.getElementById('reportTable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+    for (let row of rows) {
+        let status = row.getAttribute('data-status');
+        if (statusFilter === 'all' || status === statusFilter) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    }
+});
 </script>
+
 
 
 {% endblock %}
