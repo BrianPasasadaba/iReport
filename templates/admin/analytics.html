@@ -106,11 +106,31 @@
 {% endblock %} {% block script %}
 
 <script>
+// Function to update chart based on selected month and year
+function updateChart(month, year) {
+    fetch(`/analytics/data?month=${month}&year=${year}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Assuming data is returned as { labels: [...], values: [...] }
+            chart.data.labels = data.labels;
+            chart.data.datasets[0].data = data.values;
+            chart.update();
+        })
+        .catch(error => {
+            console.error('Error updating chart:', error);
+        });
+}
+
     var ctx = document.getElementById('barChart').getContext('2d');
     var chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: {{ labels | tojson }},
+            labels: [],
     datasets: [{
         label: 'Count of Incidents',
         backgroundColor: [
@@ -124,7 +144,7 @@
             'rgba(73, 73, 73, 1)'   // Dark Gray
         ],
         borderWidth: 1,
-        data: {{ values | tojson }}
+        data: []
           }]
       },
     options: {
@@ -146,6 +166,28 @@
         }
     },
   });
+
+// Assuming you have month and year dropdowns with IDs 'month-dropdown' and 'year-dropdown'
+    const monthDropdown = document.getElementById('month-dropdown');
+    const yearDropdown = document.getElementById('year-dropdown');
+
+    // Add event listeners to dropdowns
+    monthDropdown.addEventListener('change', function() {
+        const selectedMonth = monthDropdown.value;
+        const selectedYear = yearDropdown.value;
+        updateChart(selectedMonth, selectedYear);
+    });
+
+    yearDropdown.addEventListener('change', function() {
+        const selectedMonth = monthDropdown.value;
+        const selectedYear = yearDropdown.value;
+        updateChart(selectedMonth, selectedYear);
+    });
+
+    // Initial call to update chart based on initial selected values
+    const initialMonth = monthDropdown.value;
+    const initialYear = yearDropdown.value;
+    updateChart(initialMonth, initialYear);
 </script>
 
 <script>

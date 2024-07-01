@@ -282,6 +282,7 @@ def login():
 @app.route('/analytics')
 @login_required
 def analytics():
+
     cursor = mysql.connection.cursor()
     
      # Query to get the valid coordinates
@@ -296,8 +297,29 @@ def analytics():
 
     coordinates = [{'lat': lat, 'lng': lng, 'category_id': category_id} for lat, lng, category_id in coordinates_data]
 
-    # Query to get the analytics data
-    analytics_query = """
+    cursor.close()
+
+    return render_template('admin/analytics.html', coordinates=coordinates)
+
+@app.route('/analytics/data', methods=['GET'])
+@login_required
+def analytics_data():
+    cursor = mysql.connection.cursor()
+
+    # Get query parameters
+    month = request.args.get('month', None)
+    year = request.args.get('year', None)
+
+    # Build the WHERE clause based on selected month and year
+    where_clause = ""
+    if month and year:
+        where_clause = f"WHERE MONTH(date_time) = {month} AND YEAR(date_time) = {year}"
+    elif month:
+        where_clause = f"WHERE MONTH(date_time) = {month}"
+    elif year:
+        where_clause = f"WHERE YEAR(date_time) = {year}"
+
+    analytics_query = f"""
         SELECT
             CASE category_id
                 WHEN 1 THEN 'Medical Emergency'
@@ -307,17 +329,21 @@ def analytics():
             END AS category_name,
             COUNT(*) AS count
         FROM reports
+        {where_clause}
         GROUP BY category_id
     """
+
     cursor.execute(analytics_query)
     analytics_data = cursor.fetchall()
 
-    labels = [row[0] for row in analytics_data]
-    values = [int(row[1]) for row in analytics_data]
+    # Fetch labels and values from the query result
+    labels = [row[0] for row in analytics_data] if analytics_data else []
+    values = [int(row[1]) for row in analytics_data] if analytics_data else []
 
     cursor.close()
 
-    return render_template('admin/analytics.html', coordinates=coordinates, labels=labels, values=values)
+    # Return JSON response
+    return jsonify({'labels': labels, 'values': values})
 
 
 @app.route('/help')
@@ -514,4 +540,4 @@ def logout():
 
 if __name__ == "__main__":
     app.config['UPLOAD_FOLDER'] = 'static/uploads'
-    app.run(debug=True)
+    app.run(debug=True, host='192.168.100.8')
