@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 28, 2024 at 01:35 PM
+-- Generation Time: Jul 02, 2024 at 01:51 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,17 +48,6 @@ INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `nam
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_report`
---
-
-CREATE TABLE `admin_report` (
-  `admin_id` int(11) NOT NULL,
-  `report_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `category`
 --
 
@@ -85,13 +74,13 @@ INSERT INTO `category` (`category_id`, `categories`) VALUES
 CREATE TABLE `reports` (
   `report_id` int(11) NOT NULL,
   `date_time` datetime NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `phone_number` varchar(13) NOT NULL,
-  `location` varchar(255) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `phone_number` varchar(11) NOT NULL,
+  `location` varchar(100) NOT NULL,
   `latitude` decimal(11,8) DEFAULT NULL,
   `longitude` decimal(11,8) DEFAULT NULL,
   `estimate_victims` int(11) NOT NULL,
-  `report_details` text NOT NULL,
+  `report_details` varchar(255) NOT NULL,
   `pictures` varchar(255) DEFAULT NULL,
   `status_id` int(11) DEFAULT 1,
   `category_id` int(11) DEFAULT NULL,
@@ -99,20 +88,6 @@ CREATE TABLE `reports` (
   `cluster` tinyint(1) DEFAULT NULL,
   `cluster_distance` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `reports`
---
-
-INSERT INTO `reports` (`report_id`, `date_time`, `name`, `phone_number`, `location`, `latitude`, `longitude`, `estimate_victims`, `report_details`, `pictures`, `status_id`, `category_id`, `responder_report`, `cluster`, `cluster_distance`) VALUES
-(28, '2024-06-28 09:44:10', 'Brian', '09284562914', 'Blk20 Lot46 Ph2 San Isidro Heights, Banlic, Cabuyao', 0.00000000, 0.00000000, 1, 'May mga kotseng nagbanggaan dito, sugatan yung mga pasahero', '/uploads/image_1719538983.jpeg', 3, 1, '', 0, 0.997154),
-(29, '2024-06-28 14:48:53', 'Ae', '09993481154', 'CDRRMO', 14.27759450, 121.12403150, 3, 'thx sa libre po', '/uploads/image_1719557324.jpeg', 1, 3, NULL, 0, 0.156994),
-(30, '2024-06-28 14:55:34', 'Ax ', '09263838373', 'CDRRMO', 14.27746840, 121.12410090, 3, 'presentation naaaa', '/uploads/image_1719557727.jpeg', 1, 2, NULL, 0, 0.156994),
-(31, '2024-06-28 14:56:02', '', '09348739244', 'Cabuyao, Laguna', 14.27747030, 121.12412170, 3, 'May sunog po Dito tulong ', '/uploads/image_1719557743.jpeg', 1, 3, NULL, 0, 0.970598),
-(32, '2024-06-28 14:57:06', 'Leo', '09753125100', 'Sitio', 14.27747030, 121.12412170, 3, 'May nasusunog send ng medic', '/uploads/image_1719557813.jpeg', 1, 2, NULL, 1, 0.992105),
-(33, '2024-06-28 14:57:49', 'Axel', '09727272828', 'CDRRMO', 14.27746740, 121.12412640, 6, 'may nasagasaan dito, pasend ng medic', '/uploads/image_1719557848.jpeg', 1, 2, NULL, 0, 1.00262),
-(34, '2024-06-28 14:57:57', 'Joe Mama', '09753125140', 'Cabuyao City, laguna', 14.27747030, 121.12412170, 1, 'My head is bleeding there\'s no one here send ambulance please', '/uploads/image_1719557856.jpeg', 1, 1, NULL, 1, 0.946837),
-(35, '2024-06-28 15:41:52', 'Colin', '09171630653', 'Cabuyao City Hall', 0.00000000, 0.00000000, 1, 'A', '/uploads/image_1719560499.jpeg', 1, 2, NULL, 0, 0.156994);
 
 -- --------------------------------------------------------
 
@@ -132,7 +107,8 @@ CREATE TABLE `status` (
 INSERT INTO `status` (`status_id`, `report_status`) VALUES
 (1, 'Pending'),
 (2, 'Ongoing'),
-(3, 'Resolved');
+(3, 'Resolved'),
+(4, 'Fraudulent');
 
 --
 -- Indexes for dumped tables
@@ -143,13 +119,6 @@ INSERT INTO `status` (`status_id`, `report_status`) VALUES
 --
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`admin_id`);
-
---
--- Indexes for table `admin_report`
---
-ALTER TABLE `admin_report`
-  ADD PRIMARY KEY (`admin_id`,`report_id`),
-  ADD KEY `report_id` (`report_id`);
 
 --
 -- Indexes for table `category`
@@ -191,24 +160,17 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `status`
 --
 ALTER TABLE `status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `admin_report`
---
-ALTER TABLE `admin_report`
-  ADD CONSTRAINT `admin_report_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`admin_id`),
-  ADD CONSTRAINT `admin_report_ibfk_2` FOREIGN KEY (`report_id`) REFERENCES `reports` (`report_id`);
 
 --
 -- Constraints for table `reports`
