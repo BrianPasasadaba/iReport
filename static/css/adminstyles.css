@@ -530,6 +530,38 @@ td {
   margin-left: 2vw;
 }
 
+.analytics-container-map {
+  width: 70%;
+  height: 100%;
+  background-color: white;
+  margin: 2vw auto;
+  padding: 1vw;
+  text-align: left;
+  font-size: 0.75vw;
+  border-radius: 1%;
+  color: #000;
+  border: 1px solid #656565;
+  position: relative;
+}
+
+.analytics-container-map h3 {
+  font-size: 2vw;
+  margin-left: 2vw;
+}
+
+.analytics-container-map select {
+  padding: 0.25vw;
+  font-size: 0.75vw;
+  border: 1px solid #ccc;
+  border-radius: none;
+  background-color: #a91212;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 2vw;
+  margin-left: 2vw;
+}
+
 .help-container-2 {
   width: 100%;
   height: 90%;
