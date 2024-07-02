@@ -12,74 +12,82 @@ content%}
   </div>
   {% endif %} {% endwith %}
 </div>
-
 <div class="container-fluid">
   <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6 d-flex justify-content-center">
-      <div class="d-flex justify-content-center">
+    <div class="col-lg-6 d-flex justify-content-end align-items-center">
+      <div class="text-center">
         <img
           src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}"
           alt="Left Logo"
           class="login_img"
         />
       </div>
-      <div class="col-lg-12 d-flex justify-content-center">
-        <form class="login-form" method="POST">
-          <h1 class="login-header">i-REPORT</h1>
-          <div class="form-group">
-            <label for="employee_id" class="mb-0">EMPLOYEE ID</label>
-            <input
-              type="text"
-              class="form-control"
-              id="employee_id"
-              name="employee_id"
-              required
-              maxlength="13"
-            />
-          </div>
-          <div class="form-group">
-            <label for="password" class="mb-0">PASSWORD</label>
-            <div class="password-container">
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                name="password"
-                maxlength="100"
-                required
-              />
-              <i id="togglePassword" class="toggle-password fas fa-eye"></i>
+    </div>
+    <div class="col-lg-6 d-flex justify-content-start align-items-center">
+      <div class="container">
+            <div class="card login" >
+              <div class="card-body">
+                <form method="POST">
+                  <h1 class="card-title text-center mb-4">i-REPORT</h1>
+                  <div class="form-group">
+                    <label for="employee_id" class="mb-0">EMPLOYEE ID</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="employee_id"
+                      name="employee_id"
+                      required
+                      maxlength="13"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="password" class="mb-0">PASSWORD</label>
+                    <div class="password-container">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        maxlength="100"
+                        required
+                      />
+                      <i id="togglePassword" class="toggle-password fas fa-eye"></i>
+                    </div>
+                  </div>
+                  <div class="row justify-content-center">
+                    <button
+                      type="submit"
+                      class="btn btn-tertiary login-button d-flex align-items-center justify-content-center"
+                    >
+                      <span class="align-middle">LOGIN</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-          <div class="row justify-content-center">
-            <button
-              type="submit"
-              class="btn btn-tertiary login-button d-flex align-items-center justify-content-center"
-            >
-              <span class="align-middle">LOGIN</span>
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
-    <div class="col-lg-3"></div>
+
+
+      {% endblock %} {% block footer %} {% endblock %} {% block script %}
+      <script>
+        // Get the eye button and the password input field
+        const togglePassword = document.getElementById("togglePassword");
+        const password = document.getElementById("password");
+
+        // Add click event listener to the eye button
+        togglePassword.addEventListener("click", function () {
+          // Toggle the type attribute of the password field between 'password' and 'text'
+          const type =
+            password.getAttribute("type") === "password" ? "text" : "password";
+          password.setAttribute("type", type);
+          // Change the eye icon based on the password field's visibility
+          togglePassword.classList.toggle("fa-eye-slash");
+        });
+      </script>
+      {% endblock %}
+    </div>
   </div>
 </div>
-{% endblock %} {% block footer %} {% endblock %} {% block script %}
-<script>
-  // Get the eye button and the password input field
-  const togglePassword = document.getElementById("togglePassword");
-  const password = document.getElementById("password");
-
-  // Add click event listener to the eye button
-  togglePassword.addEventListener("click", function () {
-    // Toggle the type attribute of the password field between 'password' and 'text'
-    const type =
-      password.getAttribute("type") === "password" ? "text" : "password";
-    password.setAttribute("type", type);
-    // Change the eye icon based on the password field's visibility
-    togglePassword.classList.toggle("fa-eye-slash");
-  });
-</script>
-{% endblock %}

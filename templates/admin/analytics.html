@@ -16,7 +16,10 @@
             <h3 class="card-title mb-0">INCIDENTS FOR THE MONTH OF</h3>
           </div>
           <div class="col-4 d-flex justify-content-end align-middle">
-            <select id="month-dropdown" class="report-button form-select month-dropdown">
+            <select
+              id="month-dropdown"
+              class="report-button form-select month-dropdown"
+            >
               <option value="">All Months</option>
               <option value="1">January</option>
               <option value="2">February</option>
@@ -31,7 +34,7 @@
               <option value="11">November</option>
               <option value="12">December</option>
               <!-- Add other months as needed -->
-          </select>
+            </select>
           </div>
         </div>
 
@@ -58,15 +61,19 @@
             <div class="analytic-year mt-3">
               <label for="year">YEAR</label>
             </div>
-            <select id="year-dropdown" class="report-button form-select month-dropdown" style="width: 6vw;">
+            <select
+              id="year-dropdown"
+              class="report-button form-select month-dropdown"
+              style="width: 6vw"
+            >
               <option value="2024" selected>2024</option>
               <option value="2025">2025</option>
               <!-- Add other years as needed -->
-          </select>
+            </select>
           </div>
         </div>
       </div>
-      <div style="height: 24vw">
+      <div style="height: 25rem">
         <canvas id="barChart"></canvas>
       </div>
     </div>
@@ -95,7 +102,7 @@
             </div>
           </div>
           <div class="col-9">
-            <div id="map" style="height: 27vw"></div>
+            <div id="map" style="height: 27rem"></div>
           </div>
         </div>
       </div>

@@ -20,29 +20,29 @@ a:hover {
 
 .header {
   background-color: #a91212;
-  height: 15vh;
+  height: 10rem;
   color: #fff;
-  padding: 2vh;
-  font-size: 1.5vw;
-  font-family: "Inter";
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
   z-index: 1000;
 }
 
 .header-logo {
-  height: 14vh;
+  height: 8rem;
 }
 
 .footer {
   background-color: #a91212;
   color: #fff;
-  padding: 2vh 0;
+  padding: 1rem 0;
   text-align: center;
   position: fixed;
   bottom: 0;
   width: 100%;
   z-index: 9999;
-  font-size: 1vw;
-  font-family: "Inter";
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
 }
 
 .footer a {
@@ -53,61 +53,61 @@ a:hover {
 .sidebar-header {
   position: fixed;
   text-align: center;
-  width: 15vw;
+  width: 15rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #100a51;
-  border-right: 0.5vw solid #100a51;
-  top: 15vh;
-  padding: 2vh;
-  font-size: 1vw;
-  height: 25vh;
-  font-family: "Inter";
+  border-right: 0.5rem solid #100a51;
+  top: 10rem;
+  padding: 1rem;
+  font-size: 1rem;
+  height: 10rem;
+  font-family: "Inter", sans-serif;
   z-index: 300;
 }
+
 .sidebar-header img {
-  padding: 2vh;
-  max-width: 12vh;
+  padding: 1rem;
+  max-width: 8rem;
   height: auto;
 }
 
 .sidebar-header p {
   color: white;
 }
+
 .sidebar {
   position: fixed;
-  top: 40vh;
+  top: 20rem;
   left: 0;
   bottom: 0;
-  width: 15vw;
+  width: 15rem;
   background-color: #100a51;
   display: flex;
   flex-direction: column;
-  border-right: 0.5vw solid #100a51;
-  padding-top: 3vh;
-  font-size: 1vw;
+  border-right: 0.5rem solid #100a51;
+  padding-top: 1rem;
+  font-size: 1rem;
   font-family: "Lato", sans-serif;
   overflow-y: auto;
   z-index: 1000;
 }
 
 .sidebar .list-group {
-  position: relative; /* Ensure relative positioning within the sidebar */
-  width: 100%; /* Take full width of the sidebar */
-  max-width: calc(
-    15vw - 1vw
-  ); /* Adjust based on the sidebar width and padding */
-  overflow-x: hidden; /* Hide horizontal overflow */
-  overflow-y: auto; /* Enable vertical scrolling if needed */
-  padding: 0.5rem; /* Adjust padding as needed */
+  position: relative;
+  width: 100%;
+  max-width: calc(15rem - 1rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0.5rem;
 }
 
 .sidebar .list-group-item {
   background-color: #100a51 !important;
   color: white !important;
-  border-radius: 5px;
+  border-radius: 0.3rem;
   border: none;
   position: relative;
 }
@@ -120,7 +120,7 @@ a:hover {
 
 .sidebar ul {
   list-style-type: none;
-  padding-left: 1vw;
+  padding-left: 1rem;
 }
 
 .sidebar li {
@@ -128,7 +128,7 @@ a:hover {
 }
 
 .sidebar ul li {
-  margin-bottom: 2vh;
+  margin-bottom: 1rem;
 }
 
 .sidebar a {
@@ -137,25 +137,24 @@ a:hover {
 }
 
 .sub-menu ul li {
-  margin-bottom: 1vh;
+  margin-bottom: 0.5rem;
 }
 
 .main-content {
   position: fixed;
-  left: 15vw;
-  top: 20vh;
+  left: 15rem;
+  top: 12rem;
 }
-
 .incident-title {
-  font-size: 2.5vw;
-  padding: 1vw;
+  font-size: 3rem;
+  padding: 0.625rem;
   color: #000;
 }
 
 .card-body {
   align-items: center;
   justify-content: space-between;
-  padding: 0 1vw;
+  padding: 0 0.625rem;
 }
 
 .report-button {
@@ -167,19 +166,19 @@ a:hover {
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  width: 8vw;
-  height: 6vh;
-  font-size: 1vw;
-  padding: 0.5vw;
+  width: 5rem;
+  height: 3rem;
+  font-size: 0.625rem;
+  padding: 0.3125rem;
   font-family: "Inter";
 }
 
 .search-bar {
   border: 1px solid #656565;
   width: 20%;
-  height: 5vh;
-  font-size: 0.5vw;
-  margin-left: 62vw;
+  height: 2.5rem;
+  font-size: 0.3125rem;
+  margin-left: 38.75rem;
 }
 
 .search-icon {
@@ -188,7 +187,7 @@ a:hover {
   top: 50%;
   transform: translateY(-50%);
   color: #656565;
-  font-size: 0.75vw;
+  font-size: 0.46875rem;
   border: none;
   background-color: transparent;
 }
@@ -196,8 +195,8 @@ a:hover {
 .scrollable-container {
   position: relative;
   overflow: auto;
-  width: 60vw;
-  height: 65vh;
+  width: 37.5rem;
+  height: 32.5rem;
   align-items: center;
 }
 
@@ -205,7 +204,7 @@ a:hover {
   width: 100%;
   border-collapse: collapse;
   background-color: white;
-  font-size: 1vw;
+  font-size: 0.625rem;
 }
 
 th,
@@ -213,7 +212,7 @@ td {
   text-align: center;
   padding: 1%;
   border-radius: 1%;
-  margin-bottom: 0.5vh;
+  margin-bottom: 0.25rem;
   border-bottom: 1px solid #d9d9d9;
 }
 
@@ -229,74 +228,8 @@ td {
   font-family: "Manrope";
 }
 
-.announcement-container {
-  width: 90%;
-  height: auto;
-  background-color: #a91212;
-  margin: 2vw auto;
-  padding: 2vw;
-  text-align: left;
-  font-size: 1vw;
-  border-radius: 1%;
-}
-
-.card.announcement-preview {
-  height: 20vh;
-}
-
-.announcement {
-  color: #a91212;
-}
-
 .no-border {
   border: none;
-}
-
-.date-announcement {
-  border: 1px solid #a91212;
-}
-
-.button-match-height {
-  height: 60%;
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
-  color: white;
-  background-color: #a91212;
-  font-size: 1.5vw;
-  margin-top: 2vh;
-  margin-bottom: 2vh;
-  border: #a91212;
-}
-
-.form-control.announcement {
-  border-radius: 5px;
-  background-color: #d9d9d9;
-  font-size: 1vw;
-}
-
-.faqs-container {
-  width: 90%;
-  height: 90%;
-  background-color: #a91212;
-  margin: 2vw auto;
-  padding: 2vw;
-  text-align: left;
-  font-size: 1vw;
-  border-radius: 1%;
-  color: white;
-}
-
-.faqs-button {
-  position: absolute;
-  right: 5vw;
-  bottom: 1.5vw;
-  display: flex;
-}
-
-.faqs-button a {
-  margin-left: 1vw;
-  font-size: 1vw;
-  padding: 0.5vw;
 }
 
 .btn.btn-primary {
@@ -304,7 +237,7 @@ td {
   color: white;
   font-weight: bold;
   border: none;
-  margin-left: 0.5vw;
+  margin-left: 0.5rem;
 }
 
 .btn.btn-primary:hover {
@@ -323,7 +256,7 @@ td {
 .btn.btn-secondary:hover {
   background-color: #656565;
   color: white;
-  margin-left: 0.5vw;
+  margin-left: 0.5rem;
 }
 
 .btn.btn-tertiary {
@@ -347,7 +280,7 @@ td {
 .btn.btn-fourth:hover {
   background-color: white;
   color: #656565;
-  margin-left: 0.5vw;
+  margin-left: 0.5rem;
   border: 1px solid #656565;
 }
 
@@ -360,7 +293,7 @@ td {
 .btn.btn-fifth:hover {
   background-color: #000;
   color: white;
-  margin-left: 0.5vw;
+  margin-left: 0.5rem;
 }
 
 .btn.btn-sixth {
@@ -372,38 +305,14 @@ td {
 .btn.btn-sixth:hover {
   background-color: #100a51;
   color: white;
-  margin-left: 0.5vw;
-}
-
-.checkbox {
-  height: 2.5vh;
-  width: 3vh;
-  border: 1px solid white;
-}
-
-.card.faqs-add {
-  height: 40vh;
-}
-
-.faqs-add-button {
-  position: absolute;
-  right: 3vw;
-  bottom: 1.5vw;
-  display: flex;
-}
-
-.faqs-add-button a {
-  margin-left: 1vw;
-  font-size: 1vw;
-  padding: 0.2vw;
-  border-radius: 0%;
+  margin-left: 0.5rem;
 }
 
 .add {
   background-color: white;
-  height: 15vhw;
-  width: 65vw;
-  font-size: 1vw;
+  height: 15rem;
+  width: 65rem;
+  font-size: 1rem;
   border: none;
 }
 
@@ -411,16 +320,8 @@ td {
   outline: none;
 }
 
-.edit {
-  background-color: white;
-  height: 20vh;
-  width: 50vw;
-  font-size: 1vw;
-  border: none;
-}
-
 .modal-title {
-  font-size: 2vw;
+  font-size: 2rem;
 }
 
 .modal-body p {
@@ -428,12 +329,12 @@ td {
 }
 
 .modal-content {
-  height: 70vh;
-  width: 60vw;
-  font-size: 0.75vw;
+  height: 40rem;
+  width: 65rem;
+  font-size: 0.9375rem;
   color: #000;
   position: fixed;
-  padding: 2vw;
+  padding: 2rem;
 }
 
 .modal-dialog {
@@ -447,31 +348,32 @@ td {
 
 .modal-footer {
   position: static;
-  right: 5vw;
-  bottom: 1.5vw;
+  right: 4rem;
+  bottom: 1.5rem;
   display: flex;
 }
 
 .modal-footer button {
-  padding: 1vw;
-  font-size: 0.75vw;
+  padding: 1rem;
+  font-size: 0.9375rem;
 }
 
 .modal-footer hr {
   display: none;
 }
+
 .report-container {
   overflow: auto;
-  width: 80vw;
-  height: 65vh;
+  width: 100rem;
+  height: 40rem;
   align-items: center;
   border: 1px solid gray;
   margin: 1vw;
-  font-size: 1vw;
+  font-size: 1rem;
 }
 
 .report-container h4 {
-  font-size: 1.5vw;
+  font-size: 1.5rem;
 }
 
 .report-container p,
@@ -481,7 +383,7 @@ td {
 
 .report-container select {
   padding: 0.25vw;
-  font-size: 0.75vw;
+  font-size: 0.9375rem;
   border-radius: none;
   background-color: #a91212;
   color: white;
@@ -490,7 +392,6 @@ td {
   caret-color: white;
 }
 
-/* Style the dropdown options */
 #status option:focus {
   background-color: white;
   color: #a91212;
@@ -500,12 +401,12 @@ td {
 
 .analytics-container {
   width: 70%;
-  height: 120%;
+  height: 90%;
   background-color: white;
   margin: 2vw auto;
   padding: 1vw;
   text-align: left;
-  font-size: 0.75vw;
+  font-size: 0.9375rem;
   border-radius: 1%;
   color: #000;
   border: 1px solid #656565;
@@ -513,34 +414,23 @@ td {
 }
 
 .analytics-container h3 {
-  font-size: 2vw;
+  font-size: 2rem;
   margin-left: 2vw;
 }
 
 .analytics-container select {
   padding: 0.25vw;
-  font-size: 0.75vw;
+  font-size: 0.9375rem;
   border: 1px solid #ccc;
-  border-radius: none;
   background-color: #a91212;
   color: white;
-  cursor: pointer;
   font-weight: bold;
+  width: 70%;
   margin-right: 2vw;
   margin-left: 2vw;
 }
 
-.help-container-2 {
-  width: 100%;
-  height: 90%;
-  background-color: white;
-  margin: 1vw auto;
-  padding: 1vw;
-  text-align: left;
-  font-size: 1vw;
-  color: #000;
-}
-
+.help-container-2,
 .help-container-3 {
   width: 100%;
   height: 90%;
@@ -548,27 +438,29 @@ td {
   margin: 1vw auto;
   padding: 1vw;
   text-align: left;
-  font-size: 1vw;
+  font-size: 1rem;
   color: #000;
 }
+
 .scrollable-container.help {
   position: relative;
   overflow: auto;
-  width: 170vh;
-  height: 70vh;
+  width: 170rem;
+  height: 70rem;
   align-items: center;
 }
+
 .accordion {
   background-color: transparent;
   color: #000;
   cursor: pointer;
-  padding: 1vw;
+  padding: 1rem;
   margin: 0;
   width: 100%;
   border: none;
   text-align: left;
   outline: none;
-  font-size: 1vw;
+  font-size: 1rem;
   position: relative;
   box-shadow: none;
   transition: background-color 0.5s ease;
@@ -577,12 +469,12 @@ td {
 .accordion-panel {
   background-color: white;
   color: #000;
-  padding: 0 1.5vw;
+  padding: 0 1.5rem;
   margin: 0;
   display: none;
   overflow: hidden;
   transition: opacity 0.5s ease 0.3s;
-  font-size: 1vw;
+  font-size: 1rem;
   border: 1px solid #656565;
   border-top: 1px solid white;
 }
@@ -602,57 +494,56 @@ td {
 }
 
 .login_img {
-  max-width: 35vw;
-  min-width: 35vw;
-  margin-bottom: 20px;
+  margin-top: 2rem;
+  max-width: 40rem;
+  min-width: 40rem;
+  margin-bottom: 5rem;
 }
 
-.login-form {
+.login {
   background-color: #100a51;
-  padding: 2vw;
+  padding: 2rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  font-size: 1vw;
+  font-size: 1rem;
   color: white;
-  height: 55vh;
-  width: 30vw;
-  margin-top: 5vw;
+  width: 30rem;
 }
 
 .login-header {
   text-align: center;
-  font-size: 2vw;
-  margin-bottom: 3vh;
+  font-size: 2rem;
+  margin-bottom: 3rem;
   color: white;
   font-weight: bold;
 }
 
 .form-group {
-  margin-bottom: 5vh;
+  margin-bottom: 3rem;
   width: 100%;
 }
 
 .form-control {
-  font-size: 1vw;
+  font-size: 1rem;
   width: 100%;
-  height: 4vh;
+  height: 3rem;
 }
 
 .login-button {
-  font-size: 1.25vw;
+  font-size: 1.25rem;
   width: 50%;
-  height: 5vh;
-  margin-bottom: 7vh;
+  height: 3rem;
+  margin-bottom: 7rem;
   color: white;
 }
 
 .filter {
-  font-size: 1vw;
+  font-size: 1rem;
   color: #000;
 }
 
 .filter select {
   padding: 0.25rem;
-  font-size: 0.75vw;
+  font-size: 0.9375rem;
   border: 1px solid #ccc;
   border-radius: none;
   background-color: rgba(16, 10, 81, 0.15);
@@ -664,28 +555,6 @@ td {
 .filter select option {
   background-color: white;
   color: #a91212;
-}
-.pagination {
-  position: static;
-  bottom: 1vh;
-  right: 0;
-  text-align: right;
-  margin-left: 75vw;
-}
-
-.pagination button {
-  padding: 0.75vw;
-  margin: 0 0.2vw;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  background-color: #656565;
-  color: white;
-  font-size: 0.5vw;
-}
-
-.pagination button.active {
-  background-color: #a91212;
-  color: white;
 }
 
 .page-1,
@@ -709,7 +578,7 @@ td {
 
 .report select {
   padding: 0.25vw;
-  font-size: 0.75vw;
+  font-size: 0.9375rem;
   border: 1px solid #ccc;
   border-radius: none;
   background-color: #a91212;
@@ -720,7 +589,7 @@ td {
 
 .analytics-container select {
   padding: 0.25vw;
-  font-size: 1.25vw;
+  font-size: 0.9375rem;
   border: 1px solid #ccc;
   background-color: #a91212;
   color: white;
@@ -731,15 +600,15 @@ td {
 .legend-container {
   display: flex;
   align-items: left;
-  margin-right: 0.25vw;
+  margin-right: 0.25rem;
 }
 
 .legend-circle {
   display: inline-block;
-  width: 1vw;
-  height: 2vh;
+  width: 1rem;
+  height: 1rem;
   border-radius: 50%;
-  margin-right: 0.5vw;
+  margin-right: 0.5rem;
   position: sticky;
 }
 
@@ -756,25 +625,41 @@ td {
 }
 
 .legend-text {
-  font-size: 1vw;
-  margin-right: 0.5vw;
+  font-size: 1rem;
+  margin-right: 0.5rem;
 }
 
 .chev-icon {
   color: #a91212;
 }
 
+.print-icon {
+  color: #d9d9d9;
+}
+
+.print-icon:hover {
+  color: #a91212;
+}
+
+.form-icon {
+  color: #a91212;
+}
+
+.form-icon:hover {
+  color: #100a51;
+}
+
 .month-dropdown {
   background-image: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M7 10l5 5 5-5z"></path></svg>');
-  background-size: 2vw;
+  background-size: 2rem;
   background-position: right center;
   background-repeat: no-repeat;
-  padding-right: 2vw;
-  font-size: 0.5vw;
+  padding-right: 2rem;
+  font-size: 0.625rem;
 }
 
 .btn.icon-button i {
-  font-size: 2vw;
+  font-size: 2rem;
 }
 
 /* Disable eye button in Microsoft Edge */
@@ -782,6 +667,7 @@ input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
   display: none;
 }
+
 .password-container {
   position: relative;
   width: 100%;
@@ -812,6 +698,7 @@ input[type="password"]::-ms-clear {
   border-radius: 5px;
   text-align: center;
 }
+
 .flash-message .close-btn {
   float: right;
   top: 5px;
@@ -831,7 +718,7 @@ input[type="password"]::-ms-clear {
 
 .analytic-year {
   font-family: "Poppins";
-  font-size: 1.2vw;
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
@@ -850,6 +737,11 @@ input[type="password"]::-ms-clear {
 .form-icon:hover {
   color: #100a51;
 }
+
+.container-last {
+  margin-bottom: 10vh;
+}
+
 @media only screen and (max-width: 1680px) and (max-height: 1050px) {
 }
 
