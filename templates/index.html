@@ -117,8 +117,31 @@
       </div>
     </div>
   </div>
+  <div class="row justify-content-center mt-4">
+    <div class="col-12 text-center terms-links">
+      By using this service, you understood and agree to i-Report
+      <a href="{{ url_for('term_of_use') }}">Terms of Use</a>
+      and
+      <a href="{{ url_for('privacy') }}">Privacy Policy</a>.
+    </div>
+  </div>
 </div>
 
 <div class="container-last"></div>
 
+{% endblock %} {% block footer%}
+<footer class="footer" style="position: fixed">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h5>CONTACT US</h5>
+        <p>
+          EMAIL:
+          <a href="mailto:cdrrmo.cabuyao@gmail.com">cdrrmo.cabuyao@gmail.com</a>
+        </p>
+        <p>HOTLINE NUMBER: +49 5081 159</p>
+      </div>
+    </div>
+  </div>
+</footer>
 {% endblock %}

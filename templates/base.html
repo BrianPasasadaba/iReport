@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>iReport</title>
-    <link rel="icon" href="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}" type="image/icon type">
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}"
+      type="image/icon type"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/bootstrap.css') }}"
@@ -19,6 +23,10 @@
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -46,8 +54,7 @@
       </div>
     </header>
 
-    {% block content %} {% endblock %}
-
+    {% block content %} {% endblock %} {% block footer%}
     <footer class="footer">
       <div class="container">
         <div class="row">
@@ -64,8 +71,7 @@
         </div>
       </div>
     </footer>
-
-    {% block modal %} {% endblock %}
+    {% endblock %} {% block modal %} {% endblock %}
 
     <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>

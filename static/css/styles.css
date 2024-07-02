@@ -2,7 +2,6 @@ body {
   background-color: white;
   margin: 0;
   padding: 0;
-  font-weight: bold;
   font-family: "Inter";
 }
 
@@ -32,7 +31,7 @@ a {
   color: #fff;
   padding: 1.5vh 0;
   text-align: center;
-  position: fixed;
+  position: relative;
   bottom: 0;
   width: 100%;
   z-index: 9999;
@@ -265,4 +264,32 @@ a:hover {
 .note {
   color: #656565;
   font-style: italic;
+}
+
+.terms-links {
+  font-weight: lighter;
+  font-size: small;
+}
+
+.terms-links a {
+  text-decoration: underline;
+}
+
+.terms-privacy .card {
+  border: none;
+  background-color: transparent;
+}
+.terms-privacy .card-header {
+  border-bottom: none;
+  background-color: transparent;
+  font-family: "Poppins" !important;
+  font-weight: bolder;
+  font-size: 2rem;
+}
+.terms-privacy .card-content {
+  padding: 20px;
+  padding-bottom: none;
+  background-color: transparent;
+  font-size: small;
+  margin-bottom: 2px;
 }

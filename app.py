@@ -256,6 +256,14 @@ def uploaded_file(filename):
 def faqs():
     return render_template('faqs.html')
 
+@app.route('/term_of_use')
+def term_of_use():
+    return render_template('term_of_use.html')
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html') 
+
 #Start of admin routes
 @app.route('/login', methods=['GET', 'POST'])
 def login():
