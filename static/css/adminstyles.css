@@ -255,15 +255,17 @@ td {
 }
 
 .btn.btn-secondary {
-  color: #656565;
+  color: white;
   font-weight: bold;
-  background-color: white;
+  background-color: #656565;
+  border: none;
 }
 
 .btn.btn-secondary:hover {
-  background-color: #656565;
-  color: white;
+  background-color: white;
+  color: #656565;
   margin-left: 0.5rem;
+  border: 1px solid #656565;
 }
 
 .btn.btn-tertiary {
