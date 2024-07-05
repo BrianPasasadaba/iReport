@@ -457,7 +457,7 @@ td {
 
 .analytics-container-map {
   width: 70%;
-  height: 100%;
+  height: 90%;
   background-color: white;
   margin: 2vw auto;
   padding: 1vw;
@@ -809,7 +809,7 @@ input[type="password"]::-ms-clear {
   }
 
   .analytics-container {
-    height: 120%;
+    height: 90%;
   }
 
   
