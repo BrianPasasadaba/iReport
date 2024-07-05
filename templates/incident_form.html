@@ -239,9 +239,9 @@
 </script>
 
 <script>
-  /// Function to validate contact number
+var contactNumberInput = document.getElementById("contact_number");
+/// Function to validate contact number
   function validateContactNumber() {
-    var contactNumberInput = document.getElementById("contact_number");
     var contactNumber = contactNumberInput.value;
     var contactNoValidationMessage = document.getElementById(
       "contactNoValidationMessage"
@@ -263,6 +263,11 @@
       contactNoValidationMessage.textContent = "";
     }
   }
+  // Add event listener to clear message on blur
+contactNumberInput.addEventListener("blur", function () {
+  contactNoValidationMessage.textContent = "";
+});
+  
 </script>
 
 <script>
@@ -544,35 +549,55 @@
 </script>
 
 <script>
-  // Function to check if all required fields are filled
-  function validateForm() {
-    const contactNumber = document.getElementById('contact_number').value.trim();
-    const location = document.getElementById('location').value.trim();
-    const victims = document.getElementById('victims').value.trim();
-    const picture = document.getElementById('picture').value.trim(); // Assuming picture is filled after taking a photo
-    const details = document.getElementById('details').value.trim();
+// Function to check if all required fields are filled
+function validateForm() {
+  const contactNumber = document.getElementById('contact_number').value.trim();
+  const location = document.getElementById('location').value.trim();
+  const victims = document.getElementById('victims').value.trim();
+  const picture = document.getElementById('picture').value.trim(); // Assuming picture is filled after taking a photo
+  const details = document.getElementById('details').value.trim();
 
-    // Check if all fields are not empty
-    return contactNumber !== '' && location !== '' && victims !== '' && picture !== '' && details !== '';
+  // Check if all fields are not empty
+  const allFieldsFilled = contactNumber !== '' && location !== '' && victims !== '' && picture !== '' && details !== '';
+
+  // Validate contact number if all fields are filled
+  if (allFieldsFilled) {
+    const contactNumberValid = validateContactNumberBeforeSubmit(contactNumber);
+    if (!contactNumberValid) {
+      // Call validateContactNumber if contact number is invalid
+      validateContactNumber(contactNumber);
+      return false; // Disable submit button
+    }
   }
 
-  // Function to toggle submit button
-  function toggleSubmitButton() {
-    document.getElementById('submitButton').disabled = !validateForm();
-  }
+  return allFieldsFilled && contactNumberValid; // Only enable submit if all valid
+}
 
-  // Disable submit button by default
-  document.getElementById('submitButton').disabled = true;
+// Function to validate contact number
+function validateContactNumberBeforeSubmit(contactNumber) {
+  // Regular expression to match 11 digits starting with 09
+  const regex = /^09\d{10}$/;
+  return regex.test(contactNumber);
+}
 
-  // Enable submit button on form input changes
-  const form = document.getElementById('reportForm');
-  const formElements = form.querySelectorAll('input, textarea');
-  formElements.forEach(element => {
-    element.addEventListener('input', toggleSubmitButton);
-  });
+// Function to toggle submit button
+function toggleSubmitButton() {
+  document.getElementById('submitButton').disabled = !validateForm();
+}
 
-  // Initial check in case fields are pre-filled
-  toggleSubmitButton();
+// Disable submit button by default
+document.getElementById('submitButton').disabled = true;
+
+// Enable submit button on form input changes
+const form = document.getElementById('reportForm');
+const formElements = form.querySelectorAll('input, textarea');
+formElements.forEach(element => {
+  element.addEventListener('input', toggleSubmitButton);
+});
+
+// Initial check in case fields are pre-filled
+toggleSubmitButton();
+
 </script>
 
 
