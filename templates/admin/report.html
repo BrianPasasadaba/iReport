@@ -461,10 +461,20 @@ function printIndividualReport(reportId) {
       // Initialize DataTable
       let table = $('#reportTable').DataTable();
   
+      // Retrieve saved filter value from sessionStorage (or localStorage for persistent across sessions)
+      let savedStatusFilter = sessionStorage.getItem('statusFilter');
+      if (savedStatusFilter) {
+          $('#filterByStatus').val(savedStatusFilter); // Set dropdown value
+          table.column(7).search(savedStatusFilter === 'all' ? '' : '^' + savedStatusFilter + '$', true, false).draw(); // Apply filter
+      }
+  
       // Event listener for the filter dropdown
       $('#filterByStatus').on('change', function() {
           let statusFilter = this.value;
           
+          // Save filter value to sessionStorage
+          sessionStorage.setItem('statusFilter', statusFilter);
+  
           // Use the search API to filter by the status
           table.column(7).search(statusFilter === 'all' ? '' : '^' + statusFilter + '$', true, false).draw();
       });
