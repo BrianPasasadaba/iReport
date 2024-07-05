@@ -327,6 +327,7 @@ td {
   outline: none;
 }
 
+
 .modal-title {
   font-size: 2rem;
 }
@@ -336,14 +337,31 @@ td {
 }
 
 .modal-content {
-  height: 40rem;
-  width: 65rem;
+  height: 30rem;
+  width: 40rem;
   font-size: 0.9375rem;
   color: #000;
-  position: fixed;
-  padding: 2rem;
+  top: 50%;
+  left:25%;
+  padding: 1rem;
+  padding-top: 0%;
+  background-color: white; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
+
+.success {
+  height: 20rem !important;
+  width: 30rem;
+  font-size: 0.9375rem;
+  color: #000;
+  top: 50%;
+  left:50%;
+  padding: 1rem;
+  padding-top: 0%;
+  background-color: white; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
 .modal-dialog {
   position: fixed;
   top: 20%;
@@ -371,7 +389,7 @@ td {
 
 .report-container {
   overflow: auto;
-  width: 100rem;
+  width: 75rem;
   height: 40rem;
   align-items: center;
   border: 1px solid gray;
