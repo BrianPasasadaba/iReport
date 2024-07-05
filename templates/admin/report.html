@@ -220,36 +220,35 @@ aria-hidden="true" data-bs-backdrop="static">
 </script>
 
 <script>
-  $(document).ready(function () {
-    $('.show-map-btn').click(function () {
-      $('#mapModal').modal('show');
-      var lat = $(this).data('lat');
-      var lng = $(this).data('lng');
-      $('#mapModal').on('shown.bs.modal', function () {
-        initializeMap(lat, lng);
-      });
-    });
+$(document).ready(function () {
+    $(document).on('click', '.show-map-btn', function () {
+      $('#mapModal').modal('show');
+      var lat = $(this).data('lat');
+      var lng = $(this).data('lng');
+      $('#mapModal').on('shown.bs.modal', function () {
+        initializeMap(lat, lng);
+      });
+    });
 
-    function initializeMap(lat, lng) {
-      // Remove any existing map instance
-      $('#map').remove();
+    function initializeMap(lat, lng) {
+      // Remove any existing map instance
+      $('#map').remove();
 
-      // Create a new map container
-      var mapContainer = $('<div id="map" style="width: 100%; height: 100%;"></div>');
-      $('.modal-body').append(mapContainer);
+      // Create a new map container
+      var mapContainer = $('<div id="map" style="width: 100%; height: 100%;"></div>');
+      $('.modal-body').append(mapContainer);
 
-      var map = L.map('map').setView([lat, lng], 17);
+      var map = L.map('map').setView([lat, lng], 17);
 
-      map.setMinZoom(14); // Adjust the maximum zoom level as needed
+      map.setMinZoom(14); // Adjust the maximum zoom level as needed
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
 
-      const marker = L.marker([lat, lng]).addTo(map);
-
-    }
-  });
+      const marker = L.marker([lat, lng]).addTo(map);
+    }
+});
 </script>
 
 <script>
@@ -328,6 +327,9 @@ document.addEventListener("DOMContentLoaded", function () {
                   break;
               case 'resolved':
                   statusValue = 3;
+                  break;
+              case 'fraudulent':
+                  statusValue = 4;
                   break;
               default:
                   statusValue = 1; // Default to 'Pending' if status is not recognized

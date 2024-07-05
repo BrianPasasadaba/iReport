@@ -208,6 +208,8 @@ function updateChart(month, year) {
   // Set initial map view (replace with your desired zoom level)
   map.setView([14.247142, 121.136673], 12); // Adjust zoom level as needed
 
+  map.setMinZoom(12); // Adjust the maximum zoom level as needed
+
   // Define marker icons
   var redIcon = new L.Icon({
       iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
