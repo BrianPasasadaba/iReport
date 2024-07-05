@@ -53,6 +53,7 @@ content%}
                       />
                       <i id="togglePassword" class="toggle-password fas fa-eye"></i>
                     </div>
+                    <small id="passwordMessage" class="form-text text-danger"></small>
                   </div>
                   <div class="row justify-content-center">
                     <button
@@ -88,10 +89,12 @@ content%}
         }
 
         function validatePassword() {
-            const value = passwordInput.value;
-            const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*_?&])[A-Za-z\d@$!%*_?&]{8,}$/.test(value);
-            console.log('Password:', isValid ? 'Valid' : 'Invalid');
-            return isValid;
+          const value = passwordInput.value;
+          const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*_?&])[A-Za-z\d@$!%*_?&]{8,}$/.test(value);
+          if (passwordInput === document.activeElement) { // Check if password field is in focus
+            passwordMessage.textContent = isValid ? '' : 'Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a symbol.';
+          }
+          return isValid;
         }
 
         function validateForm() {
@@ -107,6 +110,15 @@ content%}
 
         employeeIdInput.addEventListener('input', validateForm);
         passwordInput.addEventListener('input', validateForm);
+        passwordInput.addEventListener('focus', function() {
+          validatePassword(); // Show password message on focus
+        });
+        passwordInput.addEventListener('blur', function() {
+          // Clear message only if it's not empty (prevents unnecessary DOM manipulation)
+          if (passwordMessage.textContent) {
+            passwordMessage.textContent = '';
+          }
+        });
     });
 
       </script>
