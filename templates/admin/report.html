@@ -345,9 +345,9 @@ document.addEventListener("DOMContentLoaded", function () {
               pendingOption.disabled = false;
           }
 
-          // Disable the edit report button if status is "Resolved"
+          // Disable the edit report button if status is "Resolved" or "Fraudulent"
           var editButton = document.getElementById("editReport");
-          if (statusValue === 3) {
+          if (statusValue === 3 || statusValue === 4) {
               editButton.disabled = true;
           } else {
               editButton.disabled = false;
