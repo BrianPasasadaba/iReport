@@ -386,6 +386,8 @@
         // Set the imageURL to the hidden input field
         document.getElementById("picture").value = imageURL;
 
+        toggleSubmitButton(); // Enable submit button
+
         // Save the new image URL as the previous image URL
         previousImageUrl = imageURL;
 
@@ -481,6 +483,7 @@
               // Check for success message
               $("#viewSuccessModal").modal("show"); // Show modal on success
               $("#reportForm")[0].reset(); // Clear the form
+              localStorage.removeItem('formData');
               clearCapturedImage(); // Clear captured image
             } else {
               // Handle errors (optional)
@@ -496,6 +499,12 @@
         // Optionally, display a message indicating form is not valid. Uncomment the line below to display an alert message.
         // alert("Please fill in all required fields before submitting the form.");
       }
+    });
+
+    // Listen for the success modal's hidden event
+    $('#viewSuccessModal').on('hidden.bs.modal', function (e) {
+      // Reload the page
+      location.reload();
     });
   });
 </script>
@@ -533,5 +542,39 @@
     input.addEventListener("input", saveFormData);
   });
 </script>
+
+<script>
+  // Function to check if all required fields are filled
+  function validateForm() {
+    const contactNumber = document.getElementById('contact_number').value.trim();
+    const location = document.getElementById('location').value.trim();
+    const victims = document.getElementById('victims').value.trim();
+    const picture = document.getElementById('picture').value.trim(); // Assuming picture is filled after taking a photo
+    const details = document.getElementById('details').value.trim();
+
+    // Check if all fields are not empty
+    return contactNumber !== '' && location !== '' && victims !== '' && picture !== '' && details !== '';
+  }
+
+  // Function to toggle submit button
+  function toggleSubmitButton() {
+    document.getElementById('submitButton').disabled = !validateForm();
+  }
+
+  // Disable submit button by default
+  document.getElementById('submitButton').disabled = true;
+
+  // Enable submit button on form input changes
+  const form = document.getElementById('reportForm');
+  const formElements = form.querySelectorAll('input, textarea');
+  formElements.forEach(element => {
+    element.addEventListener('input', toggleSubmitButton);
+  });
+
+  // Initial check in case fields are pre-filled
+  toggleSubmitButton();
+</script>
+
+
 
 {% endblock %}

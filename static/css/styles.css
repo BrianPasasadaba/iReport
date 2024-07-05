@@ -261,6 +261,12 @@ a:hover {
   font-weight: 500;
 }
 
+.submit-button:disabled {
+  background-color: #656565;
+  color: white;
+  cursor: not-allowed;
+}
+
 .submit-button:hover {
   background-color: #a91212;
   color: white;
