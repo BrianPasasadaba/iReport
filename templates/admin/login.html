@@ -72,6 +72,46 @@ content%}
 
 
       {% endblock %} {% block footer %} {% endblock %} {% block script %}
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const employeeIdInput = document.getElementById('employee_id');
+        const passwordInput = document.getElementById('password');
+        const submitButton = document.querySelector('.login-button');
+        const passwordMessage = document.getElementById('passwordMessage');
+
+        function validateEmployeeId() {
+            const value = employeeIdInput.value;
+            const isValid = /^[a-zA-Z][a-zA-Z0-9-]{12}$/.test(value);
+            console.log('Employee ID:', isValid ? 'Valid' : 'Invalid');
+            return isValid;
+        }
+
+        function validatePassword() {
+            const value = passwordInput.value;
+            const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*_?&])[A-Za-z\d@$!%*_?&]{8,}$/.test(value);
+            console.log('Password:', isValid ? 'Valid' : 'Invalid');
+            return isValid;
+        }
+
+        function validateForm() {
+            const isEmployeeIdValid = validateEmployeeId();
+            const isPasswordValid = validatePassword();
+            const isFormValid = isEmployeeIdValid && isPasswordValid;
+            console.log('Form Valid:', isFormValid);
+            submitButton.disabled = !isFormValid;
+        }
+
+        // Initial validation call to disable button based on initial state
+        validateForm();
+
+        employeeIdInput.addEventListener('input', validateForm);
+        passwordInput.addEventListener('input', validateForm);
+    });
+
+      </script>
+      
+
       <script>
         // Get the eye button and the password input field
         const togglePassword = document.getElementById("togglePassword");
