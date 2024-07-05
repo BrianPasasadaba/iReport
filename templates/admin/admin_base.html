@@ -132,7 +132,26 @@
         <div class="row">
           <div class="col-1">
             {% block footer %}
-            <a href="{{ url_for('logout') }}">LOGOUT</a>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#logoutModal">LOGOUT</button>
+
+              <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content success">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                    </div>
+                    <div class="modal-body">
+                      <h4 class="mt-3">Are you sure you want to log out?</h4>
+                      <h6>You will be returned to the login screen.</h6>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn btn-primary" onclick="location.href='{{ url_for('logout') }}'">Logout</button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
             {% endblock %}
           </div>
         </div>
