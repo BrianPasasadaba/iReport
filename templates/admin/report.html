@@ -22,6 +22,8 @@
 
 </style>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+
 <div class="main-content">
   <div class="report-container">
     <div class="incident-title">
@@ -452,6 +454,20 @@ document.getElementById('filterByStatus').addEventListener('change', function() 
 });
 </script>
 
+<script>
+  // Connect to the SocketIO server using window.location.hostname and the specified namespace
+  var socket = io.connect('/report');
+
+  socket.on('connect', function() {
+      console.log('Connected to server');
+  });
+
+  socket.on('new_report', function() {
+    console.log('Received report data:');
+    window.location.reload()
+  });
+
+</script>
 
 
 {% endblock %}

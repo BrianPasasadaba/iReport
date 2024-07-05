@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, redirect, request, flash, ses
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
+from flask_socketio import SocketIO, emit
 from datetime import datetime
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
@@ -26,6 +27,7 @@ from clustering_model import load_data_and_train_model, predict_cluster_and_dist
 
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 # Initialize Flask-Login
 login_manager = LoginManager()
@@ -96,6 +98,14 @@ def load_user(employee_id):
     
 
 
+@socketio.on('new_report', namespace='/report')
+def handle_new_report():
+  # Add the namespace argument (`namespace='/report'`) to the emit function
+  emit('report_update', namespace='/report')
+
+    
+
+
 @app.route('/')
 def index():
     '''
@@ -163,6 +173,11 @@ def submit_incident_form():
                 (current_datetime, full_name, contact_number, location, latitude, longitude, victims, details, picture, category_id, predicted_cluster, distance_to_nearest_centroid))
     mysql.connection.commit()
     cur.close()
+
+    socketio.emit('new_report', namespace='/report')
+    print("SocketIO Event 'new_report' has been emitted")  # Log emitted data
+
+
     # Prepare success message (optional)
     message = "Report Submitted! First Responders are on their way."
 
