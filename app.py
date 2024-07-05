@@ -92,7 +92,11 @@ def load_user(employee_id):
     user_data = cursor.fetchone()
     cursor.close()
     if user_data:
-        return User(user_data[5], user_data[7])  # employee_id is at index 5 and password is at index 7
+        user = User(user_data[5], user_data[7])
+        full_name = f"{user_data[2]} {user_data[1]}"  # Assuming first name is at index 3 and last name is at index 2
+        user.full_name = full_name  # employee_id is at index 5 and password is at index 7
+
+        return user
     else:
         return None
     
@@ -108,23 +112,6 @@ def handle_new_report():
 
 @app.route('/')
 def index():
-    '''
-    account = {
-        'email': 'admin@cdrrmo.com',
-        'password': 'Admin1234'
-    }
-
-    # Hash the password before storing it in the database
-    hashed_password = bcrypt.generate_password_hash(account['password']).decode('utf-8')
-
-    # Insert the new user into the database
-    cursor = mysql.connection.cursor()
-    query = "INSERT INTO admins (email, password) VALUES (%s, %s)"
-    cursor.execute(query, (account['email'], hashed_password))
-    mysql.connection.commit()
-    cursor.close()
-    '''
-
                    
     return render_template('index.html')
 
