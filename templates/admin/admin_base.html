@@ -86,7 +86,11 @@
                 alt="Sidebar Image"
                 class="img-fluid rounded-circle"
               />
-              <p>CDRRMO ADMIN</p>
+              {% if current_user %}
+                  <p>{{ current_user.full_name }}</p>
+              {% else %}
+                  <p>CDRRMO ADMIN1</p>
+              {% endif %}
             </div>
             <div class="list-group mx-2">
               <a
