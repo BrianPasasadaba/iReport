@@ -439,21 +439,6 @@ function printIndividualReport(reportId) {
         .catch(error => console.error('Error:', error));
 }
 
-
-// JavaScript for filtering
-document.getElementById('filterByStatus').addEventListener('change', function() {
-    let statusFilter = this.value;
-    let rows = document.getElementById('reportTable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-
-    for (let row of rows) {
-        let status = row.getAttribute('data-status');
-        if (statusFilter === 'all' || status === statusFilter) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    }
-});
 </script>
 
 <script>
@@ -470,6 +455,21 @@ document.getElementById('filterByStatus').addEventListener('change', function() 
   });
 
 </script>
+
+<script>
+  $(document).ready(function() {
+      // Initialize DataTable
+      let table = $('#reportTable').DataTable();
+  
+      // Event listener for the filter dropdown
+      $('#filterByStatus').on('change', function() {
+          let statusFilter = this.value;
+          
+          // Use the search API to filter by the status
+          table.column(7).search(statusFilter === 'all' ? '' : '^' + statusFilter + '$', true, false).draw();
+      });
+  });
+  </script>
 
 
 {% endblock %}
