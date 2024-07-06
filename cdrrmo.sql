@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2024 at 01:51 AM
+-- Generation Time: Jul 06, 2024 at 02:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,7 +43,9 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `name_suffix`, `employee_id`, `email`, `password`) VALUES
-(3, 'Admin', 'CDRRMO', NULL, NULL, 'CDRRMO-ADM-01', 'admin@cdrrmo.com', '$2b$12$f.g/WgSBWFaiCqTM8CnlJ.neGyJKDpDrTc2VJ7E1csyicXXffVm7.');
+(3, 'Admin', 'CDRRMO', NULL, NULL, 'CDRRMO-ADM-01', 'admin@cdrrmo.com', '$2b$12$.Cev6VdYqe0H9A8t00MlyuJJLYUT6z/W/R3tGUiC1fjrrkUj6Xe.a'),
+(4, 'Admin 2', 'CDRRMO', NULL, NULL, 'CDRRMO-ADM-02', 'admin2@cdrrmo.com', '$2b$12$T/CZJHVVmMlL3ZQU6TXN3uN8QOjbxSRGYBeLL094FYsoHtOhQODx.'),
+(5, 'Admin 3', 'CDRRMO', NULL, NULL, 'CDRRMO-ADM-03', 'admin3@cdrrmo.com', '$2b$12$JOlHH0PYB5NaRlM0mLo2gOOmCf70idmRn66GTXndIsed2a0o9EKMS');
 
 -- --------------------------------------------------------
 
@@ -148,7 +150,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique id number for admin accounts.', AUTO_INCREMENT=4;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique id number for admin accounts.', AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `category`
