@@ -556,13 +556,13 @@ function validateForm() {
   const victims = document.getElementById('victims').value.trim();
   const picture = document.getElementById('picture').value.trim(); // Assuming picture is filled after taking a photo
   const details = document.getElementById('details').value.trim();
-
+  const contactNumberValid = validateContactNumberBeforeSubmit(contactNumber);
   // Check if all fields are not empty
   const allFieldsFilled = contactNumber !== '' && location !== '' && victims !== '' && picture !== '' && details !== '';
 
   // Validate contact number if all fields are filled
   if (allFieldsFilled) {
-    const contactNumberValid = validateContactNumberBeforeSubmit(contactNumber);
+    console.log("validateContactNumberBeforeSubmit returned:", contactNumberValid); // Added console.log
     if (!contactNumberValid) {
       // Call validateContactNumber if contact number is invalid
       validateContactNumber(contactNumber);
@@ -576,7 +576,7 @@ function validateForm() {
 // Function to validate contact number
 function validateContactNumberBeforeSubmit(contactNumber) {
   // Regular expression to match 11 digits starting with 09
-  const regex = /^09\d{10}$/;
+  const regex = /^09\d{9}$/;
   return regex.test(contactNumber);
 }
 
