@@ -1,67 +1,97 @@
-{% extends 'admin/admin_base.html' %} 
-
-{% block content%} 
-
-<div class="main-content">
-    <div class="report-container">
-      <div class="incident-title">
-        <div class="card-body d-flex">
-          <div class="col-8">
-            <p class="card-text">Frequently Asked Questions</p>
-          </div>
-        </div>
-      </div>
-      <div class="help-container-2">
-        <div class="accordion-container">
-          <button class="accordion">
-            How do I update incident's status
-            <i class="fas fa-chevron-down chev-icon"></i>
-          </button>
-          <div class="accordion-panel">
-            <div class="accordion-content">
+{% extends 'admin/admin_base.html' %} {% block content%}
+<div id="page-content-wrapper">
+  <div class="container-fluid px-4">
+    <div class="card">
+      <div class="card-title">Frequently Asked Questions</div>
+      <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#panelsStayOpen-collapseOne"
+              aria-expanded="true"
+              aria-controls="panelsStayOpen-collapseOne"
+            >
+              How do I update incident's status
+            </button>
+          </h2>
+          <div
+            id="panelsStayOpen-collapseOne"
+            class="accordion-collapse collapse show"
+          >
+            <div class="accordion-body">
               <p>Change the status into Ongoing:</p>
               <p>Step 1: Click the file icon in the View Details column.</p>
-              <p>Step 2: Locate and click the "Edit" button. </p>
-              <p>Step 3: Locate the status dropdown and change it into Ongoing.</p>
-              <br>
+              <p>Step 2: Locate and click the "Edit" button.</p>
+              <p>
+                Step 3: Locate the status dropdown and change it into Ongoing.
+              </p>
+              <br />
               <p>Change the status into Resolved:</p>
               <p>Step 1: Click the file icon in the View Details column.</p>
-              <p>Step 2: Locate and click the "Edit" button. </p>
-              <p>Step 3: Fill out the incident details field with information from the rescue team. </p>
-              <p>Step 4: Locate the status dropdown and change it into Resolved.</p>
-            </div>
-          </div>
-
-          <button class="accordion">
-            How do I change my password
-            <i class="fas fa-chevron-down chev-icon"></i>
-          </button>
-          <div class="accordion-panel">
-            <div class="accordion-content">
+              <p>Step 2: Locate and click the "Edit" button.</p>
               <p>
-                An account cannot be personally and physically edited by
-                the account holder. They must contact office's IT
-                department to update any information about their
-                account.
+                Step 3: Fill out the incident details field with information
+                from the rescue team.
+              </p>
+              <p>
+                Step 4: Locate the status dropdown and change it into Resolved.
               </p>
             </div>
           </div>
-
-          <button class="accordion">
-            Where is the Responder Incident Form located?
-            <i class="fas fa-chevron-down chev-icon"></i>
-          </button>
-          <div class="accordion-panel">
-            <div class="accordion-content">
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#panelsStayOpen-collapseTwo"
+              aria-expanded="false"
+              aria-controls="panelsStayOpen-collapseTwo"
+            >
+              How do I change my password
+            </button>
+          </h2>
+          <div
+            id="panelsStayOpen-collapseTwo"
+            class="accordion-collapse collapse"
+          >
+            <div class="accordion-body">
+              An account cannot be personally and physically edited by the
+              account holder. They must contact office's IT department to update
+              any information about their account.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#panelsStayOpen-collapseThree"
+              aria-expanded="false"
+              aria-controls="panelsStayOpen-collapseThree"
+            >
+              Where is the Responder Incident Form located?
+            </button>
+          </h2>
+          <div
+            id="panelsStayOpen-collapseThree"
+            class="accordion-collapse collapse"
+          >
+            <div class="accordion-body">
               <p>The document can be found here:</p>
               <div class="row">
                 <div class="col-6 text-left mb-4">
                   <span class="d-inline-block">Responder Incident Form</span>
-                  <a href="{{ url_for('static', filename='forms/IncidentForm.pdf') }}" target="_blank"
-                    ><i
-                      class="fas fa-print fa-2x ml-2 form-icon"
-                     
-                    ></i
+                  <a
+                    href="{{ url_for('static', filename='forms/IncidentForm.pdf') }}"
+                    target="_blank"
+                    ><i class="fas fa-print fa-2x ml-2 form-icon"></i
                   ></a>
                 </div>
               </div>
@@ -70,41 +100,7 @@
         </div>
       </div>
     </div>
+
+    {% endblock %}
   </div>
 </div>
-</div>
-
-{% endblock %}
-
-{% block script %} 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var acc = document.getElementsByClassName("accordion");
-    var i;
-
-    for (i = 0; i < acc.length; i++) {
-      acc[i].addEventListener("click", function () {
-        this.classList.toggle("active");
-        var panel = this.nextElementSibling;
-        if (panel.style.maxHeight) {
-          panel.style.maxHeight = null;
-        } else {
-          panel.style.maxHeight = panel.scrollHeight + "px";
-        }
-
-        // Rotate chevron icon
-        var icon = this.querySelector("i");
-        if (icon.classList.contains("fa-chevron-down")) {
-          icon.classList.remove("fa-chevron-down");
-          icon.classList.add("fa-chevron-up");
-        } else {
-          icon.classList.remove("fa-chevron-up");
-          icon.classList.add("fa-chevron-down");
-        }
-
-        
-      });
-    }
-  });
-</script>
-{% endblock %}
