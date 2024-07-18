@@ -1,145 +1,162 @@
-{% extends 'admin/admin_base.html' %} {% block navbar%} {% endblock %} {% block
-content%}
-<!-- Flash message container -->
-<div class="container">
-  {% with messages = get_flashed_messages() %} {% if messages %}
-  <div class="flash-message">
-    {{ messages[0] }}
-    <!-- Display only the first flash message, you can modify it as needed -->
-    <span class="close-btn" onclick="this.parentElement.style.display='none';"
-      >&times;</span
-    >
-  </div>
-  {% endif %} {% endwith %}
-</div>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-6 d-flex justify-content-end align-items-center">
-      <div class="text-center">
-        <img
-          src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}"
-          alt="Left Logo"
-          class="login_img"
-        />
-      </div>
+{% extends 'admin/admin_base.html' %} {% block header%} 
+<header id="navbar" class="navbar navbar-expand-lg primary-bg py-2 px-3">
+  <div><img src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}" /> </div>
+  <div class="d-flex align-items-center justify-content-center w-100 primary-text">
+    <div class="text-center ms-3">
+      <h2 class="fs-5">
+        <p>i-Report</p>
+        <p>CABUYAO CITY DISASTER RISK REDUCTION AND MANAGEMENT OFFICE</p>
+      </h2>
     </div>
-    <div class="col-lg-6 d-flex justify-content-start align-items-center">
-      <div class="container">
-            <div class="card login" >
-              <div class="card-body">
-                <form method="POST">
-                  <h1 class="card-title text-center mb-4">i-REPORT</h1>
-                  <div class="form-group">
-                    <label for="employee_id" class="mb-0">ACCOUNT ID</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="employee_id"
-                      name="employee_id"
-                      required
-                      maxlength="13"
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="password" class="mb-0">PASSWORD</label>
-                    <div class="password-container">
+  </div>
+</header>
+{% endblock %}{% block sidebar%} {% endblock %} {% block
+  content%}
+  <!-- Flash message container -->
+  <div class="container">
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div class="flash-message">
+      {{ messages[0] }}
+      <!-- Display only the first flash message, you can modify it as needed -->
+      <span class="close-btn" onclick="this.parentElement.style.display='none';"
+        >&times;</span
+      >
+    </div>
+    {% endif %} {% endwith %}
+  </div>
+ 
+
+<div id="page-content-wrapper">
+  <div id="login" class="container-fluid px-4">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 d-none d-lg-block text-center justify-content-center ">
+        <img src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}" />
+      </div>
+      <div class="col-lg-6 justify-content-center">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title text-center">i-REPORT</div>
+            <form  method="POST">
+                    <div class="form-group">
+                      <label for="employee_id" class="mb-0">ACCOUNT ID</label>
                       <input
-                        type="password"
+                        type="text"
                         class="form-control"
-                        id="password"
-                        name="password"
-                        maxlength="100"
+                        id="employee_id"
+                        name="employee_id"
                         required
+                        maxlength="13"
                       />
-                      <i id="togglePassword" class="toggle-password fas fa-eye"></i>
                     </div>
-                    <small id="passwordMessage" class="form-text text-danger"></small>
-                  </div>
-                  <div class="row justify-content-center">
-                    <button
-                      type="submit"
-                      class="btn btn-tertiary login-button d-flex align-items-center justify-content-center"
-                    >
-                      <span class="align-middle">LOGIN</span>
-                    </button>
-                  </div>
-                </form>
+                    <div class="form-group">
+                      <label for="password" class="mb-0">PASSWORD</label>
+                      <div class="password-container">
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="password"
+                          name="password"
+                          maxlength="100"
+                          required
+                        />
+                        <i id="togglePassword" class="toggle-password fas fa-eye"></i>
+                      </div>
+                      <small id="passwordMessage" class="form-text text-danger"></small>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                      <button
+                        type="submit"
+                        class="btn btn-primary login-button"
+                      >
+                       LOGIN
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
 
-      {% endblock %} {% block footer %} {% endblock %} {% block script %}
+</div>
+<footer id="footer" class="footer primary-bg py-2 px-3">
 
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const employeeIdInput = document.getElementById('employee_id');
-        const passwordInput = document.getElementById('password');
-        const submitButton = document.querySelector('.login-button');
-        const passwordMessage = document.getElementById('passwordMessage');
+</footer>
 
-        function validateEmployeeId() {
-            const value = employeeIdInput.value;
-            const isValid = /^[a-zA-Z][a-zA-Z0-9-]{12}$/.test(value);
-            console.log('Employee ID:', isValid ? 'Valid' : 'Invalid');
+  
+        {% endblock %} {% block footer %} {% endblock %} {% block script %}
+  
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+          const employeeIdInput = document.getElementById('employee_id');
+          const passwordInput = document.getElementById('password');
+          const submitButton = document.querySelector('.login-button');
+          const passwordMessage = document.getElementById('passwordMessage');
+  
+          function validateEmployeeId() {
+              const value = employeeIdInput.value;
+              const isValid = /^[a-zA-Z][a-zA-Z0-9-]{12}$/.test(value);
+              console.log('Employee ID:', isValid ? 'Valid' : 'Invalid');
+              return isValid;
+          }
+  
+          function validatePassword() {
+            const value = passwordInput.value;
+            const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*_?&])[A-Za-z\d@$!%*_?&]{8,}$/.test(value);
+            if (passwordInput === document.activeElement) { // Check if password field is in focus
+              passwordMessage.textContent = isValid ? '' : 'Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a symbol.';
+            }
             return isValid;
-        }
-
-        function validatePassword() {
-          const value = passwordInput.value;
-          const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*_?&])[A-Za-z\d@$!%*_?&]{8,}$/.test(value);
-          if (passwordInput === document.activeElement) { // Check if password field is in focus
-            passwordMessage.textContent = isValid ? '' : 'Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a symbol.';
           }
-          return isValid;
-        }
-
-        function validateForm() {
-            const isEmployeeIdValid = validateEmployeeId();
-            const isPasswordValid = validatePassword();
-            const isFormValid = isEmployeeIdValid && isPasswordValid;
-            console.log('Form Valid:', isFormValid);
-            submitButton.disabled = !isFormValid;
-        }
-
-        // Initial validation call to disable button based on initial state
-        validateForm();
-
-        employeeIdInput.addEventListener('input', validateForm);
-        passwordInput.addEventListener('input', validateForm);
-        passwordInput.addEventListener('focus', function() {
-          validatePassword(); // Show password message on focus
-        });
-        passwordInput.addEventListener('blur', function() {
-          // Clear message only if it's not empty (prevents unnecessary DOM manipulation)
-          if (passwordMessage.textContent) {
-            passwordMessage.textContent = '';
+  
+          function validateForm() {
+              const isEmployeeIdValid = validateEmployeeId();
+              const isPasswordValid = validatePassword();
+              const isFormValid = isEmployeeIdValid && isPasswordValid;
+              console.log('Form Valid:', isFormValid);
+              submitButton.disabled = !isFormValid;
           }
-        });
-    });
-
-      </script>
-      
-
-      <script>
-        // Get the eye button and the password input field
-        const togglePassword = document.getElementById("togglePassword");
-        const password = document.getElementById("password");
-
-        // Add click event listener to the eye button
-        togglePassword.addEventListener("click", function () {
-          // Toggle the type attribute of the password field between 'password' and 'text'
-          const type =
-            password.getAttribute("type") === "password" ? "text" : "password";
-          password.setAttribute("type", type);
-          // Change the eye icon based on the password field's visibility
-          togglePassword.classList.toggle("fa-eye-slash");
-        });
-      </script>
-      {% endblock %}
+  
+          // Initial validation call to disable button based on initial state
+          validateForm();
+  
+          employeeIdInput.addEventListener('input', validateForm);
+          passwordInput.addEventListener('input', validateForm);
+          passwordInput.addEventListener('focus', function() {
+            validatePassword(); // Show password message on focus
+          });
+          passwordInput.addEventListener('blur', function() {
+            // Clear message only if it's not empty (prevents unnecessary DOM manipulation)
+            if (passwordMessage.textContent) {
+              passwordMessage.textContent = '';
+            }
+          });
+      });
+  
+        </script>
+        
+  
+        <script>
+          // Get the eye button and the password input field
+          const togglePassword = document.getElementById("togglePassword");
+          const password = document.getElementById("password");
+  
+          // Add click event listener to the eye button
+          togglePassword.addEventListener("click", function () {
+            // Toggle the type attribute of the password field between 'password' and 'text'
+            const type =
+              password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+            // Change the eye icon based on the password field's visibility
+            togglePassword.classList.toggle("fa-eye-slash");
+          });
+        </script>
+        {% endblock %}
+      </div>
     </div>
   </div>
-</div>
+  

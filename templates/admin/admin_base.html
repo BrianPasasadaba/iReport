@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>iReport</title>
-    <link rel="icon" href="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}" type="image/icon type">
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}"
+      type="image/icon type"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/bootstrap.css') }}"
@@ -56,113 +60,132 @@
   </head>
 
   <body>
+    {% block header%}
+
     <header
-      class="header d-flex justify-content-between align-items-center py-3"
+      id="navbar"
+      class="navbar navbar-expand-lg navbar-light primary-bg py-2 px-3"
     >
-      <div class="ml-4">
-        <a href="{{ url_for('report') }}">
+      <div class="d-flex align-items-center w-100 primary-text">
+        <div class="d-flex align-items-center me-auto">
+          <i
+            class="fas fa-align-left primary-text fs-5 me-3"
+            id="menu-toggle"
+          ></i>
           <img
             src="{{ url_for('static', filename='image/CDRRMO_LOGO.png') }}"
-            alt="Left Logo"
-            class="header-logo"
+            class="me-3"
           />
-        </a>
-      </div>
-      <div class="text-center">
-        <div>i-Report</div>
-        <div>CABUYAO CITY DISASTER RISK REDUCTION AND MANAGEMENT OFFICE</div>
-      </div>
-      <div class="mr-4"></div>
-    </header>
-
-    {% block navbar %}
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="sidebar d-flex flex-column justify-content-between">
-            <div class="sidebar-header text-center">
-              <img
-                src="{{ url_for('static', filename='image/user.png') }}"
-                alt="Sidebar Image"
-                class="img-fluid rounded-circle"
-              />
-              {% if current_user %}
-                  <p>{{ current_user.full_name }}</p>
-              {% else %}
-                  <p>CDRRMO ADMIN1</p>
-              {% endif %}
-            </div>
-            <div class="list-group mx-2">
-              <a
-                class="list-group-item list-group-item-action"
-                id="list-reports-list"
-                href="{{ url_for('report') }}"
-                role="tab"
-                aria-controls="list-reports"
-              >
-                <i class="fa fa-list-alt"></i> REPORTS
-              </a>
-              <a
-                class="list-group-item list-group-item-action"
-                id="list-analytics-list"
-                href="{{ url_for('analytics') }}"
-                role="tab"
-                aria-controls="list-analytics"
-              >
-                <i class="fas fa-chart-bar"></i> ANALYTICS
-              </a>
-              <a
-                class="list-group-item list-group-item-action"
-                id="list-help-list"
-                href="{{ url_for('help') }}"
-                role="tab"
-                aria-controls="list-help"
-              >
-                <i class="fa fa-question-circle"></i> HELP
-              </a>
-            </div>
-          </div>
+          <span class="fs-5">i-Report</span>
+        </div>
+        <div class="mx-auto text-center d-none d-lg-block">
+          <h2 class="fs-5 m-0">
+            CABUYAO CITY DISASTER RISK REDUCTION AND MANAGEMENT OFFICE DASHBOARD
+          </h2>
         </div>
       </div>
-    </div>
-    {% endblock %} {% block content %} {% endblock %}
 
-    <footer class="footer">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-1">
-            {% block footer %}
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#logoutModal">LOGOUT</button>
-
-              <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content success">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
-                    </div>
-                    <div class="modal-body">
-                      <h4 class="mt-3">Are you sure you want to log out?</h4>
-                      <h6>You will be returned to the login screen.</h6>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                      <button type="button" class="btn btn-primary" onclick="location.href='{{ url_for('logout') }}'">Logout</button>
-
-                    </div>
-                  </div>
-                </div>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link primary-text fw-bold"
+            href="{{ url_for('logout') }}"
+            data-bs-toggle="modal"
+            data-bs-target="#logoutModal"
+          >
+            Logout
+          </a>
+        </li>
+        <div
+          class="modal fade"
+          id="logoutModal"
+          tabindex="-1"
+          aria-labelledby="logoutModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content-1 success">
+              <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">
+                  Confirm Logout
+                </h5>
               </div>
-            {% endblock %}
+              <div class="modal-body-1">
+                <h4 class="mt-3">Are you sure you want to log out?</h4>
+                <h6>You will be returned to the login screen.</h6>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="location.href='{{ url_for('logout') }}'"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
           </div>
         </div>
+      </ul>
+    </header>
+    {%endblock%} {% block sidebar %}
+    <div class="d-flex" id="wrapper">
+      <div class="secondary-bg" id="sidebar-wrapper">
+        <div class="sidebar-heading text-center primary-text">
+          <img
+            src="{{ url_for('static', filename='image/user.png') }}"
+            alt="Sidebar Image"
+            class="img-fluid rounded-circle"
+          />
+          {% if current_user %}
+          <p>{{ current_user.full_name }}</p>
+          {% else %}
+          <p>CDRRMO ADMIN1</p>
+          {% endif %}
+        </div>
+        <div class="list-group mx-2">
+          <a
+            href="{{ url_for('report') }}"
+            class="list-group-item list-group-item-action bg-transparent primary-text fw-bold {% if current_page == 'report' %}active{% endif %}"
+          >
+            <i class="fa fa-list-alt me-2"></i>REPORTS
+          </a>
+          <a
+            href="{{ url_for('analytics') }}"
+            class="list-group-item list-group-item-action bg-transparent primary-text fw-bold {% if current_page == 'analytics' %}active{% endif %}"
+          >
+            <i class="fas fa-chart-bar me-2"></i>ANALYTICS
+          </a>
+          <a
+            href="{{ url_for('help') }}"
+            class="list-group-item list-group-item-action bg-transparent primary-text fw-bold {% if current_page == 'help' %}active{% endif %}"
+          >
+            <i class="fa fa-question-circle me-2"></i>HELP
+          </a>
+        </div>
       </div>
-    </footer>
-
+      {% endblock %} {% block content %} {% endblock %}
+    </div>
     <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
     <script src="{{ url_for('static', filename='js/adminscripts.js') }}"></script>
+    <script>
+      var el = document.getElementById("wrapper");
+      var toggleButton = document.getElementById("menu-toggle");
+
+      toggleButton.onclick = function () {
+        el.classList.toggle("toggled");
+      };
+    </script>
 
     {% block script %} {% endblock %}
   </body>

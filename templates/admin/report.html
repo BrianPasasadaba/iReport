@@ -2,199 +2,173 @@
 
 {% block content%}
 
-<style>
-  table#reportTable tbody tr td:nth-child(5) {
-    word-break: break-word;
-    overflow-wrap: break-word;
-    max-width: 20%;
-    overflow: hidden;
-    white-space: normal; /* Allow wrapping */ 
-  } 
-
-
-  table#reportTable tbody tr td:nth-child(7) {
-    word-break: break-word;
-    overflow-wrap: break-word;
-    max-width: 30%;
-    overflow: hidden;
-    white-space: normal; /* Allow wrapping */  
-  }
-
-</style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
 
-<div class="main-content">
-  <div class="report-container">
-    <div class="incident-title">
-      <div class="card-body d-flex">
-        <div class="col-9">
-          <p class="card-text">INCIDENT REPORTS</p>
+<div id="page-content-wrapper">
+  <div class="container-fluid px-4">
+    <div class="card">
+      <div class="card-title">INCIDENT REPORTS</div>
+      <div class="row">
+        <div class="col-lg-9 text-end">
+          <button type="button" class="icon-button" onclick="printReportPDF()">
+            <i class="fas fa-print"></i>
+          </button>
         </div>
-        <button type="button" class="btn icon-button"  onclick="printReportPDF()">
-          <i class="fas fa-print fa-lg print-icon"></i>
-        </button>
-        <div id="filterByStatusSection" class="input-group">
-          <label class="input-group-text" for="filterByStatus">Filter: </label>
-          <select name="filterByStatus" id="filterByStatus" class="form-select" style="font-size: 1rem; color: white;">
-              <option value="all">ALL REPORTS</option>    
-              <option value="Pending">PENDING</option>
-              <option value="Ongoing">ONGOING</option>
-              <option value="Resolved">RESOLVED</option>
-              <option value="Fraudulent">FRAUDULENT</option>
+
+        <div id="filterByStatusSection" class="input-group input-group-sm">
+          <label class="input-group-text" for="filterByStatus">Filter:</label>
+          <select class="form-select" name="filterByStatus" id="filterByStatus">
+            <option value="all">ALL REPORTS</option>
+            <option value="Pending">PENDING</option>
+            <option value="Ongoing">ONGOING</option>
+            <option value="Resolved">RESOLVED</option>
+            <option value="Fraudulent">FRAUDULENT</option>
           </select>
         </div>
       </div>
-    </div>
-
-    <div class="row">
-      <table id="reportTable" style="width: 100%;">
-        <thead>
-          <tr>
-            <th class="text-center">Report ID</th>
-            <th class="text-center">Date and Time</th>
-            <th class="text-center">Phone Number</th>
-            <th class="text-center">Name</th>
-            <th class="text-center">Location</th>
-            <th class="text-center">Victims (Estimated)</th>
-            <th class="text-center">Further Details</th>
-            <th class="text-center">Status</th>
-            <th class="text-center">View Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for report in reports %}
-          <tr data-status="{{ report[13 ]}}">
-            <td class="text-center">{{ report[0] }}</td>
-            <td class="text-center">{{ report[1] }}</td>
-            <td class="text-center">{{ report[2] }}</td>
-            <td class="text-center">{{ report[3] }}</td>
-            <td class="text-center">
-              {% if report[5] !=0 and report[6] !=0 %}
-              <button type="button" class="btn icon-button show-map-btn" data-toggle="modal" data-lat="{{ report[5] }}"
-                data-lng="{{ report[6] }}">
-                <i class="fas fa-map-marked-alt fa-lg"></i>
-              </button>
-              {% else %}
+      <div class="row">
+        <table id="reportTable" style="width: 100%;">
+          <thead>
+            <tr>
+              <th class="th text-center">Report ID</th>
+              <th class="th text-center">Date and Time</th>
+              <th class="th text-center">Phone Number</th>
+              <th class="th text-center">Name</th>
+              <th class="th text-center">Location</th>
+              <th class="th text-center">Victims (Estimated)</th>
+              <th class="th text-center">Further Details</th>
+              <th class="th text-center">Status</th>
+              <th class="th text-center">View Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for report in reports %}
+            <tr data-status="{{ report[13 ]}}">
+              <td class="text-center">{{ report[0] }}</td>
+              <td class="text-center">{{ report[1] }}</td>
+              <td class="text-center">{{ report[2] }}</td>
+              <td class="text-center">{{ report[3] }}</td>
+              <td class="text-center">
+                {% if report[5] !=0 and report[6] !=0 %}
+                <button type="button" class="btn icon-button show-map-btn" data-toggle="modal"
+                  data-lat="{{ report[5] }}" data-lng="{{ report[6] }}">
+                  <i class="fas fa-map-marked-alt fa-lg"></i>
+                </button>
+                {% else %}
                 {{ report[4] }}
-              {% endif %}
-            </td>
+                {% endif %}
+              </td>
               <td class="text-center">{{ report[7] }}</td>
               <td class="text-center">{{ report[8] }}</td>
               <td class="text-center">{{ report[13] }}</td>
               <td class="text-center">
-                <button type="button" class="btn icon-button details-btn" data-toggle="modal" data-target="#detailsModal"
-                        data-report-id="{{ report[0] }}" data-date="{{ report[1] }}" data-phone="{{ report[2] }}"
-                        data-name="{{ report[3] }}" data-location="{{ report[4] }}" data-victims="{{ report[7] }}"
-                        data-details="{{ report[8] }}" data-picture="{{ report[9] }}" data-responder="{{ report[10] }}"
-                        data-status="{{ report[13] }}" data-category="{{ report[14] }}" data-cluster="{{ report[11]}}" 
-                        data-distance="{{ report[12]}}">
-                    <i class="far fa-file fa-lg"></i>
+                <button type="button" class="btn icon-button details-btn" data-toggle="modal"
+                  data-target="#detailsModal" data-report-id="{{ report[0] }}" data-date="{{ report[1] }}"
+                  data-phone="{{ report[2] }}" data-name="{{ report[3] }}" data-location="{{ report[4] }}"
+                  data-victims="{{ report[7] }}" data-details="{{ report[8] }}" data-picture="{{ report[9] }}"
+                  data-responder="{{ report[10] }}" data-status="{{ report[13] }}" data-category="{{ report[14] }}"
+                  data-cluster="{{ report[11]}}" data-distance="{{ report[12]}}">
+                  <i class="far fa-file fa-lg"></i>
                 </button>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <div class="container-last"></div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Map Modal -->
+  <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <button type="button" class="btn-close btn-lg" data-bs-dismiss="modal" aria-label="Close"
+            style="font-size: 1.2rem;">
+          </button>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+          <div id="map"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
-</div>
-</div>
-<!-- Map Modal -->
-<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true" data-bs-backdrop="static">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-  <div class="modal-header d-flex justify-content-between">
-      <button type="button" class="btn-close btn-lg" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.2rem;">
-      </button>
-  </div>
-  <div class="modal-body" style="text-align: center;">
-    <div id="map"></div>
-  </div>
-</div>
-</div>
-</div>
-
 <!-- Details Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModal"
-aria-hidden="true" data-bs-backdrop="static">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-    <div class="modal-header d-flex justify-content-between">
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModal" aria-hidden="true"
+  data-bs-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header d-flex justify-content-between">
         <h5 class="modal-title" id="detailsModalLabel">Report Details</h5>
-        <button type="button" class="btn-close btn-lg" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.2rem;">
+        <button type="button" class="btn-close btn-lg" data-bs-dismiss="modal" aria-label="Close"
+          style="font-size: 1.2rem;">
         </button>
-    </div>
-    <div class="modal-body" style="font-size: large; overflow-y: auto;">
+      </div>
+      <div class="modal-body" style=" overflow-y: auto;">
         <!-- Data will be populated here -->
+      </div>
+      <div class="modal-footer">
+        <!-- Close Button -->
+        <button type="button" class="btn btn-primary" id="printReportButton">Print</button>
+        <!-- Edit Button -->
+        <button type="button" class="btn btn-primary" id="editReport" data-report-id="{{ reportId }}">Edit</button>
+      </div>
     </div>
-    <div class="modal-footer">
-      <!-- Close Button -->
-      <button type="button" class="btn btn-primary" id="printReportButton">Print</button>
-      <!-- Edit Button -->
-      <button type="button" class="btn btn-primary" id="editReport" data-report-id="{{ reportId }}">Edit</button>   
   </div>
-</div>
-</div>
 </div>
 
 <!-- Edit Details Modal -->
-<div class="modal fade" id="editDetailsModal" tabindex="-1" role="dialog" aria-labelledby="editDetailsModal" aria-hidden="true"  data-bs-backdrop="static">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-    <div class="modal-header d-flex justify-content-center">
+<div class="modal fade" id="editDetailsModal" tabindex="-1" role="dialog" aria-labelledby="editDetailsModal"
+  aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header d-flex justify-content-center">
         <h5 class="modal-title" id="detailsModalLabel">Report Details</h5>
-        <button type="button" class="btn-close btn-lg" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.2rem;">
+        <button type="button" class="btn-close btn-lg" data-bs-dismiss="modal" aria-label="Close"
+          style="font-size: 1.2rem;">
         </button>
+      </div>
+      <div class="modal-body" style="font-size: large; overflow-y: auto;">
+        <form id="editReportForm" action="/update_report" method="POST">
+          <div class="form-group">
+            <label for="responder_report" class="form-label">Responder's Report:</label>
+            <textarea class="form-control" id="responder_report" name="responder_report" rows="2"
+              maxlength="255"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="status">Status:</label>
+            <select class="form-control form-select" id="status" name="status" required style="height: 3vw;">
+              <option value="1">Pending</option>
+              <option value="2">Ongoing</option>
+              <option value="3">Resolved</option>
+              <option value="4">Fraudulent</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <!-- Edit Button -->
+        <button type="submit" class="btn btn-primary" id="saveReport">Save</button>
+      </div>
+      </form>
     </div>
-    <div class="modal-body" style="font-size: large; overflow-y: auto;">
-      <form id="editReportForm" action="/update_report" method="POST">
-        <div class="form-group">
-          <label for="responder_report" class="form-label">Responder's Report:</label>
-          <textarea class="form-control" id="responder_report" name="responder_report" rows="2" maxlength="255"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="status">Status:</label>
-          <select class="form-control form-select" id="status" name="status" required style="height: 3vw;" >
-          <option value="1">Pending</option>
-          <option value="2">Ongoing</option>
-          <option value="3">Resolved</option>
-          <option value="4">Fraudulent</option>
-          </select>
-        </div>  
-    </div>
-    <div class="modal-footer">
-      <!-- Edit Button -->
-      <button type="submit" class="btn btn-primary" id="saveReport">Save</button>   
   </div>
-</form>
-</div>
-</div>
 </div>
 
 <!-- Start of Success Modal -->
-<div
-  id="viewSuccessModal"
-  class="modal fade"
-  tabindex="-1"
-  aria-labelledby="successModalLabel"
-  aria-hidden="true"
-  data-bs-backdrop="static"
->
+<div id="viewSuccessModal" class="modal fade" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true"
+  data-bs-backdrop="static">
   <div class="modal-dialog " style="margin: auto;">
-    <div class="modal-content success" >
+    <div class="modal-content success">
       <!-- Modal Body -->
       <div class="modal-body" style="text-align: center">
         <i class="fa fa-check-circle fa-8x mb-3" style="color: #02ca2a;"></i>
         <h5>Report has been updated.</h5>
       </div>
       <!-- Modal Footer -->
-      <div
-        class="modal-footer d-flex justify-content-center align-items-center"
-      >
+      <div class="modal-footer d-flex justify-content-center align-items-center">
         <!-- Close Button -->
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
           OKAY
@@ -204,7 +178,7 @@ aria-hidden="true" data-bs-backdrop="static">
   </div>
 </div>
 
-{% endblock %} 
+{% endblock %}
 
 {% block script %}
 <script>
@@ -213,79 +187,79 @@ aria-hidden="true" data-bs-backdrop="static">
       //"searching": false, // Disable search bar
       //"paging": false, // Disable pagination
       "lengthChange": false, // Disable "entries per page" selection
-      "order": [[ 0, "desc" ]], // Order by Report ID in descending order
+      "order": [[0, "desc"]], // Order by Report ID in descending order
       //"info" : false,
     });
   });
 </script>
 
 <script>
-$(document).ready(function () {
-    $(document).on('click', '.show-map-btn', function () {
-      $('#mapModal').modal('show');
-      var lat = $(this).data('lat');
-      var lng = $(this).data('lng');
-      $('#mapModal').on('shown.bs.modal', function () {
-        initializeMap(lat, lng);
-      });
-    });
+  $(document).ready(function () {
+    $(document).on('click', '.show-map-btn', function () {
+      $('#mapModal').modal('show');
+      var lat = $(this).data('lat');
+      var lng = $(this).data('lng');
+      $('#mapModal').on('shown.bs.modal', function () {
+        initializeMap(lat, lng);
+      });
+    });
 
-    function initializeMap(lat, lng) {
-      // Remove any existing map instance
-      $('#map').remove();
+    function initializeMap(lat, lng) {
+      // Remove any existing map instance
+      $('#map').remove();
 
-      // Create a new map container
-      var mapContainer = $('<div id="map" style="width: 100%; height: 100%;"></div>');
-      $('.modal-body').append(mapContainer);
+      // Create a new map container
+      var mapContainer = $('<div id="map" style="width: 100%; height: 100%;"></div>');
+      $('.modal-body').append(mapContainer);
 
-      var map = L.map('map').setView([lat, lng], 17);
+      var map = L.map('map').setView([lat, lng], 17);
 
-      map.setMinZoom(14); // Adjust the maximum zoom level as needed
+      map.setMinZoom(14); // Adjust the maximum zoom level as needed
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
 
-      const marker = L.marker([lat, lng]).addTo(map);
-    }
-});
+      const marker = L.marker([lat, lng]).addTo(map);
+    }
+  });
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  var currentReportId; // Variable to store the current reportId  
-  
-  var detailsButtons = document.querySelectorAll(".details-btn");
-  detailsButtons.forEach(function (button) {
+  document.addEventListener("DOMContentLoaded", function () {
+    var currentReportId; // Variable to store the current reportId  
+
+    var detailsButtons = document.querySelectorAll(".details-btn");
+    detailsButtons.forEach(function (button) {
       button.addEventListener("click", function () {
-          var reportId = this.getAttribute("data-report-id");
-          var date = this.getAttribute("data-date");
-          var phone = this.getAttribute("data-phone");
-          var name = this.getAttribute("data-name");
-          var location = this.getAttribute("data-location");
-          var victims = this.getAttribute("data-victims");
-          var details = this.getAttribute("data-details");
-          var status = this.getAttribute("data-status");
-          var category = this.getAttribute("data-category");
-          var responder = this.getAttribute("data-responder");
-          var picture = this.getAttribute("data-picture"); // Get picture URL
-          var cluster = this.getAttribute("data-cluster");
-          var distance = this.getAttribute("data-distance");
+        var reportId = this.getAttribute("data-report-id");
+        var date = this.getAttribute("data-date");
+        var phone = this.getAttribute("data-phone");
+        var name = this.getAttribute("data-name");
+        var location = this.getAttribute("data-location");
+        var victims = this.getAttribute("data-victims");
+        var details = this.getAttribute("data-details");
+        var status = this.getAttribute("data-status");
+        var category = this.getAttribute("data-category");
+        var responder = this.getAttribute("data-responder");
+        var picture = this.getAttribute("data-picture"); // Get picture URL
+        var cluster = this.getAttribute("data-cluster");
+        var distance = this.getAttribute("data-distance");
 
-          // Populate modal header and body with data
-          var modal = document.querySelector("#detailsModal");
-          var modalTitle = modal.querySelector(".modal-title");
-          var modalBody = modal.querySelector(".modal-body");
+        // Populate modal header and body with data
+        var modal = document.querySelector("#detailsModal");
+        var modalTitle = modal.querySelector(".modal-title");
+        var modalBody = modal.querySelector(".modal-body");
 
-          modalTitle.innerText = "Incident Report No. " + reportId;
+        modalTitle.innerText = "Incident Report No. " + reportId;
 
-          var warningMessage = " ";
-          // Display a warning message if the cluster distance is less than 0.75
-          if (distance < 0.75) {
-            warningMessage = `<p style="color: red; font-weight: bold; margin-bottom: 10px;">**Warning:** This report may be fraudulent or suspicious. Verify report details thoroughly.</p>`;
-          }
+        var warningMessage = " ";
+        // Display a warning message if the cluster distance is less than 0.75
+        if (distance < 0.75) {
+          warningMessage = `<p style="color: red; font-weight: bold; margin-bottom: 10px;">**Warning:** This report may be fraudulent or suspicious. Verify report details thoroughly.</p>`;
+        }
 
-          modalBody.innerHTML = `
+        modalBody.innerHTML = `
           ${warningMessage}
           <p class="mb-3"><span style="color: gray;">Category:</span> ${category}</p>
           <p class="mb-3"><span style="color: gray;">Date and Time:</span> ${date}</p>
@@ -302,142 +276,142 @@ document.addEventListener("DOMContentLoaded", function () {
 
           `;
 
-          // Set the title of the editDetailsModal
-          var editModalTitle = document.querySelector("#editDetailsModal .modal-title");
-          editModalTitle.innerText = "Edit Incident Report No. " + reportId;
-          // Add report ID to edit button data attribute
-          currentReportId = this.getAttribute("data-report-id");
+        // Set the title of the editDetailsModal
+        var editModalTitle = document.querySelector("#editDetailsModal .modal-title");
+        editModalTitle.innerText = "Edit Incident Report No. " + reportId;
+        // Add report ID to edit button data attribute
+        currentReportId = this.getAttribute("data-report-id");
 
-          // Pre-fill the editDetailsModal form fields with the passed data
-          var editResponderReport = document.querySelector("#editDetailsModal #responder_report");
-          var editStatus = document.querySelector("#editDetailsModal #status");
-          if (responder !== 'None') {
-            editResponderReport.value = responder;
-          } else {
-            editResponderReport.value = ''; // or any other default value you prefer
-          }
-          // Map status string to corresponding value
-          var statusValue;
-          switch(status.toLowerCase()) {
-              case 'pending':
-                  statusValue = 1;
-                  break;
-              case 'ongoing':
-                  statusValue = 2;
-                  break;
-              case 'resolved':
-                  statusValue = 3;
-                  break;
-              case 'fraudulent':
-                  statusValue = 4;
-                  break;
-              default:
-                  statusValue = 1; // Default to 'Pending' if status is not recognized
-          }
+        // Pre-fill the editDetailsModal form fields with the passed data
+        var editResponderReport = document.querySelector("#editDetailsModal #responder_report");
+        var editStatus = document.querySelector("#editDetailsModal #status");
+        if (responder !== 'None') {
+          editResponderReport.value = responder;
+        } else {
+          editResponderReport.value = ''; // or any other default value you prefer
+        }
+        // Map status string to corresponding value
+        var statusValue;
+        switch (status.toLowerCase()) {
+          case 'pending':
+            statusValue = 1;
+            break;
+          case 'ongoing':
+            statusValue = 2;
+            break;
+          case 'resolved':
+            statusValue = 3;
+            break;
+          case 'fraudulent':
+            statusValue = 4;
+            break;
+          default:
+            statusValue = 1; // Default to 'Pending' if status is not recognized
+        }
 
-          editStatus.value = statusValue;
+        editStatus.value = statusValue;
 
-          // Disable "Pending" option if current status is "Ongoing"
-          var pendingOption = editStatus.querySelector("option[value='1']");
-          if (statusValue === 2) {
-              pendingOption.disabled = true;
-          } else {
-              pendingOption.disabled = false;
-          }
+        // Disable "Pending" option if current status is "Ongoing"
+        var pendingOption = editStatus.querySelector("option[value='1']");
+        if (statusValue === 2) {
+          pendingOption.disabled = true;
+        } else {
+          pendingOption.disabled = false;
+        }
 
-          // Disable the edit report button if status is "Resolved" or "Fraudulent"
-          var editButton = document.getElementById("editReport");
-          if (statusValue === 3 || statusValue === 4) {
-              editButton.disabled = true;
-          } else {
-              editButton.disabled = false;
-          }
+        // Disable the edit report button if status is "Resolved" or "Fraudulent"
+        var editButton = document.getElementById("editReport");
+        if (statusValue === 3 || statusValue === 4) {
+          editButton.disabled = true;
+        } else {
+          editButton.disabled = false;
+        }
 
-          // Show the modal
-          $('#detailsModal').modal('show');
+        // Show the modal
+        $('#detailsModal').modal('show');
       });
-  });
+    });
 
-  // Print button event listener
-  document.getElementById("printReportButton").addEventListener("click", function () {
-        printIndividualReport(currentReportId);
+    // Print button event listener
+    document.getElementById("printReportButton").addEventListener("click", function () {
+      printIndividualReport(currentReportId);
     });
 
     // Event listener for edit button click
     var editButton = document.getElementById("editReport");
     editButton.addEventListener("click", function () {
-        // Set the reportId attribute of the edit button
-        editButton.dataset.reportId = currentReportId;
-        // Show the editDetailsModal
-        $('#editDetailsModal').modal('show');
+      // Set the reportId attribute of the edit button
+      editButton.dataset.reportId = currentReportId;
+      // Show the editDetailsModal
+      $('#editDetailsModal').modal('show');
     });
 
     // Event listener for form submission
-document.getElementById("editReportForm").addEventListener("submit", function (event) {
-// Prevent default form submission
-event.preventDefault();
+    document.getElementById("editReportForm").addEventListener("submit", function (event) {
+      // Prevent default form submission
+      event.preventDefault();
 
-// Manually submit the form
-var form = this;
+      // Manually submit the form
+      var form = this;
 
-// Retrieve the reportId from the stored variable
-var reportId = currentReportId;
+      // Retrieve the reportId from the stored variable
+      var reportId = currentReportId;
 
-// Add the reportId to the form data
-var formData = new FormData(form);
-formData.append('reportId', reportId);
+      // Add the reportId to the form data
+      var formData = new FormData(form);
+      formData.append('reportId', reportId);
 
-$.ajax({
-  url: form.action,
-  method: form.method,
-  data: formData,
-  processData: false,
-  contentType: false,
-  success: function (response) {
-        // Hide the editDetailsModal
-        $('#detailsModal').modal('hide');
-        $('#editDetailsModal').modal('hide');
-        // Show the success modal
-        $('#viewSuccessModal').modal('show');
-  },
-  error: function (xhr, status, error) {
-    // Handle error response
-    console.error("Error submitting form:", error);
-    console.log("Response:", xhr.responseText);
-    // Optionally display error message to user
-  }
-});
-});
+      $.ajax({
+        url: form.action,
+        method: form.method,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          // Hide the editDetailsModal
+          $('#detailsModal').modal('hide');
+          $('#editDetailsModal').modal('hide');
+          // Show the success modal
+          $('#viewSuccessModal').modal('show');
+        },
+        error: function (xhr, status, error) {
+          // Handle error response
+          console.error("Error submitting form:", error);
+          console.log("Response:", xhr.responseText);
+          // Optionally display error message to user
+        }
+      });
+    });
 
-// Event listener for the OKAY button in the success modal
-$('#viewSuccessModal').on('hidden.bs.modal', function () {
-    location.reload();
+    // Event listener for the OKAY button in the success modal
+    $('#viewSuccessModal').on('hidden.bs.modal', function () {
+      location.reload();
+    });
+
+
   });
-
-
-});
 
 </script>
 
 <script>
-function printReportPDF() {
-  window.location.href = "/report/print-pdf";  // Redirect to the new route
-}
-function printIndividualReport(reportId) {
+  function printReportPDF() {
+    window.location.href = "/report/print-pdf";  // Redirect to the new route
+  }
+  function printIndividualReport(reportId) {
     fetch(`/report/print-individual/${reportId}`)
-        .then(response => response.blob())
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = `report_${reportId}.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-        })
-        .catch(error => console.error('Error:', error));
-}
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = `report_${reportId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => console.error('Error:', error));
+  }
 
 </script>
 
@@ -445,11 +419,11 @@ function printIndividualReport(reportId) {
   // Connect to the SocketIO server using window.location.hostname and the specified namespace
   var socket = io.connect('/report');
 
-  socket.on('connect', function() {
-      console.log('Connected to server');
+  socket.on('connect', function () {
+    console.log('Connected to server');
   });
 
-  socket.on('new_report', function() {
+  socket.on('new_report', function () {
     console.log('Received report data:');
     window.location.reload()
   });
@@ -457,29 +431,29 @@ function printIndividualReport(reportId) {
 </script>
 
 <script>
-  $(document).ready(function() {
-      // Initialize DataTable
-      let table = $('#reportTable').DataTable();
-  
-      // Retrieve saved filter value from sessionStorage (or localStorage for persistent across sessions)
-      let savedStatusFilter = sessionStorage.getItem('statusFilter');
-      if (savedStatusFilter) {
-          $('#filterByStatus').val(savedStatusFilter); // Set dropdown value
-          table.column(7).search(savedStatusFilter === 'all' ? '' : '^' + savedStatusFilter + '$', true, false).draw(); // Apply filter
-      }
-  
-      // Event listener for the filter dropdown
-      $('#filterByStatus').on('change', function() {
-          let statusFilter = this.value;
-          
-          // Save filter value to sessionStorage
-          sessionStorage.setItem('statusFilter', statusFilter);
-  
-          // Use the search API to filter by the status
-          table.column(7).search(statusFilter === 'all' ? '' : '^' + statusFilter + '$', true, false).draw();
-      });
+  $(document).ready(function () {
+    // Initialize DataTable
+    let table = $('#reportTable').DataTable();
+
+    // Retrieve saved filter value from sessionStorage (or localStorage for persistent across sessions)
+    let savedStatusFilter = sessionStorage.getItem('statusFilter');
+    if (savedStatusFilter) {
+      $('#filterByStatus').val(savedStatusFilter); // Set dropdown value
+      table.column(7).search(savedStatusFilter === 'all' ? '' : '^' + savedStatusFilter + '$', true, false).draw(); // Apply filter
+    }
+
+    // Event listener for the filter dropdown
+    $('#filterByStatus').on('change', function () {
+      let statusFilter = this.value;
+
+      // Save filter value to sessionStorage
+      sessionStorage.setItem('statusFilter', statusFilter);
+
+      // Use the search API to filter by the status
+      table.column(7).search(statusFilter === 'all' ? '' : '^' + statusFilter + '$', true, false).draw();
+    });
   });
-  </script>
+</script>
 
 
 {% endblock %}
