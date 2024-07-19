@@ -308,13 +308,13 @@ def accounts():
     admins = cur.fetchall()
     cur.close()
 
-    return render_template('admin/accounts.html', admins=admins)
+    return render_template('admin/accounts.html',current_page='accounts', admins=admins)
 
 @app.route('/accounts/create')
 @login_required
 def create_account():
 
-    return render_template('admin/create_account.html')
+    return render_template('admin/create_account.html',current_page='accounts')
 
 @app.route('/accounts/save', methods=['POST'])
 @login_required
@@ -381,7 +381,7 @@ def analytics():
 
     cursor.close()
 
-    return render_template('admin/analytics.html', coordinates=coordinates)
+    return render_template('admin/analytics.html',current_page='analytics', coordinates=coordinates)
 
 @app.route('/analytics/data', methods=['GET'])
 @login_required
@@ -431,7 +431,7 @@ def analytics_data():
 @app.route('/help')
 @login_required
 def help():
-    return render_template('admin/help.html')
+    return render_template('admin/help.html',current_page='help')
 
 @app.route('/report')
 @login_required
@@ -449,7 +449,7 @@ def report():
     cur.close()
     
     # Pass data to template and render
-    return render_template('admin/report.html', reports=reports)
+    return render_template('admin/report.html', current_page='report', reports=reports)
 
 @app.route('/update_report', methods=['POST'])
 def update_report():
