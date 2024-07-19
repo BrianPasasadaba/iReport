@@ -10,10 +10,18 @@
     <div class="card">
       <div class="card-title">INCIDENT REPORTS</div>
       <div class="row">
-        <div class="col-lg-9 text-end">
-          <button type="button" class="icon-button" onclick="printReportPDF()">
-            <i class="fas fa-print"></i>
-          </button>
+        <div class="col-lg-7 text-end">
+        </div>
+
+        <div id="exportByStatusSection" class="input-group input-group-sm ms-3">
+          <label class="input-group-text" for="filterByStatus">Export:</label>
+          <select class="form-select" name="filterByStatus" id="filterByStatus">
+            <option value="all">ALL REPORTS</option>
+            <option value="Pending">PENDING</option>
+            <option value="Ongoing">ONGOING</option>
+            <option value="Resolved">RESOLVED</option>
+            <option value="Fraudulent">FRAUDULENT</option>
+          </select>
         </div>
 
         <div id="filterByStatusSection" class="input-group input-group-sm">
@@ -26,6 +34,8 @@
             <option value="Fraudulent">FRAUDULENT</option>
           </select>
         </div>
+
+
       </div>
       <div class="row">
         <table id="reportTable" style="width: 100%;">

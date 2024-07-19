@@ -116,6 +116,10 @@ footer {
   border: none;
 }
 
+.asterisk {
+  color: #a91212;
+}
+
 #reportTable th {
   background-color: rgba(16, 10, 81, 0.15);
   border-top: 1px solid #656565;
@@ -148,7 +152,25 @@ footer {
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 2rem;
-  width: 30%;
+  width: 4  0%;
+}
+
+#exportByStatusSection label {
+  font-size: 1rem;
+}
+
+#exportByStatusSection select {
+  font-size: 0.8rem;
+}
+
+#exportByStatusSection select {
+  background-color: #a91212;
+  color: #fff;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="%23ffffff" d="M10 12l-4-4h8z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 2rem;
+  width: 4  0%;
 }
 
 /* Analytics */
