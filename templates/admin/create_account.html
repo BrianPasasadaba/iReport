@@ -4,22 +4,22 @@
         <div class="card">
             <div class="card-title">CREATE ACCOUNT</div>
             <div class="card-body">
-                <form method="POST" action="" id="createAccountForm">  
+                <form method="POST" action="/accounts/save" id="createAccountForm">  
                   <div class="form-group">
                     <label for="last_name">Last Name:<span class="asterisk">*</span></label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" required>
+                    <input type="text" class="form-control" id="last_name" name="last_name" required maxlength="100">
                   </div>
                   <div class="form-group">
                     <label for="first_name">First Name:<span class="asterisk">*</span></label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" required>
+                    <input type="text" class="form-control" id="first_name" name="first_name" required maxlength="100">
                   </div>
                   <div class="form-group">
                     <label for="middle_name">Middle Name (Optional):</label>
-                    <input type="text" class="form-control" id="middle_name" name="middle_name">
+                    <input type="text" class="form-control" id="middle_name" name="middle_name" maxlength="100">
                   </div>
                   <div class="form-group">
                     <label for="name_suffix">Name Suffix (Optional):</label>
-                    <input type="text" class="form-control" id="name_suffix" name="name_suffix">
+                    <input type="text" class="form-control" id="name_suffix" name="name_suffix" maxlength="11">
                   </div>
                   <div class="form-group">
                     <label for="employee_id">Employee ID:<span class="asterisk">*</span></label>
@@ -33,10 +33,10 @@
                   </div>
                   <div class="form-group">
                     <label for="email">E-mail:<span class="asterisk">*</span></label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <input type="email" class="form-control" id="email" name="email" required maxlength="100">
                   </div>
                   <div class="mt-3">
-                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Create Account</button>
                   </div>
                 </form>
             </div>
@@ -44,36 +44,99 @@
     </div>
 </page>
 
+<!-- Start of Success Modal -->
+<div id="viewSuccessModal" class="modal fade" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog " style="margin: auto;">
+    <div class="modal-content modal-content-1 success">
+      <!-- Modal Body -->
+      <div class="modal-body" style="text-align: center">
+        <i class="fa fa-check-circle fa-8x mb-3" style="color: #02ca2a;"></i>
+        <h5>You have successfully created</h5>
+        <h5>an account!</h5>
+      </div>
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <!-- Close Button -->
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="modalCloseButton">
+          OKAY
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %} {% block script %}
 <script>
-document.getElementById('createAccountForm').addEventListener('submit', function(event) {
+  var isSubmitting = false;
+
+  document.getElementById('createAccountForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    if (isSubmitting) {
+      return; // Prevent double submission
+    }
+
     var employeeId = document.getElementById('employee_id').value;
     var employeeIdPattern = /^CDRRMO-ADM-\d{2}$/;
     var employeeIdError = document.getElementById('employeeIdError');
-
-    if (!employeeIdPattern.test(employeeId)) {
-        employeeIdError.textContent = 'Employee ID must be in the format CDRRMO-ADM-XX (XX = digits)';
-        event.preventDefault();
-    } else {
-        employeeIdError.textContent = ''; // Clear the error message if the format is correct
-    }
 
     var contactNumber = document.getElementById('contact_number').value;
     var contactNumberPattern = /^09\d{9}$/;
     var contactNumberError = document.getElementById('contactNumberError');
 
+    var formIsValid = true;
+
+    if (!employeeIdPattern.test(employeeId)) {
+        employeeIdError.textContent = 'Employee ID must be in the format CDRRMO-ADM-XX (XX = digits)';
+        formIsValid = false;
+    } else {
+        employeeIdError.textContent = ''; // Clear the error message if the format is correct
+    }
+
     if (!contactNumberPattern.test(contactNumber)) {
-        contactNumberError.textContent = 'Contact number must with 09 and contain 11 digits';
-        event.preventDefault();
+        contactNumberError.textContent = 'Contact number must start with 09 and contain 11 digits';
+        formIsValid = false;
     } else {
         contactNumberError.textContent = ''; // Clear the error message if the format is correct
     }
-});
 
-document.getElementById('contact_number').addEventListener('input', function(event) {
+    if (formIsValid) {
+        isSubmitting = true; // Set the flag to prevent double submission
+        document.getElementById('submitBtn').disabled = true; // Disable the submit button
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+              $("#viewSuccessModal").modal("show");
+            }
+        })
+        .catch(error => console.error('Error:', error))
+        .finally(() => {
+            isSubmitting = false; // Reset the flag once the submission is complete
+            document.getElementById('submitBtn').disabled = false; // Re-enable the submit button
+        });
+    }
+  });
+
+  document.getElementById('contact_number').addEventListener('input', function(event) {
     var contactNumber = event.target.value;
     event.target.value = contactNumber.replace(/[^0-9]/g, ''); // Remove any non-numeric characters
-});
+  });
+
+  document.getElementById('modalCloseButton').addEventListener('click', function() {
+    window.location.href = '{{ url_for('accounts') }}';
+  });
 </script>
 
 

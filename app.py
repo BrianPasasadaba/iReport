@@ -1,5 +1,5 @@
-from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify, Response, send_file, make_response, send_from_directory
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask import Flask, render_template, url_for, redirect, request, flash, session, jsonify, Response, send_file, make_response, send_from_directory, abort
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
 from flask_socketio import SocketIO, emit
@@ -23,9 +23,12 @@ import textwrap
 import base64
 import os
 import time
+import random
+import string
+import re
 from clustering_model import load_data_and_train_model, predict_cluster_and_distance
 from flask_mail import Mail, Message
-
+from functools import wraps
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -101,17 +104,31 @@ def load_user(employee_id):
     user_data = cursor.fetchone()
     cursor.close()
     if user_data:
-        user = User(user_data[5], user_data[7])
+        user = User(user_data[5], user_data[8])
         full_name = f"{user_data[2]} {user_data[1]}"  # Assuming first name is at index 3 and last name is at index 2
-        admin_id = user_data[0]  # Assuming ID is at index 0
+        superadmin_check = user_data[9]  # Assuming ID is at index 0
         user.full_name = full_name  # employee_id is at index 5 and password is at index 7
-        user.id = admin_id
+        user.adminCheck = superadmin_check
 
         return user
     else:
         return None
     
-
+def superadmin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.adminCheck:
+            abort(403)  # Forbidden access
+        return f(*args, **kwargs)
+    return decorated_function
+    
+def generate_valid_password():
+    while True:
+        password_length = 12
+        password_characters = string.ascii_letters + string.digits + '@$!%*_?&'
+        password = ''.join(random.choice(password_characters) for i in range(password_length))
+        if re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*_?&])[A-Za-z\d@$!%*_?&]{8,}$', password):
+            return password
 
 @socketio.on('new_report', namespace='/report')
 def handle_new_report():
@@ -302,6 +319,7 @@ def privacy():
 #START OF SUPERADMIN ROUTES
 @app.route('/accounts')
 @login_required
+@superadmin_required
 def accounts():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM admins")
@@ -312,12 +330,14 @@ def accounts():
 
 @app.route('/accounts/create')
 @login_required
+@superadmin_required
 def create_account():
 
     return render_template('admin/create_account.html',current_page='accounts')
 
 @app.route('/accounts/save', methods=['POST'])
 @login_required
+@superadmin_required
 def save_account():
     if request.method == 'POST':
         first_name = request.form['first_name']
@@ -325,18 +345,36 @@ def save_account():
         email = request.form['email']
         contact_number = request.form['contact_number']
         employee_id = request.form['employee_id']
-        password = request.form['password']
+        
+        # Generate a valid password
+        password = generate_valid_password()
+        
+        # Hash the password
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-
+        
+        # Save the account with the hashed password
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO admins (first_name, last_name, email, contact_number, employee_id, password) VALUES (%s, %s, %s, %s, %s, %s)",
                     (first_name, last_name, email, contact_number, employee_id, hashed_password))
         mysql.connection.commit()
         cur.close()
+        
+        # Send the password to the user's email
+        msg = Message('Your New Account Password', sender='cabuyaocdrrmo@example.com', recipients=[email])
+        msg.body = f"Hello {first_name},\n\nYour account has been created. Your login details are as follows:\n\nEmail: {email}\nEmployee ID: {employee_id}\nPassword: {password}\n\nPlease change your password after logging in for the first time.\n\nBest regards,\nYour Company"
+        mail.send(msg)
+        
+        return jsonify(success=True)
 
-        flash('Account created successfully!', 'success')
-
-        return redirect(url_for('accounts'))
+@app.route('/accounts/delete/<int:admin_id>', methods=['DELETE'])
+@login_required
+@superadmin_required
+def delete_account(admin_id):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM admins WHERE admin_id = %s", (admin_id,))
+    mysql.connection.commit()
+    cur.close()
+    return '', 204
 
 #Start of admin routes
 @app.route('/login', methods=['GET', 'POST'])
@@ -351,8 +389,8 @@ def login():
         user_data = cursor.fetchone()
         cursor.close()
 
-        if user_data and bcrypt.check_password_hash(user_data[7], password):
-            user = User(user_data[5], user_data[7])
+        if user_data and bcrypt.check_password_hash(user_data[8], password):
+            user = User(user_data[5], user_data[8])
             login_user(user)
             return redirect(url_for('report'))
         else:
