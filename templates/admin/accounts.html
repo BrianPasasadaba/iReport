@@ -1,62 +1,65 @@
 {% extends 'admin/admin_base.html' %} {% block content%}
 <div id="page-content-wrapper">
-    <div class="container-fluid px-4">
-      <div class="card">
-        <div class="card-title">ADMIN ACCOUNTS</div>
-        <div>
-            <a href="{{ url_for('create_account') }}"
-                ><button class="btn btn-primary">Create New Account</button></a
-            >
-            
-        </div>
-        <div class="row">
-          <table id="reportTable" style="width: 100%;">
-            <thead>
-              <tr>
-                <th class="th text-center">Admin ID</th>
-                <th class="th text-center">Last Name</th>
-                <th class="th text-center">First Name</th>
-                <th class="th text-center">Middle Name</th>
-                <th class="th text-center">Name Suffix</th>
-                <th class="th text-center">Employee ID</th>
-                <th class="th text-center">Email</th>
-                <th class="th text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for admin in admins %}
-              <tr>
-                <td class="text-center">{{ admin[0] }}</td>
-                <td class="text-center">{{ admin[1] }}</td>
-                <td class="text-center">{{ admin[2] }}</td>
-                <td class="text-center">{{ admin[3] }}</td>
-                <td class="text-center">{{ admin[4] }}</td>
-                <td class="text-center">{{ admin[5] }}</td>
-                <td class="text-center">{{ admin[6] }}</td>
-                <td class="text-center">
-                  <a href=""
-                    ><button class="btn btn-danger" style="border-radius: 25px;">Delete</button></a
-                  >
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+  <div class="container-fluid px-4">
+    <div class="card">
+      <div class="card-title">ADMIN ACCOUNTS</div>
+      <div>
+        <a href="{{ url_for('create_account') }}"
+          ><button class="btn btn-primary">Create New Account</button></a
+        >
+      </div>
+      <div class="row">
+        <table id="accountTable" style="width: 100%">
+          <thead>
+            <tr>
+              <th class="th text-center">Admin ID</th>
+              <th class="th text-center">Last Name</th>
+              <th class="th text-center">First Name</th>
+              <th class="th text-center">Middle Name</th>
+              <th class="th text-center">Name Suffix</th>
+              <th class="th text-center">Employee ID</th>
+              <th class="th text-center">Email</th>
+              <th class="th text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for admin in admins %}
+            <tr>
+              <td class="text-center">{{ admin[0] }}</td>
+              <td class="text-center">{{ admin[1] }}</td>
+              <td class="text-center">{{ admin[2] }}</td>
+              <td class="text-center">{{ admin[3] }}</td>
+              <td class="text-center">{{ admin[4] }}</td>
+              <td class="text-center">{{ admin[5] }}</td>
+              <td class="text-center">{{ admin[6] }}</td>
+              <td class="text-center">
+                <a href=""
+                  ><button class="btn btn-danger" style="border-radius: 25px">
+                    Delete
+                  </button></a
+                >
+              </td>
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
 </div>
 
 {% endblock %} {% block script %}
 <script>
-    $(document).ready(function () {
-      $('#reportTable').DataTable({
-        //"searching": false, // Disable search bar
-        //"paging": false, // Disable pagination
-        "lengthChange": false, // Disable "entries per page" selection
-        "order": [[0, "desc"]], // Order by Report ID in descending order
-        //"info" : false,
-      });
+  $(document).ready(function () {
+    $("#accountTable").DataTable({
+      //"searching": false, // Disable search bar
+      //"paging": false, // Disable pagination
+      lengthChange: false, // Disable "entries per page" selection
+      order: [[0, "desc"]], // Order by Report ID in descending order
+      //"info" : false,
     });
-  </script>
+  });
+</script>
 
 {% endblock %}

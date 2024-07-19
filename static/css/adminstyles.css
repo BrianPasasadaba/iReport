@@ -120,12 +120,13 @@ footer {
   color: #a91212;
 }
 
+#accountTable th,
 #reportTable th {
   background-color: rgba(16, 10, 81, 0.15);
   border-top: 1px solid #656565;
   font-family: "Inter";
 }
-
+#accountTable td,
 #reportTable td {
   border-bottom: 1px solid #d9d9d9;
   font-family: "Manrope";
@@ -140,6 +141,10 @@ footer {
   color: #a91212;
 }
 
+#filterByStatusSection {
+  width: 20rem;
+}
+
 #filterByStatusSection label,
 #filterByStatusSection select {
   font-size: 1rem;
@@ -152,10 +157,10 @@ footer {
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 2rem;
-  width: 4  0%;
+  width: 4 0%;
 }
 
-#exportByStatusSection{
+#exportByStatusSection {
   width: 20rem;
 }
 
@@ -174,7 +179,7 @@ footer {
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 2rem;
-  width: 4  0%;
+  width: 4 0%;
 }
 
 /* Analytics */
@@ -422,6 +427,8 @@ input[type="password"]::-ms-clear {
     margin: 1.75rem;
   }
 
+  #exportByStatusSection label,
+  #exportByStatusSection select,
   #filterByStatusSection label,
   #filterByStatusSection select {
     font-size: 0.7rem;
@@ -440,14 +447,17 @@ input[type="password"]::-ms-clear {
 }
 
 @media (max-width: 1195px) {
+  #accountTable th,
   #reportTable th {
     font-size: 0.7rem;
   }
-
+  #accountTable td,
   #reportTable td {
     font-size: 0.7rem;
   }
 
+  #exportByStatusSection label,
+  #exportByStatusSection select,
   #filterByStatusSection label,
   #filterByStatusSection select {
     font-size: 0.7rem;
@@ -483,6 +493,8 @@ input[type="password"]::-ms-clear {
     font-size: 1rem;
   }
 
+  #exportByStatusSection label,
+  #exportByStatusSection select,
   #filterByStatusSection label,
   #filterByStatusSection select {
     font-size: 0.6rem;
@@ -503,6 +515,8 @@ input[type="password"]::-ms-clear {
   .fa-print {
     font-size: 1.5rem;
   }
+  #exportByStatusSection label,
+  #exportByStatusSection select,
   #filterByStatusSection label,
   #filterByStatusSection select {
     font-size: 0.5rem;
@@ -527,11 +541,11 @@ input[type="password"]::-ms-clear {
   #wrapper.toggled #sidebar-wrapper {
     margin-left: -8rem;
   }
-
+  #accountTable th,
   #reportTable th {
     font-size: 0.6rem;
   }
-
+  #accountTable td,
   #reportTable td {
     font-size: 0.6rem;
   }
@@ -544,25 +558,25 @@ input[type="password"]::-ms-clear {
   .card-title {
     font-size: 1.5rem;
   }
-
+  #accountTable th,
   #reportTable th {
     display: none;
   }
-
+  #accountTable td,
   #reportTable td {
     text-align: left !important;
-    font-size: 0.75rem;
+    font-size: 1rem;
     display: grid;
     grid-template-columns: 15ch auto;
     gap: 2rem;
     border: none;
     width: 55vw;
   }
-
+  #accountTable td:first-child,
   #reportTable td:first-child {
     padding-top: 4rem;
   }
-
+  #accountTable td::before,
   #reportTable td::before {
     font-weight: 700;
   }
@@ -624,8 +638,32 @@ input[type="password"]::-ms-clear {
     padding: 0.25rem;
     font-size: 0.75rem;
   }
-}
 
+  #accountTable td:nth-of-type(1)::before {
+    content: "Account ID: ";
+  }
+  #accountTable td:nth-of-type(2)::before {
+    content: "Last Name: ";
+  }
+  #accountTable td:nth-of-type(3)::before {
+    content: "First Name: ";
+  }
+  #accountTable td:nth-of-type(4)::before {
+    content: "Middle Name: ";
+  }
+  #accountTable td:nth-of-type(5)::before {
+    content: "Name Suffix: ";
+  }
+  #accountTable td:nth-of-type(6)::before {
+    content: "Employee ID: ";
+  }
+  #accountTable td:nth-of-type(7)::before {
+    content: "Email: ";
+  }
+  #accountTable td:nth-of-type(8)::before {
+    content: "Action: ";
+  }
+}
 @media (max-width: 650px) {
   .card {
     margin: 0.5rem;
@@ -634,10 +672,10 @@ input[type="password"]::-ms-clear {
   #dt-search-0 {
     width: 17vw;
   }
-
+  #accountTable td,
   #reportTable td {
     width: 40vw;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
   }
   #analytics-1 .card-title,
   #analytics-2 .card-title {
@@ -647,10 +685,15 @@ input[type="password"]::-ms-clear {
   #analytics-2 {
     margin: 0.5rem;
   }
+
   #login .btn-primary {
     padding: 5px;
     font-size: 1rem;
     width: 50%;
+  }
+
+  .btn-danger {
+    font-size: 0.65rem;
   }
 }
 
@@ -658,7 +701,7 @@ input[type="password"]::-ms-clear {
   #dt-search-0 {
     width: 17vw;
   }
-
+  #accountTable td,
   #reportTable td {
     width: 35vw;
     font-size: 0.7rem;
@@ -671,19 +714,33 @@ input[type="password"]::-ms-clear {
     margin-left: 7%;
   }
 }
-
+@media (max-width: 460px) {
+  #accountTable td,
+  #reportTable td {
+    grid-template-columns: 10ch auto;
+    gap: 0.8rem;
+  }
+}
 @media (max-width: 410px) {
+  #sidebar-wrapper .list-group {
+    width: 22rem;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -22rem;
+  }
   .card-title {
     font-size: 1.25rem;
   }
   #dt-search-0 {
     width: 17vw;
   }
-
+  #accountTable td,
   #reportTable td {
     grid-template-columns: 10ch auto;
     gap: 1rem;
     width: 25vw;
+    font-size: 0.75rem;
   }
 
   .legend-text {
@@ -720,22 +777,40 @@ input[type="password"]::-ms-clear {
   .accordion-button:not(.collapsed) {
     font-size: 0.5rem;
   }
+  #page-content-wrapper .btn-primary {
+    padding: 5px;
+    font-size: 0.9rem;
+  }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 362px) {
+  #sidebar-wrapper .list-group {
+    width: 20rem;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -20rem;
+  }
   .card-title {
     font-size: 1rem;
   }
-
+  #accountTable td,
   #reportTable td {
     grid-template-columns: 10ch auto;
     gap: 1rem;
     width: 20vw;
-    font-size: 0.5rem;
+    font-size: 0.75rem;
   }
 }
 
 @media (max-width: 320px) {
+  #sidebar-wrapper .list-group {
+    width: 17rem;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -17rem;
+  }
   .card-title {
     font-size: 1rem;
   }
@@ -746,15 +821,16 @@ input[type="password"]::-ms-clear {
   #dt-search-0 {
     width: 15vw;
   }
+  #accountTable_info.dt-info,
   #reportTable_info.dt-info {
     font-size: 0.75rem;
   }
-
+  #accountTable td,
   #reportTable td {
     grid-template-columns: 10ch auto;
     gap: 1rem;
     width: 15vw;
-    font-size: 0.5rem;
+    font-size: 0.75rem;
   }
 
   .legend-text {
@@ -796,5 +872,10 @@ input[type="password"]::-ms-clear {
     font-size: 0.75rem;
     width: 50%;
     margin-bottom: 15%;
+  }
+
+  #page-content-wrapper .btn-primary {
+    padding: 5px;
+    font-size: 0.75rem;
   }
 }
