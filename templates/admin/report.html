@@ -26,13 +26,13 @@
         </div>
         <div class="col-lg-12 d-flex justify-content-start mt-1">
           <div id="exportByStatusSection" class="input-group input-group-sm ms-3">
-            <label class="input-group-text" for="filterByStatus">Export to PDF:</label>
-            <select class="form-select" name="filterByStatus" id="filterByStatus">
+            <label class="input-group-text" for="exportByStatus">Export to PDF:</label>
+            <select class="form-select" name="exportByStatus" id="exportByStatus">
               <option value="all">ALL REPORTS</option>
-              <option value="Pending">PENDING</option>
-              <option value="Ongoing">ONGOING</option>
-              <option value="Resolved">RESOLVED</option>
-              <option value="Fraudulent">FRAUDULENT</option>
+              <option value="1">PENDING</option>
+              <option value="2">ONGOING</option>
+              <option value="3">RESOLVED</option>
+              <option value="4">FRAUDULENT</option>
             </select>
           </div>
         </div>
@@ -428,9 +428,6 @@
 </script>
 
 <script>
-  function printReportPDF() {
-    window.location.href = "/report/print-pdf";  // Redirect to the new route
-  }
   function printIndividualReport(reportId) {
     fetch(`/report/print-individual/${reportId}`)
       .then(response => response.blob())
@@ -486,6 +483,13 @@
       // Use the search API to filter by the status
       table.column(7).search(statusFilter === 'all' ? '' : '^' + statusFilter + '$', true, false).draw();
     });
+  });
+</script>
+
+<script>
+  document.getElementById('exportByStatus').addEventListener('change', function() {
+    var status = this.value;
+    window.location.href = `/report/print-pdf?status=${status}`;
   });
 </script>
 

@@ -510,15 +510,28 @@ def update_report():
 
 @app.route('/report/print-pdf')
 def print_report_pdf():
-    # Fetch data from database (same as report() function)
+    status_id = request.args.get('status', 'all')
+
+    # Modify query based on the status_id
+    if status_id == 'all':
+        query = """
+            SELECT r.report_id, r.date_time, r.phone_number, r.name, r.location,
+                r.responder_report, c.categories
+            FROM reports r
+            JOIN category c ON r.category_id = c.category_id
+        """
+    else:
+        query = """
+            SELECT r.report_id, r.date_time, r.phone_number, r.name, r.location,
+                r.responder_report, c.categories
+            FROM reports r
+            JOIN category c ON r.category_id = c.category_id
+            WHERE r.status_id = %s
+        """ % status_id
+
+    # Fetch data from database
     cur = mysql.connection.cursor()
-    cur.execute("""
-        SELECT r.report_id, r.date_time, r.phone_number, r.name, r.location,
-            r.responder_report, c.categories
-        FROM reports r
-        JOIN category c ON r.category_id = c.category_id
-        WHERE r.status_id = 3
-    """)
+    cur.execute(query)
     reports = cur.fetchall()
     cur.close()
 
