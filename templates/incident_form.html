@@ -470,12 +470,21 @@ contactNumberInput.addEventListener("blur", function () {
 
 <script>
   $(document).ready(function () {
+    var isSubmitting = false; // Flag to prevent double submission
+
     // Submit button click listener
     $("#submitButton").click(function (event) {
       event.preventDefault(); // Prevent default form submission
 
+      if (isSubmitting) {
+        return; // Prevent double submission
+      }
+
       // Check if form is valid
       if ($("#reportForm")[0].reportValidity()) {
+        isSubmitting = true; // Set the flag to prevent double submission
+        $("#submitButton").prop('disabled', true); // Disable the submit button
+
         // Get form data
         var formData = $("#reportForm").serialize();
 
@@ -499,6 +508,10 @@ contactNumberInput.addEventListener("blur", function () {
             // Handle errors (optional)
             alert("Error submitting report. Please try again.");
           },
+          complete: function () {
+            isSubmitting = false; // Reset the flag once the submission is complete
+            $("#submitButton").prop('disabled', false); // Re-enable the submit button
+          }
         });
       } else {
         // Optionally, display a message indicating form is not valid. Uncomment the line below to display an alert message.
@@ -508,11 +521,12 @@ contactNumberInput.addEventListener("blur", function () {
 
     // Listen for the success modal's hidden event
     $('#viewSuccessModal').on('hidden.bs.modal', function (e) {
-      // Reload the page
+      // Reload the page
       location.reload();
     });
   });
 </script>
+
 
 <script>
   // Function to save form data to local storage
