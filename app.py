@@ -103,7 +103,9 @@ def load_user(employee_id):
     if user_data:
         user = User(user_data[5], user_data[7])
         full_name = f"{user_data[2]} {user_data[1]}"  # Assuming first name is at index 3 and last name is at index 2
+        admin_id = user_data[0]  # Assuming ID is at index 0
         user.full_name = full_name  # employee_id is at index 5 and password is at index 7
+        user.id = admin_id
 
         return user
     else:
@@ -296,6 +298,45 @@ def term_of_use():
 @app.route('/privacy')
 def privacy():
     return render_template('privacy.html') 
+
+#START OF SUPERADMIN ROUTES
+@app.route('/accounts')
+@login_required
+def accounts():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM admins")
+    admins = cur.fetchall()
+    cur.close()
+
+    return render_template('admin/accounts.html', admins=admins)
+
+@app.route('/accounts/create')
+@login_required
+def create_account():
+
+    return render_template('admin/create_account.html')
+
+@app.route('/accounts/save', methods=['POST'])
+@login_required
+def save_account():
+    if request.method == 'POST':
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        contact_number = request.form['contact_number']
+        employee_id = request.form['employee_id']
+        password = request.form['password']
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO admins (first_name, last_name, email, contact_number, employee_id, password) VALUES (%s, %s, %s, %s, %s, %s)",
+                    (first_name, last_name, email, contact_number, employee_id, hashed_password))
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Account created successfully!', 'success')
+
+        return redirect(url_for('accounts'))
 
 #Start of admin routes
 @app.route('/login', methods=['GET', 'POST'])

@@ -1,0 +1,80 @@
+{% extends 'admin/admin_base.html' %} {% block content%}
+<page id="page-content-wrapper">
+    <div class="container-fluid px-4">
+        <div class="card">
+            <div class="card-title">CREATE ACCOUNT</div>
+            <div class="card-body">
+                <form method="POST" action="" id="createAccountForm">  
+                  <div class="form-group">
+                    <label for="last_name">Last Name:<span class="asterisk">*</span></label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="first_name">First Name:<span class="asterisk">*</span></label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="middle_name">Middle Name (Optional):</label>
+                    <input type="text" class="form-control" id="middle_name" name="middle_name">
+                  </div>
+                  <div class="form-group">
+                    <label for="name_suffix">Name Suffix (Optional):</label>
+                    <input type="text" class="form-control" id="name_suffix" name="name_suffix">
+                  </div>
+                  <div class="form-group">
+                    <label for="employee_id">Employee ID:<span class="asterisk">*</span></label>
+                    <input type="text" class="form-control" id="employee_id" name="employee_id" required maxlength="13" pattern="^CDRRMO-ADM-\d{2}$" title="Employee ID must be in format CDRRMO-ADM-XX (XX = digits)">
+                    <span id="employeeIdError" class="text-danger"></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_number">Contact Number:<span class="asterisk">*</span></label>
+                    <input type="text" class="form-control" id="contact_number" name="contact_number" required maxlength="11" pattern="^09\d{9}$" title="Contact number must with 09 and contain 11 digits">
+                    <span id="contactNumberError" class="text-danger"></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="email">E-mail:<span class="asterisk">*</span></label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                  </div>
+                  <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</page>
+
+{% endblock %} {% block script %}
+<script>
+document.getElementById('createAccountForm').addEventListener('submit', function(event) {
+    var employeeId = document.getElementById('employee_id').value;
+    var employeeIdPattern = /^CDRRMO-ADM-\d{2}$/;
+    var employeeIdError = document.getElementById('employeeIdError');
+
+    if (!employeeIdPattern.test(employeeId)) {
+        employeeIdError.textContent = 'Employee ID must be in the format CDRRMO-ADM-XX (XX = digits)';
+        event.preventDefault();
+    } else {
+        employeeIdError.textContent = ''; // Clear the error message if the format is correct
+    }
+
+    var contactNumber = document.getElementById('contact_number').value;
+    var contactNumberPattern = /^09\d{9}$/;
+    var contactNumberError = document.getElementById('contactNumberError');
+
+    if (!contactNumberPattern.test(contactNumber)) {
+        contactNumberError.textContent = 'Contact number must with 09 and contain 11 digits';
+        event.preventDefault();
+    } else {
+        contactNumberError.textContent = ''; // Clear the error message if the format is correct
+    }
+});
+
+document.getElementById('contact_number').addEventListener('input', function(event) {
+    var contactNumber = event.target.value;
+    event.target.value = contactNumber.replace(/[^0-9]/g, ''); // Remove any non-numeric characters
+});
+</script>
+
+
+{% endblock %}

@@ -152,6 +152,14 @@
           {% endif %}
         </div>
         <div class="list-group mx-2">
+          {% if current_user.id == 3 %}
+          <a
+            href="{{ url_for('accounts') }}"
+            class="list-group-item list-group-item-action bg-transparent primary-text fw-bold {% if current_page == 'accounts' or current_page == 'create_account' %}active{% endif %}"
+          >
+            <i class="fas fa-users me-2"></i>ACCOUNTS
+          </a>
+          {% endif %}
           <a
             href="{{ url_for('report') }}"
             class="list-group-item list-group-item-action bg-transparent primary-text fw-bold {% if current_page == 'report' %}active{% endif %}"
