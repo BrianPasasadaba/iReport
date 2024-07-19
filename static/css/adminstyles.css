@@ -155,12 +155,16 @@ footer {
   width: 4  0%;
 }
 
+#exportByStatusSection{
+  width: 20rem;
+}
+
 #exportByStatusSection label {
   font-size: 1rem;
 }
 
 #exportByStatusSection select {
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 #exportByStatusSection select {
