@@ -24,6 +24,7 @@ import base64
 import os
 import time
 from clustering_model import load_data_and_train_model, predict_cluster_and_distance
+from flask_mail import Mail, Message
 
 
 app = Flask(__name__)
@@ -46,6 +47,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.config['SECRET_KEY'] = 'b6Vs6>[L;pgZ26`$]>?V'
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'cabuyaocdrrmo@gmail.com'
+app.config['MAIL_PASSWORD'] = 'nfkw cyuh bvkh usqf'
+app.config['MAIL_DEFAULT_SENDER'] = 'cabuyaocdrrmo@gmail.com'
+
+mail = Mail(app)
 mysql = MySQL(app)
 
 # Define User model
@@ -145,13 +154,32 @@ def submit_incident_form():
 
     # Get current date and time
     current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("Full Name:", full_name)
-    print("Contact Number:", contact_number)
-    print("Location:", location)
-    print("Latitude:", latitude)
-    print("Longitude:", longitude)
-    print("Estimated Number of Victims:", victims)
-    print("Further Details:", details)
+
+    # Get email addresses of admins
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT email FROM admins")
+    admin_emails = [row[0] for row in cur.fetchall()]
+    cur.close()
+
+    # Prepare email content
+    message = Message(f"New Incident Report", sender=app.config['MAIL_DEFAULT_SENDER'], recipients=admin_emails)
+    message.body = f"""
+    Full Name: {full_name}
+    Contact Number: {contact_number}
+    Location: {location}
+    Estimated Number of Victims: {victims}
+    Further Details: {details}
+    Category: {predicted_category}
+    
+    Please check the admin dashboard for more details.
+    """
+
+    # Send email asynchronously (recommended)
+    try:
+        mail.send(message)
+        print("Email sent to admins successfully!")
+    except Exception as e:
+        print(f"Error sending email: {e}")
     
     # Insert data into MySQL database along with predicted category ID
     cur = mysql.connection.cursor()
