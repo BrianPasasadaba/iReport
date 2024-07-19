@@ -39,11 +39,10 @@ bcrypt = Bcrypt(app)
 
 UPLOAD_FOLDER = 'static/uploads'
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'cdrrmo'
-
+app.config['MYSQL_HOST'] = 'iReport.mysql.pythonanywhere-services.com'
+app.config['MYSQL_USER'] = 'iReport'
+app.config['MYSQL_PASSWORD'] = 'iReportpassword'
+app.config['MYSQL_DB'] = 'iReport$cdrrmo'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.config['SECRET_KEY'] = 'b6Vs6>[L;pgZ26`$]>?V'
