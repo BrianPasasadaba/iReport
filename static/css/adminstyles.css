@@ -713,6 +713,11 @@ input[type="password"]::-ms-clear {
     width: 22rem;
     margin-left: 7%;
   }
+
+  #login .card {
+    width: 80%;
+    height: 100%;
+  }
 }
 @media (max-width: 460px) {
   #accountTable td,
