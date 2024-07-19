@@ -43,7 +43,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`admin_id`, `last_name`, `first_name`, `middle_name`, `name_suffix`, `employee_id`, `email`, `password`) VALUES
-(3, 'Admin', 'CDRRMO', NULL, NULL, 'CDRRMO-ADM-01', 'admin@cdrrmo.com', '$2b$12$.Cev6VdYqe0H9A8t00MlyuJJLYUT6z/W/R3tGUiC1fjrrkUj6Xe.a'),
+(3, 'Admin', 'CDRRMO', NULL, NULL, 'CDRRMO-ADM-01', 'brian.pasasadaba@gmail.com', '$2b$12$.Cev6VdYqe0H9A8t00MlyuJJLYUT6z/W/R3tGUiC1fjrrkUj6Xe.a'),
 (4, 'Admin 2', 'CDRRMO', NULL, NULL, 'CDRRMO-ADM-02', 'admin2@cdrrmo.com', '$2b$12$T/CZJHVVmMlL3ZQU6TXN3uN8QOjbxSRGYBeLL094FYsoHtOhQODx.'),
 (5, 'Admin 3', 'CDRRMO', NULL, NULL, 'CDRRMO-ADM-03', 'admin3@cdrrmo.com', '$2b$12$JOlHH0PYB5NaRlM0mLo2gOOmCf70idmRn66GTXndIsed2a0o9EKMS');
 
