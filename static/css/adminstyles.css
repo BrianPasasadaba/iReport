@@ -426,6 +426,13 @@ input[type="password"]::-ms-clear {
   }
 }
 
+@media (max-width: 1300px) {
+  #accountTable td,
+  #accountTable th {
+    font-size: 0.7rem;
+  }
+}
+
 @media (max-width: 1220px) {
   #analytics-1 .card-title,
   #analytics-2 .card-title {
@@ -469,6 +476,14 @@ input[type="password"]::-ms-clear {
   }
 }
 
+@media (max-width: 1105px) and (max-width: 1130px) {
+  #accountTable td,
+  #accountTable th,
+  .btn-danger {
+    font-size: 0.6rem;
+  }
+}
+
 @media (max-width: 1024px) {
   #sidebar-wrapper {
     margin-left: 0;
@@ -503,9 +518,7 @@ input[type="password"]::-ms-clear {
   header {
     font-size: 0.75rem;
   }
-  .fa-print {
-    font-size: 1.5rem;
-  }
+
   #exportByStatusSection label,
   #exportByStatusSection select,
   #filterByStatusSection label,
@@ -539,6 +552,22 @@ input[type="password"]::-ms-clear {
   #accountTable td,
   #reportTable td {
     font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 915px) {
+  #accountTable td,
+  #accountTable th,
+  .btn-danger {
+    font-size: 0.55rem;
+  }
+}
+
+@media (max-width: 880px) {
+  #accountTable td,
+  #accountTable th,
+  .btn-danger {
+    font-size: 0.5rem;
   }
 }
 
@@ -649,9 +678,12 @@ input[type="password"]::-ms-clear {
     content: "Employee ID: ";
   }
   #accountTable td:nth-of-type(7)::before {
-    content: "Email: ";
+    content: "Contact Number: ";
   }
   #accountTable td:nth-of-type(8)::before {
+    content: "Email: ";
+  }
+  #accountTable td:nth-of-type(9)::before {
     content: "Action: ";
   }
 }
@@ -695,7 +727,7 @@ input[type="password"]::-ms-clear {
   #accountTable td,
   #reportTable td {
     width: 35vw;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
 
   .modal-content,
@@ -710,6 +742,15 @@ input[type="password"]::-ms-clear {
     height: 100%;
   }
 }
+
+@media (max-width: 480px) {
+  #accountTable td,
+  #accountTable th,
+  .btn-danger {
+    font-size: 0.55rem;
+  }
+}
+
 @media (max-width: 460px) {
   #accountTable td,
   #reportTable td {
