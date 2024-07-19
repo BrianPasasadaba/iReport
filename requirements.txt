@@ -9,7 +9,9 @@ bcrypt==4.1.3
 bidict==0.23.1
     # via python-socketio
 blinker==1.8.2
-    # via flask
+    # via
+    #   flask
+    #   flask-mail
 chardet==5.2.0
     # via reportlab
 click==8.1.7
@@ -29,11 +31,14 @@ flask==3.0.3
     #   -r requirements.in
     #   flask-bcrypt
     #   flask-login
+    #   flask-mail
     #   flask-mysqldb
     #   flask-socketio
 flask-bcrypt==1.0.1
     # via -r requirements.in
 flask-login==0.6.3
+    # via -r requirements.in
+flask-mail==0.10.0
     # via -r requirements.in
 flask-mysqldb==2.0.0
     # via -r requirements.in
