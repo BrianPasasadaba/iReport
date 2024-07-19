@@ -132,15 +132,6 @@ footer {
   font-family: "Manrope";
 }
 
-.fa-print {
-  color: #d9d9d9;
-  font-size: 3rem;
-}
-
-.fa-print:hover {
-  color: #a91212;
-}
-
 #filterByStatusSection {
   width: 20rem;
 }

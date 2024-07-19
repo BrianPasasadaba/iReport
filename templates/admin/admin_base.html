@@ -115,7 +115,7 @@
                 <h6>You will be returned to the login screen.</h6>
                 <span class="mb-5"> </span>
               </div>
-              <div class="modal-footer" style="margin-top: 5rem;">
+              <div class="modal-footer" style="margin-top: 5rem">
                 <button
                   type="button"
                   class="btn btn-secondary"
@@ -177,6 +177,12 @@
             class="list-group-item list-group-item-action bg-transparent primary-text fw-bold {% if current_page == 'help' %}active{% endif %}"
           >
             <i class="fa fa-question-circle me-2"></i>HELP
+          </a>
+          <a
+            href="{{ url_for('static', filename='forms/IncidentForm.pdf') }}"
+            class="list-group-item list-group-item-action bg-transparent primary-text fw-bold"
+          >
+            <i class="fa fa-print me-2"></i>INCIDENT FORM
           </a>
         </div>
       </div>
