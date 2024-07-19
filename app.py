@@ -392,7 +392,8 @@ def update_report():
 
         # Update the corresponding entry in the database
         cur = mysql.connection.cursor()
-        cur.execute("UPDATE reports SET responder_report = %s, status_id = %s WHERE report_id = %s", (responder_report, status, report_id))
+        cur.execute("UPDATE reports SET responder_report = %s, status_id = %s, category_id = %s WHERE report_id = %s", 
+                    (responder_report, status, category, report_id))
         mysql.connection.commit()
         cur.close()
 
