@@ -389,6 +389,7 @@ def update_report():
         report_id = request.form['reportId']
         responder_report = request.form['responder_report']
         status = request.form['status']
+        category = request.form['category']
 
         # Update the corresponding entry in the database
         cur = mysql.connection.cursor()
